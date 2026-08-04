@@ -24,3 +24,11 @@ Route::name('practice.')->group(function () {
         return view('pages.practice.2');
     });
 });
+
+Route::get('/dashboard-staff', function () {
+    return view('pages.dashboard-staff.index');
+})->name('dashboard-staff.index');
+
+Route::get('/laporan', function () {
+    return view('pages.laporan.index');
+})->name('laporan.index');
