@@ -17,6 +17,14 @@ Route::get('/', function () {
     return redirect()->route('warehouse.dashboard');
 });
 
+Route::get('/dashboard-staff', function () {
+    return view('pages.dashboard-staff.index');
+})->name('dashboard-staff.index');
+
+Route::get('/laporan', function () {
+    return view('pages.laporan.index');
+})->name('laporan.index');
+
 // Warehouse Manager Dashboard
 Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
 
