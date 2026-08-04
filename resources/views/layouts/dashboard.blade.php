@@ -53,11 +53,11 @@
 @php
     $whiteBg = isset($params['white_bg']) && $params['white_bg'];
 @endphp
-<body class="{{ $whiteBg ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800' }}">
+<body class="{{ $whiteBg ? 'bg-white' : 'bg-gray-50' }}">
     <x-navbar-dashboard/>
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+    <div class="flex pt-16 overflow-hidden bg-gray-50">
         <x-sidebar.admin-sidebar/>
-        <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
+        <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64">
             <main>
                 @yield('content')
             </main>

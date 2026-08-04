@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,15 +14,20 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::name('index-practice')->get('/', function () {
-    return view('pages.practice.index');
+
+Route::get('/', function () {
+    return view('welcome');
 });
 
-Route::name('practice.')->group(function () {
-    Route::name('first')->get('practice/1', function () {
-        return view('pages.practice.1');
-    });
-    Route::name('second')->get('practice/2', function () {
-        return view('pages.practice.2');
-    });
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('categories', CategoryController::class)->except(['show']);
 });
+
+require __DIR__.'/auth.php';
