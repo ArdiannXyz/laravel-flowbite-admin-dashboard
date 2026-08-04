@@ -1,6 +1,6 @@
 <x-sidebar-dashboard>
     <x-sidebar-menu-dashboard routeName="dashboard-staff.index" title="Dashboard Staff Gudang"/>
-    <x-sidebar-menu-dashboard routeName="laporan.index" title="Laporan"/>
+    <x-sidebar-menu-dashboard routeName="report.index" title="Laporan"/>
 
 
     <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">

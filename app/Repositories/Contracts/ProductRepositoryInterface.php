@@ -15,6 +15,7 @@ interface ProductRepositoryInterface
     public function getLowStockProducts(): Collection;
     public function countTotalProducts(): int;
     public function countLowStockProducts(): int;
+    public function calculateTotalStockValue(): float;
     public function create(array $data): Product;
     public function update(int $id, array $data): bool;
     public function updateStock(int $id, int $newStock): bool;
