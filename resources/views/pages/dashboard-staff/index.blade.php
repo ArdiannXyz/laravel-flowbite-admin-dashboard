@@ -19,7 +19,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Barang Masuk Perlu Diperiksa</p>
-                <p class="text-2xl font-semibold text-gray-900 dark:text-white">2 tugas</p>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $barangMasukCount }} tugas</p>
             </div>
         </div>
         <div class="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
@@ -30,7 +30,7 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">Barang Keluar Perlu Disiapkan</p>
-                <p class="text-2xl font-semibold text-gray-900 dark:text-white">2 tugas</p>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $barangKeluarCount }} tugas</p>
             </div>
         </div>
     </div>
@@ -47,35 +47,27 @@
             </div>
 
             <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                {{-- Item dummy, nanti diganti @forelse($barangMasuk as $item) --}}
-                <li class="flex items-center justify-between gap-4 p-4">
-                    <div class="min-w-0">
-                        <p class="truncate font-medium text-gray-900 dark:text-white">Minyak Goreng 2L</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">SKU: MKN-002 &middot; 40 unit &middot; dari CV Sumber Makmur</p>
-                        <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Dicatat 03 Agu 2026, 14:22</p>
+                @forelse($barangMasuk as $item)
+                    <li class="flex items-center justify-between gap-4 p-4">
+                        <div class="min-w-0">
+                            <p class="truncate font-medium text-gray-900 dark:text-white">{{ $item->product->name ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                SKU: {{ $item->product->sku ?? '-' }} &middot; {{ $item->quantity }} {{ $item->product->unit ?? 'unit' }} &middot; dari {{ $item->supplier->name ?? 'Supplier Tidak Diketahui' }}
+                            </p>
+                            <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                                Dicatat {{ \Carbon\Carbon::parse($item->transaction_date)->translatedFormat('d M Y') }}
+                            </p>
+                        </div>
+                        <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Periksa
+                        </button>
+                    </li>
+                @empty
+                    <div class="p-8 text-center">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tidak ada barang masuk yang perlu diperiksa saat ini.</p>
                     </div>
-                    <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Periksa
-                    </button>
-                </li>
-                <li class="flex items-center justify-between gap-4 p-4">
-                    <div class="min-w-0">
-                        <p class="truncate font-medium text-gray-900 dark:text-white">Kabel HDMI 2m</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">SKU: ELK-001 &middot; 25 unit &middot; dari PT Elektronik Jaya</p>
-                        <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Dicatat 02 Agu 2026, 09:10</p>
-                    </div>
-                    <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Periksa
-                    </button>
-                </li>
+                @endforelse
             </ul>
-
-            {{-- Kondisi kosong (dipakai kalau nanti list-nya kosong) --}}
-            {{--
-            <div class="p-8 text-center">
-                <p class="text-sm text-gray-500 dark:text-gray-400">Tidak ada barang masuk yang perlu diperiksa saat ini.</p>
-            </div>
-            --}}
         </div>
 
         {{-- ================================================================ --}}
@@ -88,27 +80,26 @@
             </div>
 
             <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                {{-- Item dummy, nanti diganti @forelse($barangKeluar as $item) --}}
-                <li class="flex items-center justify-between gap-4 p-4">
-                    <div class="min-w-0">
-                        <p class="truncate font-medium text-gray-900 dark:text-white">Power Bank 10000mAh</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">SKU: ELK-002 &middot; 3 unit</p>
-                        <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Diminta 03 Agu 2026, 11:00</p>
+                @forelse($barangKeluar as $item)
+                    <li class="flex items-center justify-between gap-4 p-4">
+                        <div class="min-w-0">
+                            <p class="truncate font-medium text-gray-900 dark:text-white">{{ $item->product->name ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                SKU: {{ $item->product->sku ?? '-' }} &middot; {{ $item->quantity }} {{ $item->product->unit ?? 'unit' }}
+                            </p>
+                            <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                                Diminta {{ \Carbon\Carbon::parse($item->transaction_date)->translatedFormat('d M Y') }}
+                            </p>
+                        </div>
+                        <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Siapkan
+                        </button>
+                    </li>
+                @empty
+                    <div class="p-8 text-center">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tidak ada barang keluar yang perlu disiapkan saat ini.</p>
                     </div>
-                    <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Siapkan
-                    </button>
-                </li>
-                <li class="flex items-center justify-between gap-4 p-4">
-                    <div class="min-w-0">
-                        <p class="truncate font-medium text-gray-900 dark:text-white">Kaos Polos Cotton Combed</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">SKU: PKN-001 &middot; 6 unit</p>
-                        <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">Diminta 02 Agu 2026, 16:30</p>
-                    </div>
-                    <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Siapkan
-                    </button>
-                </li>
+                @endforelse
             </ul>
         </div>
 

@@ -96,4 +96,9 @@ class ProductRepository implements ProductRepositoryInterface
         }
         return $product->delete();
     }
+
+    public function calculateTotalStockValue(): float
+    {
+        return (float) Product::sum(\Illuminate\Support\Facades\DB::raw('current_stock * buy_price'));
+    }
 }
