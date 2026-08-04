@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
