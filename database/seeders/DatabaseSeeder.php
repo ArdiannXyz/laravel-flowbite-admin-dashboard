@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
     {
         // Seed default users for testing
         User::updateOrCreate(
-            ['email' => 'admin@stockify.test'],
+            ['email' => 'manajemen@stockify.test'],
             [
-                'name' => 'Administrator Stockify',
+                'name' => 'Manajemen Stockify',
                 'password' => Hash::make('password'),
-                'role' => 'admin',
+                'role' => 'manajemen',
             ]
         );
 

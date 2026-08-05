@@ -7,7 +7,7 @@
     <meta name="author" content="#">
     <meta name="generator" content="Laravel">
 
-    <title>Dashboard - </title>
+    <title>Dashboard - Manajemen Gudang</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="canonical" href="{{ request()->fullUrl() }}">
 
