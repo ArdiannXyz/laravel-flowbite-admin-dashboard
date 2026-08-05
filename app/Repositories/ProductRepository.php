@@ -29,7 +29,10 @@ class ProductRepository implements ProductRepositoryInterface
             $query->whereColumn('current_stock', '<=', 'min_stock');
         }
 
-        return $query->latest()->paginate($perPage)->withQueryString();
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+        $paginator = $query->latest()->paginate($perPage);
+
+        return $paginator->withQueryString();
     }
 
     public function getAll(): Collection
@@ -101,4 +104,19 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return (float) Product::sum(\Illuminate\Support\Facades\DB::raw('current_stock * buy_price'));
     }
+
+    public function getAllForExport(array $filters = [])
+{
+    $query = Product::with('category');
+ 
+    if (!empty($filters['category_id'])) {
+        $query->where('category_id', $filters['category_id']);
+    }
+ 
+    if (!empty($filters['low_stock'])) {
+        $query->whereColumn('current_stock', '<', 'min_stock');
+    }
+ 
+    return $query->get();
+}
 }
