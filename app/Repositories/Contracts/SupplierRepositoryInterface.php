@@ -8,6 +8,7 @@ use App\Models\Supplier;
 interface SupplierRepositoryInterface
 {
     public function getAll(): Collection;
+    public function getAllPaginated(array $filters = [], int $perPage = 10);
     public function findById(int $id): ?Supplier;
     public function create(array $data): Supplier;
     public function update(int $id, array $data): bool;

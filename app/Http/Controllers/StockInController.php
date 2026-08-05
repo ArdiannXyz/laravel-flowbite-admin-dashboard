@@ -23,7 +23,7 @@ class StockInController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->only(['search', 'date_from', 'date_to']);
-        $transactions = $this->stockInService->getPaginatedStockIn($filters, 10);
+        $transactions = $this->stockInService->getPaginatedStockIn($filters, 5);
 
         return view('pages.inventory.stock-in.index', compact('transactions', 'filters'));
     }

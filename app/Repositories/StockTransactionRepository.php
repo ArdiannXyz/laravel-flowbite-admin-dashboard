@@ -37,7 +37,7 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
         return $query->latest('id')->paginate($perPage)->withQueryString();
     }
 
-    public function getAllPaginated(array $filters = [], int $perPage = 10): LengthAwarePaginator
+    public function getAllPaginated(array $filters = [], int $perPage = 10, string $pageName = 'page'): LengthAwarePaginator
     {
         $query = StockTransaction::with(['product.category', 'supplier', 'user']);
 
@@ -55,7 +55,7 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
             });
         }
 
-        return $query->latest('id')->paginate($perPage)->withQueryString();
+        return $query->latest('id')->paginate($perPage, ['*'], $pageName)->withQueryString();
     }
 
     public function getRecentTransactions(int $limit = 5): Collection

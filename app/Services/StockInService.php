@@ -35,6 +35,8 @@ class StockInService
             // Generate code TRX-IN-YYYYMMDD-XXXX
             $code = 'TRX-IN-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4));
 
+            $unitPrice = $data['unit_price'] ?? $product->buy_price;
+
             $transaction = $this->stockTransactionRepository->create([
                 'transaction_code' => $code,
                 'type' => 'in',
@@ -42,14 +44,30 @@ class StockInService
                 'supplier_id' => $data['supplier_id'] ?? $product->supplier_id,
                 'user_id' => $userId,
                 'quantity' => $data['quantity'],
-                'unit_price' => $data['unit_price'] ?? $product->buy_price,
+                'unit_price' => $unitPrice,
                 'transaction_date' => $data['transaction_date'] ?? date('Y-m-d'),
                 'notes' => $data['notes'] ?? null,
             ]);
 
-            // Automatic stock update: Add quantity to product current_stock
-            $newStock = $product->current_stock + $data['quantity'];
-            $this->productRepository->updateStock($product->id, $newStock);
+            // Automatic stock & Moving Average (AVG) Buy Price update
+            $oldStock     = (int) $product->current_stock;
+            $oldBuyPrice  = (float) $product->buy_price;
+            $incomingQty   = (int) $data['quantity'];
+            $incomingPrice = (float) $unitPrice;
+
+            $newStock = $oldStock + $incomingQty;
+
+            if ($newStock > 0) {
+                // Formula AVG: ((Stok Lama * Harga Beli Lama) + (Qty Masuk * Harga Beli Masuk)) / Total Stok
+                $avgBuyPrice = (($oldStock * $oldBuyPrice) + ($incomingQty * $incomingPrice)) / $newStock;
+
+                $this->productRepository->update($product->id, [
+                    'current_stock' => $newStock,
+                    'buy_price'     => round($avgBuyPrice, 2),
+                ]);
+            } else {
+                $this->productRepository->updateStock($product->id, $newStock);
+            }
 
             return $transaction;
         });

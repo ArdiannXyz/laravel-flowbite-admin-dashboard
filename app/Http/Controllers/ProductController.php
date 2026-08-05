@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->only(['search', 'category_id', 'low_stock']);
-        $products = $this->productService->getPaginatedProducts($filters, 10);
+        $products = $this->productService->getPaginatedProducts($filters, 5);
         $categories = $this->categoryRepository->getAll();
 
         return view('pages.inventory.products.index', compact('products', 'categories', 'filters'));

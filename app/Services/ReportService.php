@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\StockTransaction;
 use App\Models\User;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
@@ -24,11 +25,9 @@ class ReportService
         $categories = $this->categoryRepository->getAll();
         $users      = User::orderBy('name', 'asc')->get();
 
-        // 2. Ringkasan Stok (Memanggil method yang ADA di ProductRepositoryInterface)
+        // 2. Ringkasan Stok
         $totalProducts   = $this->productRepository->countTotalProducts();
         $lowStockCount   = $this->productRepository->countLowStockProducts();
-        
-        // Total Nilai Stok dihitung langsung dari Model Product
         $totalStockValue = (float) Product::sum(DB::raw('current_stock * buy_price'));
 
         // 3. Tab 1: Data Produk untuk Laporan Stok
@@ -72,5 +71,69 @@ class ReportService
             'barangKeluar',
             'userActivities'
         );
+    }
+
+    public function getStokProductsForExport(Request $request)
+    {
+        $query = Product::with(['category', 'supplier'])->latest('id');
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->stock_status === 'menipis') {
+            $query->whereColumn('current_stock', '<', 'min_stock');
+        } elseif ($request->stock_status === 'aman') {
+            $query->whereColumn('current_stock', '>=', 'min_stock');
+        }
+
+        return $query->get();
+    }
+
+    public function getBarangMasukForExport(Request $request)
+    {
+        $query = StockTransaction::with(['product', 'supplier', 'user'])
+            ->where('type', 'in');
+
+        if ($request->filled('masuk_from_date')) {
+            $query->whereDate('transaction_date', '>=', $request->masuk_from_date);
+        }
+        if ($request->filled('masuk_to_date')) {
+            $query->whereDate('transaction_date', '<=', $request->masuk_to_date);
+        }
+
+        return $query->latest('id')->get();
+    }
+
+    public function getBarangKeluarForExport(Request $request)
+    {
+        $query = StockTransaction::with(['product', 'user'])
+            ->where('type', 'out');
+
+        if ($request->filled('keluar_from_date')) {
+            $query->whereDate('transaction_date', '>=', $request->keluar_from_date);
+        }
+        if ($request->filled('keluar_to_date')) {
+            $query->whereDate('transaction_date', '<=', $request->keluar_to_date);
+        }
+
+        return $query->latest('id')->get();
+    }
+
+    public function getAktivitasForExport(Request $request)
+    {
+        $query = StockTransaction::with(['product', 'user']);
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+        if ($request->filled('act_from_date')) {
+            $query->whereDate('transaction_date', '>=', $request->act_from_date);
+        }
+        if ($request->filled('act_to_date')) {
+            $query->whereDate('transaction_date', '<=', $request->act_to_date);
+        }
+
+        return $query->latest('id')->get();
     }
 }

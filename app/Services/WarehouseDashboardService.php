@@ -24,7 +24,7 @@ class WarehouseDashboardService
             'today_stock_out_count' => $this->stockTransactionRepository->countTodayTransactionsByType('out'),
             'today_stock_out_qty' => $this->stockTransactionRepository->sumTodayQuantityByType('out'),
             'low_stock_products' => $this->productRepository->getLowStockProducts(),
-            'recent_transactions' => $this->stockTransactionRepository->getRecentTransactions(8),
+            'recent_transactions' => $this->stockTransactionRepository->getAllPaginated([], 3, 'trx_page'),
             'recent_opnames' => $this->stockOpnameRepository->getRecentOpnames(5),
         ];
     }

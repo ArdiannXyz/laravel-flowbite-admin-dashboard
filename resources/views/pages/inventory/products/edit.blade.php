@@ -90,14 +90,25 @@
 
                 <!-- Satuan -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Satuan (Unit)</label>
-                    <input type="text" name="unit" value="{{ old('unit', $product->unit) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Satuan (Unit) <span class="text-red-500">*</span></label>
+                    <select name="unit" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <option value="unit" {{ old('unit', $product->unit) == 'unit' ? 'selected' : '' }}>unit</option>
+                        <option value="pcs" {{ old('unit', $product->unit) == 'pcs' ? 'selected' : '' }}>pcs</option>
+                        <option value="box" {{ old('unit', $product->unit) == 'box' ? 'selected' : '' }}>box</option>
+                        <option value="roll" {{ old('unit', $product->unit) == 'roll' ? 'selected' : '' }}>roll</option>
+                    </select>
                 </div>
 
                 <!-- Gambar -->
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Ganti Gambar Produk</label>
-                    <input type="file" name="image" accept="image/*" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <div class="flex items-center">
+                        <label for="image_input_edit" class="flex h-10 w-full cursor-pointer items-center overflow-hidden rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus-within:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                            <span class="flex h-full items-center bg-gray-800 px-4 text-xs font-semibold text-white hover:bg-gray-700 dark:bg-gray-600">Pilih Gambar</span>
+                            <span id="file_name_display_edit" class="px-3 text-xs text-gray-500 dark:text-gray-400 truncate">{{ $product->image ? basename($product->image) : 'Belum ada gambar dipilih' }}</span>
+                            <input type="file" name="image" id="image_input_edit" accept="image/*" class="hidden" onchange="document.getElementById('file_name_display_edit').textContent = this.files[0] ? this.files[0].name : '{{ $product->image ? basename($product->image) : 'Belum ada gambar dipilih' }}'">
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Deskripsi -->

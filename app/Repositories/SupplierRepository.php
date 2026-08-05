@@ -13,6 +13,24 @@ class SupplierRepository implements SupplierRepositoryInterface
         return Supplier::all();
     }
 
+    public function getAllPaginated(array $filters = [], int $perPage = 10)
+    {
+        $query = Supplier::withCount('products')->latest();
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('address', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->paginate($perPage)->withQueryString();
+    }
+
     public function findById(int $id): ?Supplier
     {
         return Supplier::find($id);

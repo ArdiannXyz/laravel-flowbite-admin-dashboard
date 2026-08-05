@@ -10,15 +10,57 @@
             <img src="{{ asset('static/images/logo.svg')}}" class="h-8 mr-3" alt="FlowBite Logo" />
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
           </a>
-          <form action="#" method="GET" class="hidden lg:block lg:pl-3.5">
+          <!-- Global Search Bar -->
+          <div class="hidden lg:block lg:pl-3.5 relative" id="global-search-wrapper">
             <label for="topbar-search" class="sr-only">Search</label>
-            <div class="relative mt-1 lg:w-96">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+            <div class="relative lg:w-96">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none z-10">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                </svg>
               </div>
-              <input type="text" name="email" id="topbar-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search">
+              <input
+                type="text"
+                id="topbar-search"
+                autocomplete="off"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 pr-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Cari produk, transaksi, fitur..."
+              >
+              <!-- Loading spinner -->
+              <div id="search-loading" class="absolute inset-y-0 right-0 hidden items-center pr-3">
+                <svg class="animate-spin w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+              </div>
+              <!-- Clear button -->
+              <button id="search-clear" class="absolute inset-y-0 right-0 hidden items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
             </div>
-          </form>
+
+            <!-- Search Dropdown Results -->
+            <div id="search-dropdown" class="hidden absolute top-full mt-1 left-0 w-full bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden" style="min-width:420px; max-height:480px; overflow-y:auto;">
+              <!-- Empty state -->
+              <div id="search-empty" class="hidden px-4 py-8 text-center">
+                <svg class="mx-auto w-10 h-10 text-gray-300 dark:text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Tidak ada hasil untuk "<span id="search-empty-query" class="font-semibold"></span>"</p>
+              </div>
+              <!-- Results list -->
+              <ul id="search-results-list" class="divide-y divide-gray-100 dark:divide-gray-700"></ul>
+              <!-- Footer hint -->
+              <div id="search-footer" class="hidden px-4 py-2 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-700 flex items-center gap-3 text-xs text-gray-400">
+                <span>↑↓ navigasi</span>
+                <span>↵ buka</span>
+                <span>Esc tutup</span>
+              </div>
+            </div>
+          </div>
+
         </div>
         <div class="flex items-center">
             <div class="hidden mr-3 -mb-1 sm:block">
@@ -206,3 +248,151 @@
       </div>
     </div>
   </nav>
+
+<script>
+(function () {
+    const input      = document.getElementById('topbar-search');
+    const dropdown   = document.getElementById('search-dropdown');
+    const resultList = document.getElementById('search-results-list');
+    const emptyState = document.getElementById('search-empty');
+    const emptyQuery = document.getElementById('search-empty-query');
+    const loading    = document.getElementById('search-loading');
+    const clearBtn   = document.getElementById('search-clear');
+    const footer     = document.getElementById('search-footer');
+
+    if (!input) return;
+
+    let debounceTimer  = null;
+    let activeIndex    = -1;
+
+    const icons = {
+        'dashboard': '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 17h7v4H3z"/></svg>',
+        'product':   '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>',
+        'stock-in':  '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>',
+        'stock-out': '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>',
+        'opname':    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>',
+        'report':    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+        'add':       '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>',
+    };
+
+    const badgeColors = {
+        'low-stock': 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+        'in':        'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+        'out':       'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+    };
+
+    const categoryColors = {
+        'Produk':           'text-purple-500',
+        'Barang Masuk':     'text-green-500',
+        'Barang Keluar':    'text-blue-500',
+        'Stock Opname':     'text-yellow-500',
+        'Halaman':          'text-gray-400',
+        'Manajemen Produk': 'text-purple-400',
+    };
+
+    const showDropdown = () => dropdown.classList.remove('hidden');
+    const hideDropdown = () => { dropdown.classList.add('hidden'); activeIndex = -1; };
+    const showLoading  = () => { loading.classList.remove('hidden'); loading.classList.add('flex'); };
+    const hideLoading  = () => { loading.classList.add('hidden');    loading.classList.remove('flex'); };
+    const showClear    = () => { clearBtn.classList.remove('hidden'); clearBtn.classList.add('flex'); };
+    const hideClear    = () => { clearBtn.classList.add('hidden');    clearBtn.classList.remove('flex'); };
+
+    function renderResults(data) {
+        hideLoading();
+        resultList.innerHTML = '';
+        emptyState.classList.add('hidden');
+        footer.classList.add('hidden');
+
+        if (!data.results || data.results.length === 0) {
+            emptyQuery.textContent = data.query;
+            emptyState.classList.remove('hidden');
+            showDropdown();
+            return;
+        }
+
+        // Group by category
+        const groups = {};
+        data.results.forEach(r => {
+            if (!groups[r.category]) groups[r.category] = [];
+            groups[r.category].push(r);
+        });
+
+        let globalIdx = 0;
+        Object.entries(groups).forEach(([cat, items]) => {
+            const catEl = document.createElement('li');
+            const catColor = categoryColors[cat] || 'text-gray-400';
+            catEl.className = 'px-4 pt-3 pb-1';
+            catEl.innerHTML = `<p class="text-xs font-semibold uppercase tracking-wider ${catColor}">${cat}</p>`;
+            resultList.appendChild(catEl);
+
+            items.forEach(item => {
+                const li       = document.createElement('li');
+                li.dataset.idx = globalIdx++;
+                li.dataset.url = item.url;
+                const iconSvg  = icons[item.icon] || icons['product'];
+                const badgeCls = item.badge ? (badgeColors[item.badge] || '') : '';
+                const badgeHtml = item.badge
+                    ? `<span class="ml-auto flex-shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${badgeCls}">${item.badge_text}</span>`
+                    : '';
+
+                li.className = 'search-result-item flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
+                li.innerHTML = `
+                    <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400">${iconSvg}</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate">${item.title}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">${item.subtitle}</p>
+                    </div>
+                    ${badgeHtml}
+                `;
+                li.addEventListener('click', () => { window.location.href = item.url; });
+                li.addEventListener('mouseenter', () => setActive(parseInt(li.dataset.idx)));
+                resultList.appendChild(li);
+            });
+        });
+
+        footer.classList.remove('hidden');
+        showDropdown();
+    }
+
+    function setActive(idx) {
+        activeIndex = idx;
+        document.querySelectorAll('.search-result-item').forEach((el, i) => {
+            if (i === idx) { el.classList.add('bg-gray-100', 'dark:bg-gray-700'); el.scrollIntoView({ block: 'nearest' }); }
+            else           { el.classList.remove('bg-gray-100', 'dark:bg-gray-700'); }
+        });
+    }
+
+    function doSearch(q) {
+        if (q.length < 2) { hideDropdown(); hideLoading(); return; }
+        showLoading();
+        showDropdown();
+        fetch(`/search?q=${encodeURIComponent(q)}`, { headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' } })
+            .then(r => r.json())
+            .then(renderResults)
+            .catch(() => hideLoading());
+    }
+
+    input.addEventListener('input', function () {
+        const q = this.value.trim();
+        q.length > 0 ? showClear() : hideClear();
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => doSearch(q), 300);
+    });
+
+    input.addEventListener('keydown', function (e) {
+        const items = document.querySelectorAll('.search-result-item');
+        if (e.key === 'ArrowDown')  { e.preventDefault(); setActive(Math.min(activeIndex + 1, items.length - 1)); }
+        else if (e.key === 'ArrowUp')    { e.preventDefault(); setActive(Math.max(activeIndex - 1, 0)); }
+        else if (e.key === 'Enter' && activeIndex >= 0 && items[activeIndex]) { e.preventDefault(); window.location.href = items[activeIndex].dataset.url; }
+        else if (e.key === 'Escape') { hideDropdown(); input.blur(); }
+    });
+
+    clearBtn.addEventListener('click', () => { input.value = ''; hideClear(); hideDropdown(); input.focus(); });
+
+    document.addEventListener('click', e => {
+        if (!document.getElementById('global-search-wrapper').contains(e.target)) hideDropdown();
+    });
+
+    input.addEventListener('focus', () => { if (input.value.trim().length >= 2) showDropdown(); });
+})();
+</script>

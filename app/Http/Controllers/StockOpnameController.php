@@ -21,7 +21,7 @@ class StockOpnameController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->only(['search']);
-        $opnames = $this->stockOpnameService->getPaginatedStockOpnames($filters, 10);
+        $opnames = $this->stockOpnameService->getPaginatedStockOpnames($filters, 5);
 
         return view('pages.inventory.stock-opname.index', compact('opnames', 'filters'));
     }

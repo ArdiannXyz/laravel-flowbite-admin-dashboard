@@ -189,6 +189,12 @@
                     </tbody>
                 </table>
             </div>
+
+            @if($summary['recent_transactions']->hasPages())
+                <div class="mt-4 border-t border-gray-200 pt-3 dark:border-gray-700">
+                    {{ $summary['recent_transactions']->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>

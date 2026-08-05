@@ -21,7 +21,7 @@ class StockOutController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->only(['search', 'date_from', 'date_to']);
-        $transactions = $this->stockOutService->getPaginatedStockOut($filters, 10);
+        $transactions = $this->stockOutService->getPaginatedStockOut($filters, 5);
 
         return view('pages.inventory.stock-out.index', compact('transactions', 'filters'));
     }

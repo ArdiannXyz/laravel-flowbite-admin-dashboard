@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class AdminSidebar extends Component
+class ManajemengudangSidebar extends Component
 {
     public function __construct()
     {
@@ -15,6 +15,6 @@ class AdminSidebar extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.sidebar.admin-sidebar');
+        return view('components.sidebar.manajemengudang-sidebar');
     }
 }

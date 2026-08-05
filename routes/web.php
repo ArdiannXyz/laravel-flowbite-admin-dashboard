@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\WarehouseDashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\StockOutController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\GlobalSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +25,17 @@ Route::get('/', function () {
 Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->name('dashboard-staff.index');
 
 Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+Route::get('/report/export/excel', [ReportController::class, 'exportExcel'])->name('report.export.excel');
+Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])->name('report.export.pdf');
 
 // Warehouse Manager Dashboard
 Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
 
 // Product Management (CRUD)
 Route::resource('products', ProductController::class);
+
+// Supplier Management (CRUD)
+Route::resource('suppliers', SupplierController::class);
 
 // Barang Masuk (Stock In)
 Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
@@ -43,3 +51,6 @@ Route::post('stock-out', [StockOutController::class, 'store'])->name('stock-out.
 Route::get('stock-opname', [StockOpnameController::class, 'index'])->name('stock-opname.index');
 Route::get('stock-opname/create', [StockOpnameController::class, 'create'])->name('stock-opname.create');
 Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
+
+// Global Search
+Route::get('/search', [GlobalSearchController::class, 'search'])->name('search.global');
