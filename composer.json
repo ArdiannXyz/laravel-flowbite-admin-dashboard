@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^6.25",
-        "yaza/laravel-repository-service": "4.0"
+        "yaza/laravel-repository-service": "4.0"       
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
