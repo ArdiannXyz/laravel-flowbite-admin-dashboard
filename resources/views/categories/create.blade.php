@@ -1,41 +1,33 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+@extends('layouts.dashboard')
+
+@section('content')
+
+<div class="p-4">
+
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
             Tambah Kategori
-        </h2>
-    </x-slot>
+        </h1>
 
-    <div class="py-6">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
-                <form action="{{ route('categories.store') }}" method="POST">
-                    @csrf
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Nama Kategori</label>
-                        <input type="text" name="name" value="{{ old('name') }}"
-                            class="w-full border-gray-300 rounded-lg @error('name') border-red-500 @enderror">
-                        @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Deskripsi (opsional)</label>
-                        <textarea name="description" rows="3"
-                            class="w-full border-gray-300 rounded-lg">{{ old('description') }}</textarea>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
-                            Simpan
-                        </button>
-                        <a href="{{ route('categories.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">
-                            Batal
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <p class="text-gray-500 dark:text-gray-400 mt-1">
+            Tambahkan kategori produk baru.
+        </p>
     </div>
-</x-app-layout>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+
+        <div class="p-6">
+
+            <form method="POST" action="{{ route('categories.store') }}">
+
+                @include('categories.form')
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@endsection
