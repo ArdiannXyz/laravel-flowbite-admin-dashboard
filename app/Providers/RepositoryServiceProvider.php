@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
@@ -13,7 +11,6 @@ use App\Repositories\Contracts\StockTransactionRepositoryInterface;
 use App\Repositories\StockTransactionRepository;
 use App\Repositories\Contracts\StockOpnameRepositoryInterface;
 use App\Repositories\StockOpnameRepository;
-
 class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -24,7 +21,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(StockTransactionRepositoryInterface::class, StockTransactionRepository::class);
         $this->app->bind(StockOpnameRepositoryInterface::class, StockOpnameRepository::class);
     }
-
     public function boot(): void
     {
         //

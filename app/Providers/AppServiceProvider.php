@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Eloquent\CategoryRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
