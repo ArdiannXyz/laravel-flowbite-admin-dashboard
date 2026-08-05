@@ -5,13 +5,18 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Seed default users for testing
-        User::updateOrCreate(
+        // Pastikan role sudah ada sebelum di-assign
+        foreach (['admin', 'manajer', 'staff'] as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
+        }
+
+        $admin = User::updateOrCreate(
             ['email' => 'admin@stockify.test'],
             [
                 'name' => 'Administrator Stockify',
@@ -19,17 +24,19 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
             ]
         );
+        $admin->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $manager = User::updateOrCreate(
             ['email' => 'manager@stockify.test'],
             [
                 'name' => 'Budi Santoso (Manajer Gudang)',
                 'password' => Hash::make('password'),
-                'role' => 'manager',
+                'role' => 'manajer', // disamakan dengan yang dipakai di routes/sidebar
             ]
         );
+        $manager->syncRoles(['manajer']);
 
-        User::updateOrCreate(
+        $staff = User::updateOrCreate(
             ['email' => 'staff@stockify.test'],
             [
                 'name' => 'Siti Rahma (Staff Gudang)',
@@ -37,6 +44,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'staff',
             ]
         );
+        $staff->syncRoles(['staff']);
 
         $this->call([
             CategorySeeder::class,

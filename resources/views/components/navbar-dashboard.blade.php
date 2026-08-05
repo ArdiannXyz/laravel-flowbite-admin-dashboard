@@ -1,4 +1,4 @@
-<nav class="fixed z-50 w-full bg-white border-b border-gray-200">
+<nav class="fixed z-50 w-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
@@ -177,27 +177,29 @@
                 </button>
               </div>
               <!-- Dropdown menu -->
-              <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow" id="dropdown-2">
+              <div class="z-50 hidden my-4 text-base list-none bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded shadow" id="dropdown-2">
                 <div class="px-4 py-3" role="none">
-                  <p class="text-sm text-gray-900" role="none">
-                    Neil Sims
+                  <p class="text-sm text-gray-900 dark:text-white" role="none">
+                    {{ auth()->user()->name }}
                   </p>
-                  <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                    neil.sims@flowbite.com
+                  <p class="text-sm font-medium text-gray-900 dark:text-gray-300 truncate" role="none">
+                    {{ auth()->user()->email }}
                   </p>
                 </div>
                 <ul class="py-1" role="none">
                   <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">Dashboard</a>
                   </li>
                   <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
+                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">Settings</a>
                   </li>
                   <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Earnings</a>
-                  </li>
-                  <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">
+                        Sign out
+                      </button>
+                    </form>
                   </li>
                 </ul>
               </div>

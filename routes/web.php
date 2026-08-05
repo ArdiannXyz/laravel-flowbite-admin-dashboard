@@ -1,15 +1,17 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WarehouseDashboardController;
+use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\StockOutController;
 use App\Http\Controllers\StockOpnameController;
-use App\Http\Controllers\StaffDashboardController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,70 +23,111 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Protected Routes (Harus Login)
-|--------------------------------------------------------------------------
-*/
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Dashboard Admin
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+    // =========================================================================
+    // 1. REDIRECT DASHBOARD UTAMA BERDASARKAN ROLE
+    // =========================================================================
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
 
-    // Dashboard Staff Gudang
-    Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->name('dashboard-staff.index');
-    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+        if ($user->hasRole('admin')) {
+            return app(DashboardController::class)->index();
+        }
 
-    // Warehouse Manager Dashboard
-    Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
+        if ($user->hasRole('manajer')) {
+            return redirect()->route('warehouse.dashboard');
+        }
 
+        if ($user->hasRole('staff')) {
+            return redirect()->route('dashboard-staff.index');
+        }
 
-  Route::get('/report', [ReportController::class, 'index'])->name('report.index');
-  Route::get('/report/export/stok', [ReportController::class, 'exportStokPdf'])->name('report.export.stok');
-  Route::get('/report/export/barang-masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('report.export.masuk');
-  Route::get('/report/export/barang-keluar', [ReportController::class, 'exportBarangKeluarPdf'])->name('report.export.keluar');
-  Route::get('/report/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('report.export.aktivitas');
+        abort(403, 'Akun Anda belum memiliki role yang valid.');
+    })->name('dashboard');
 
-  Route::get('/report/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('report.export.stok-excel');
-  Route::get('/report/export/barang-masuk-excel', [ReportController::class, 'exportBarangMasukExcel'])->name('report.export.masuk-excel');
-  Route::get('/report/export/barang-keluar-excel', [ReportController::class, 'exportBarangKeluarExcel'])->name('report.export.keluar-excel');
-  Route::get('/report/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('report.export.aktivitas-excel');
+    // =========================================================================
+    // 2. TARGET ROUTE DASHBOARD KHUSUS ROLE
+    // =========================================================================
+    Route::middleware(['role:manajer'])->group(function () {
+        Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
+    });
 
-    // Product Management (CRUD)
-    Route::resource('products', ProductController::class);
+    Route::middleware(['role:staff'])->group(function () {
+        Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->name('dashboard-staff.index');
+    });
 
+    // =========================================================================
+    // 3. AKSES BERSAMA (Admin, Manajer, Staff)
+    // =========================================================================
+    Route::middleware(['role:admin|manajer|staff'])->group(function () {
+        
+        // Stok Masuk
+        Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
+        Route::get('stock-in/{id}', [StockInController::class, 'show'])->name('stock-in.show');
+        Route::post('stock-in/{id}/confirm', [StockInController::class, 'confirm'])->name('stock-in.confirm');
 
-    // Barang Masuk (Stock In)
-    Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
-    Route::get('stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
-    Route::post('stock-in', [StockInController::class, 'store'])->name('stock-in.store');
+        // Stok Keluar
+        Route::get('stock-out', [StockOutController::class, 'index'])->name('stock-out.index');
+        Route::get('stock-out/{id}', [StockOutController::class, 'show'])->name('stock-out.show');
+        Route::post('stock-out/{id}/confirm', [StockOutController::class, 'confirm'])->name('stock-out.confirm');
+    });
 
-    // Barang Keluar (Stock Out)
-    Route::get('stock-out', [StockOutController::class, 'index'])->name('stock-out.index');
-    Route::get('stock-out/create', [StockOutController::class, 'create'])->name('stock-out.create');
-    Route::post('stock-out', [StockOutController::class, 'store'])->name('stock-out.store');
+    // =========================================================================
+    // 4. AKSES MANAJERIAL (Admin & Manajer Gudang)
+    // =========================================================================
+    Route::middleware(['role:admin|manajer'])->group(function () {
+        
+        // Produk
+        Route::get('products', [ProductController::class, 'index'])->name('products.index');
 
-    // Stock Opname
-    Route::get('stock-opname', [StockOpnameController::class, 'index'])->name('stock-opname.index');
-    Route::get('stock-opname/create', [StockOpnameController::class, 'create'])->name('stock-opname.create');
-    Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
+        // Transaksi Stock
+        Route::get('stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
+        Route::post('stock-in', [StockInController::class, 'store'])->name('stock-in.store');
+        
+        Route::get('stock-out/create', [StockOutController::class, 'create'])->name('stock-out.create');
+        Route::post('stock-out', [StockOutController::class, 'store'])->name('stock-out.store');
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+        // Stock Opname
+        Route::get('stock-opname', [StockOpnameController::class, 'index'])->name('stock-opname.index');
+        Route::get('stock-opname/create', [StockOpnameController::class, 'create'])->name('stock-opname.create');
+        Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Master Data
-    |--------------------------------------------------------------------------
-    */
-    Route::resource('categories', CategoryController::class)
-        ->except(['show']);
+        // // Supplier
+        // Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+        // Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
+
+        // Laporan
+        Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    });
+
+    // =========================================================================
+    // 5. KHUSUS ADMIN SYSTEM
+    // =========================================================================
+    Route::middleware(['role:admin'])->group(function () {
+        
+        // Produk CUD & Import/Export
+        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        // Master Data Kategori
+        Route::resource('categories', CategoryController::class)->except(['show']);
+    });
+
+    // Route Detail Produk untuk Admin & Manajer
+    Route::middleware(['role:admin|manajer'])->group(function () {
+        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
+    });
+
+    // =========================================================================
+    // 6. PROFILE
+    // =========================================================================
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
