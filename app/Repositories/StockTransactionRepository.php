@@ -89,4 +89,39 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
     {
         return StockTransaction::with(['product', 'supplier', 'user'])->find($id);
     }
+
+    public function getByTypeForExport(string $type, array $filters = [])
+{
+    $query = StockTransaction::with(['product', 'supplier', 'user'])
+        ->where('type', $type);
+ 
+    if (!empty($filters['date_from'])) {
+        $query->whereDate('transaction_date', '>=', $filters['date_from']);
+    }
+ 
+    if (!empty($filters['date_to'])) {
+        $query->whereDate('transaction_date', '<=', $filters['date_to']);
+    }
+ 
+    return $query->orderByDesc('transaction_date')->get();
+}
+ 
+public function getAllForExport(array $filters = [])
+{
+    $query = StockTransaction::with(['product', 'user']);
+ 
+    if (!empty($filters['user_id'])) {
+        $query->where('user_id', $filters['user_id']);
+    }
+ 
+    if (!empty($filters['date_from'])) {
+        $query->whereDate('created_at', '>=', $filters['date_from']);
+    }
+ 
+    if (!empty($filters['date_to'])) {
+        $query->whereDate('created_at', '<=', $filters['date_to']);
+    }
+ 
+    return $query->orderByDesc('created_at')->get();
+}
 }

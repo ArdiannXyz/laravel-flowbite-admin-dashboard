@@ -15,4 +15,6 @@ interface StockTransactionRepositoryInterface
     public function sumTodayQuantityByType(string $type): int;
     public function create(array $data): StockTransaction;
     public function findById(int $id): ?StockTransaction;
+    public function getByTypeForExport(string $type, array $filters = []);
+    public function getAllForExport(array $filters = []);
 }

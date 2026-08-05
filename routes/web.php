@@ -39,8 +39,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Warehouse Manager Dashboard
     Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
 
+
+  Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+  Route::get('/report/export/stok', [ReportController::class, 'exportStokPdf'])->name('report.export.stok');
+  Route::get('/report/export/barang-masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('report.export.masuk');
+  Route::get('/report/export/barang-keluar', [ReportController::class, 'exportBarangKeluarPdf'])->name('report.export.keluar');
+  Route::get('/report/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('report.export.aktivitas');
+
+  Route::get('/report/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('report.export.stok-excel');
+  Route::get('/report/export/barang-masuk-excel', [ReportController::class, 'exportBarangMasukExcel'])->name('report.export.masuk-excel');
+  Route::get('/report/export/barang-keluar-excel', [ReportController::class, 'exportBarangKeluarExcel'])->name('report.export.keluar-excel');
+  Route::get('/report/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('report.export.aktivitas-excel');
+
     // Product Management (CRUD)
     Route::resource('products', ProductController::class);
+
 
     // Barang Masuk (Stock In)
     Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
