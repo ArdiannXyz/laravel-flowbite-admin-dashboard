@@ -8,7 +8,7 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">Pencatatan pengeluaran barang untuk penjualan, pengiriman, atau retur.</p>
         </div>
         <div>
-            <a href="{{ route('stock-out.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+            <a href="{{ route('stock-out.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
                 Input Pengeluaran Barang
             </a>
@@ -25,12 +25,12 @@
     <div class="mb-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <form method="GET" action="{{ route('stock-out.index') }}" class="flex flex-col gap-4 md:flex-row md:items-center">
             <div class="flex-1">
-                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari Kode TRX atau Nama Produk..." class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari Kode TRX atau Nama Produk..." class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             </div>
             <div class="flex items-center gap-2">
-                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 <span class="text-gray-500 dark:text-gray-400">s/d</span>
-                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             </div>
             <div class="flex items-center gap-2">
                 <button type="submit" class="rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600">Filter</button>
@@ -59,14 +59,14 @@
                             <td class="px-6 py-4 text-xs font-medium text-gray-900 dark:text-white">
                                 {{ $trx->transaction_date->format('d M Y') }}
                             </td>
-                            <td class="px-6 py-4 font-mono text-xs font-semibold text-blue-700 dark:text-blue-400">
+                            <td class="px-6 py-4 font-mono text-xs font-semibold text-red-700 dark:text-red-400">
                                 {{ $trx->transaction_code }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 {{ $trx->product->name ?? '-' }}
                                 <div class="text-xs font-normal text-gray-400">SKU: {{ $trx->product->sku ?? '' }}</div>
                             </td>
-                            <td class="px-6 py-4 text-center font-extrabold text-blue-600 dark:text-blue-400">
+                            <td class="px-6 py-4 text-center font-extrabold text-red-600 dark:text-red-400">
                                 -{{ $trx->quantity }} {{ $trx->product->unit ?? '' }}
                             </td>
                             <td class="px-6 py-4 text-gray-900 dark:text-white">

@@ -12,6 +12,7 @@ use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GlobalSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Global Search
+    Route::get('/search', [GlobalSearchController::class, 'index'])->name('search.global');
 
     // =========================================================================
     // 1. REDIRECT DASHBOARD UTAMA BERDASARKAN ROLE
@@ -64,13 +68,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         // Stok Masuk
         Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
-        Route::get('stock-in/{id}', [StockInController::class, 'show'])->name('stock-in.show');
-        Route::post('stock-in/{id}/confirm', [StockInController::class, 'confirm'])->name('stock-in.confirm');
 
         // Stok Keluar
         Route::get('stock-out', [StockOutController::class, 'index'])->name('stock-out.index');
-        Route::get('stock-out/{id}', [StockOutController::class, 'show'])->name('stock-out.show');
-        Route::post('stock-out/{id}/confirm', [StockOutController::class, 'confirm'])->name('stock-out.confirm');
     });
 
     // =========================================================================
@@ -78,8 +78,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =========================================================================
     Route::middleware(['role:admin|manajer'])->group(function () {
         
-        // Produk
+        // Produk (CRUD)
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
 
         // Transaksi Stock
         Route::get('stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
@@ -93,33 +99,39 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('stock-opname/create', [StockOpnameController::class, 'create'])->name('stock-opname.create');
         Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
 
-        // // Supplier
-        // Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-        // Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
-
         // Laporan
         Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+        Route::get('/report/export/stok', [ReportController::class, 'exportStokPdf'])->name('report.export.stok');
+        Route::get('/report/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('report.export.stok-excel');
+        Route::get('/report/export/masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('report.export.masuk');
+        Route::get('/report/export/masuk-excel', [ReportController::class, 'exportBarangMasukExcel'])->name('report.export.masuk-excel');
+        Route::get('/report/export/keluar', [ReportController::class, 'exportBarangKeluarPdf'])->name('report.export.keluar');
+        Route::get('/report/export/keluar-excel', [ReportController::class, 'exportBarangKeluarExcel'])->name('report.export.keluar-excel');
+        Route::get('/report/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('report.export.aktivitas');
+        Route::get('/report/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('report.export.aktivitas-excel');
+
+        // Supplier (Read-Only List)
+        Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     });
 
     // =========================================================================
     // 5. KHUSUS ADMIN SYSTEM
     // =========================================================================
     Route::middleware(['role:admin'])->group(function () {
-        
-        // Produk CUD & Import/Export
-        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('products', [ProductController::class, 'store'])->name('products.store');
-        Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
-        Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-
-        // Master Data Kategori
+        // Master Data Kategori (CRUD)
         Route::resource('categories', CategoryController::class)->except(['show']);
+
+        // Supplier CRUD (Khusus Admin)
+        Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+        Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+        Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+        Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+        Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
     });
 
-    // Route Detail Produk untuk Admin & Manajer
+    // Supplier Show (Bisa diakses Admin & Manajer)
     Route::middleware(['role:admin|manajer'])->group(function () {
-        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
+        Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
     });
 
     // =========================================================================

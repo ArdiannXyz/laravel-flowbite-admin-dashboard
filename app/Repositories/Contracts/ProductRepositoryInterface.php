@@ -19,6 +19,7 @@ interface ProductRepositoryInterface
     public function create(array $data): Product;
     public function update(int $id, array $data): bool;
     public function updateStock(int $id, int $newStock): bool;
+    public function updateStockAndPrice(int $id, int $newStock, float $newBuyPrice): bool;
     public function delete(int $id): bool;
     public function getAllForExport(array $filters = []);
 }
