@@ -7,7 +7,7 @@
     <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Laporan</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Laporan stok barang, riwayat transaksi, dan aktivitas pengguna</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Laporan stok barang dan riwayat transaksi gudang</p>
         </div>
     </div>
 
@@ -29,11 +29,14 @@
                     Barang Keluar
                 </button>
             </li>
+            {{-- HANYA ADMIN YANG BISA MELIHAT TAB AKTIVITAS --}}
+            @role('admin')
             <li role="presentation">
                 <button class="inline-block rounded-t-lg border-b-2 p-4" id="tab-aktivitas-btn" data-tabs-target="#tab-aktivitas" type="button" role="tab" aria-controls="tab-aktivitas">
                     Aktivitas Pengguna
                 </button>
             </li>
+            @endrole
         </ul>
     </div>
 
@@ -256,8 +259,9 @@
         </div>
 
         {{-- ================================================================ --}}
-        {{-- TAB 4: AKTIVITAS PENGGUNA --}}
+        {{-- TAB 4: AKTIVITAS PENGGUNA (KHUSUS ADMIN) --}}
         {{-- ================================================================ --}}
+        @role('admin')
         <div class="hidden rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
 
             <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
@@ -332,6 +336,7 @@
                 {{ $userActivities->links() }}
             </div>
         </div>
+        @endrole
 
     </div>
 </div>
