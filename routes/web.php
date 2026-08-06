@@ -13,6 +13,10 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StockSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,6 +144,77 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
+    // =========================================================================
+    // 5. KHUSUS ADMIN SYSTEM
+    // =========================================================================
+    Route::middleware(['role:admin'])->group(function () {
+
+    // ---------------------------------------------------------------------
+    // Produk
+    // ---------------------------------------------------------------------
+    Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    //Route::put('products/{product}', [ProductController::class, 'update')->name('products.update');
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Import / Export Produk
+    Route::get('products/import', [ProductController::class, 'import'])->name('products.import');
+    Route::post('products/import', [ProductController::class, 'storeImport'])->name('products.storeImport');
+    Route::get('products/export', [ProductController::class, 'export'])->name('products.export');
+
+    // ---------------------------------------------------------------------
+    // Master Data
+    // ---------------------------------------------------------------------
+
+    // Kategori
+    Route::resource('categories', CategoryController::class)->except(['show']);
+
+    // Atribut Produk
+    Route::resource('attributes', AttributeController::class)->except(['show']);
+
+    // Supplier
+    Route::resource('suppliers', SupplierController::class)->except(['show']);
+
+    // Pengguna
+    Route::resource('users', UserController::class)->except(['show']);
+
+    // ---------------------------------------------------------------------
+    // Stock Minimum
+    // ---------------------------------------------------------------------
+    Route::get('stock-settings', [StockSettingController::class, 'index'])
+        ->name('stock-settings.index');
+
+    Route::put('stock-settings', [StockSettingController::class, 'update'])
+        ->name('stock-settings.update');
+
+    // ---------------------------------------------------------------------
+    // Laporan
+    // ---------------------------------------------------------------------
+    Route::prefix('report')->name('report.')->group(function () {
+
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+
+        Route::get('/stock', [ReportController::class, 'stock'])
+            ->name('stock');
+
+        Route::get('/transaction', [ReportController::class, 'transaction'])
+            ->name('transaction');
+
+        Route::get('/activity', [ReportController::class, 'activity'])
+            ->name('activity');
+    });
+
+    // ---------------------------------------------------------------------
+    // Pengaturan Aplikasi
+    // ---------------------------------------------------------------------
+    Route::get('settings', [SettingController::class, 'index'])
+        ->name('settings.index');
+
+    Route::put('settings', [SettingController::class, 'update'])
+        ->name('settings.update');
+    });
+    
+});
 require __DIR__.'/auth.php';
