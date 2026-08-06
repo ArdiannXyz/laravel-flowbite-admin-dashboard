@@ -9,7 +9,7 @@
             Dashboard Utama (Admin)
         </h1>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Ringkasan performa sistem inventaris, transaksi stok, dan aktivitas pengguna.
+            Ringkasan performa sistem inventaris, transaksi stok, grafik ketersediaan, dan aktivitas pengguna.
         </p>
     </div>
 
@@ -18,7 +18,7 @@
         <a href="{{ route('products.create') }}"
            class="inline-flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-        Tambah Produk
+            Tambah Produk
         </a>
 
         <a href="{{ route('report.index') }}"
@@ -99,15 +99,51 @@
         </div>
     </div>
 
-    <!-- 2. GRID KONTEN UTAMA: AKTIVITAS & PERINGATAN STOK -->
+    <!-- 2. GRAFIK STOK BARANG PER KATEGORI -->
+    <div class="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="mb-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Grafik Distribusi Stok per Kategori</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Visualisasi jumlah fisik stok barang berdasarkan kategori produk.</p>
+            </div>
+            <span class="rounded bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                Real-time Data
+            </span>
+        </div>
+
+        @php
+            $maxStock = max(1, ($categoryChartData ?? collect())->max('stock') ?? 1);
+        @endphp
+
+        <div class="space-y-4 pt-2">
+            @forelse($categoryChartData ?? [] as $item)
+                @php
+                    $percentage = min(100, round(($item['stock'] / $maxStock) * 100));
+                @endphp
+                <div>
+                    <div class="mb-1 flex justify-between text-sm">
+                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $item['name'] }}</span>
+                        <span class="font-bold text-blue-600 dark:text-blue-400">{{ number_format($item['stock']) }} Unit</span>
+                    </div>
+                    <div class="h-3 w-full rounded-full bg-gray-100 dark:bg-gray-700">
+                        <div class="h-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500" style="width: {{ max(4, $percentage) }}%"></div>
+                    </div>
+                </div>
+            @empty
+                <div class="py-6 text-center text-sm text-gray-500">Belum ada data kategori untuk ditampilkan pada grafik.</div>
+            @endforelse
+        </div>
+    </div>
+
+    <!-- 3. GRID KONTEN UTAMA: AKTIVITAS & PERINGATAN STOK -->
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3 mb-6">
         
         <!-- Tabel Transaksi & Aktivitas Pengguna Terbaru (2 Kolom) -->
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:col-span-2">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aktivitas Transaksi Terbaru</h3>
-                <a href="{{ route('stock-in.index') }}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                    Lihat Riwayat
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Aktivitas Pengguna Terbaru</h3>
+                <a href="{{ route('report.index') }}" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                    Lihat Laporan Aktivitas
                 </a>
             </div>
             <div class="overflow-x-auto">
@@ -167,7 +203,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400">Min. Stok: {{ $product->min_stock }}</p>
                         </div>
                         <div class="text-right">
-                            <span class="text-sm font-bold text-red-600 dark:text-red-400">{{ $product->stock }} Item</span>
+                            <span class="text-sm font-bold text-red-600 dark:text-red-400">{{ $product->current_stock }} Item</span>
                         </div>
                     </div>
                 @empty
@@ -178,7 +214,7 @@
             </div>
         </div>
 
-    </div>
+        </div>
 
 </div>
 

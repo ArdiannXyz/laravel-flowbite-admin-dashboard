@@ -1,6 +1,6 @@
 <x-sidebar-dashboard>
     {{-- ========================================== --}}
-    {{-- 1. DASHBOARD BERDASARKAN ROLE              --}}
+    {{-- 1. DASHBOARD BERDASARKAN ROLE             --}}
     {{-- ========================================== --}}
     @role('admin')
         <x-sidebar-menu-dashboard routeName="dashboard" title="Dashboard Admin"/>
@@ -25,10 +25,8 @@
 
         <x-sidebar-menu-dropdown-dashboard routeName="products.*" title="Produk">
             <x-sidebar-menu-dropdown-item-dashboard routeName="products.index" title="Daftar Produk"/>
-            @hasanyrole('admin|manajer')
-                <x-sidebar-menu-dropdown-item-dashboard routeName="products.create" title="Tambah Produk"/>
-            @endhasanyrole
             @role('admin')
+                <x-sidebar-menu-dropdown-item-dashboard routeName="products.create" title="Tambah Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="categories.index" title="Kategori Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="attributes.index" title="Atribut Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="products.import" title="Import Produk"/>
@@ -61,17 +59,13 @@
         @endhasanyrole
     </x-sidebar-menu-dropdown-dashboard>
 
-    {{-- Stock Opname & Pengaturan Stok --}}
+    {{-- Stock Opname --}}
     @hasanyrole('admin|manajer')
         <x-sidebar-menu-dropdown-dashboard routeName="stock-opname.*" title="Stock Opname">
             <x-sidebar-menu-dropdown-item-dashboard routeName="stock-opname.index" title="Riwayat Opname"/>
             <x-sidebar-menu-dropdown-item-dashboard routeName="stock-opname.create" title="Pemeriksaan Stok"/>
         </x-sidebar-menu-dropdown-dashboard>
     @endhasanyrole
-
-    @role('admin')
-        <x-sidebar-menu-dashboard routeName="stock-settings.index" title="Stok Minimum"/>
-    @endrole
 
 
     {{-- ========================================== --}}
@@ -81,28 +75,19 @@
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
             MANAJEMEN SUPPLIER
         </div>
-
         @role('admin')
             <x-sidebar-menu-dropdown-dashboard routeName="suppliers.*" title="Supplier">
-                <x-sidebar-menu-dropdown-item-dashboard
-                    routeName="suppliers.index"
-                    title="Daftar Supplier"/>
-
-                <x-sidebar-menu-dropdown-item-dashboard
-                    routeName="suppliers.create"
-                    title="Tambah Supplier"/>
+                <x-sidebar-menu-dropdown-item-dashboard routeName="suppliers.index" title="Daftar Supplier"/>
+                <x-sidebar-menu-dropdown-item-dashboard routeName="suppliers.create" title="Tambah Supplier"/>
             </x-sidebar-menu-dropdown-dashboard>
         @else
-            <x-sidebar-menu-dashboard
-                routeName="suppliers.index"
-                activeRoute="suppliers.*"
-                title="Daftar Supplier"/>
+            <x-sidebar-menu-dashboard routeName="suppliers.index" activeRoute="suppliers.*" title="Daftar Supplier"/>
         @endrole
     @endhasanyrole
 
 
     {{-- ========================================== --}}
-    {{-- 5. LAPORAN & DOKUMEN                       --}}
+    {{-- 5. LAPORAN                                 --}}
     {{-- ========================================== --}}
     @hasanyrole('admin|manajer')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
@@ -110,10 +95,8 @@
         </div>
 
         <x-sidebar-menu-dropdown-dashboard routeName="report.*" title="Pusat Laporan">
-            {{-- TAMBAHAN: Route index agar halaman utama laporan bisa diakses dari sidebar --}}
-            <x-sidebar-menu-dropdown-item-dashboard routeName="report.index" title="Ringkasan Laporan"/>
             <x-sidebar-menu-dropdown-item-dashboard routeName="report.stock" title="Laporan Stok Barang"/>
-            <x-sidebar-menu-dropdown-item-dashboard routeName="report.transaction" title="Laporan Transaksi Masuk/Keluar"/>
+            <x-sidebar-menu-dropdown-item-dashboard routeName="report.transaction" title="Laporan Barang Masuk & Keluar"/>
             @role('admin')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="report.activity" title="Laporan Aktivitas Pengguna"/>
             @endrole
@@ -122,11 +105,11 @@
 
 
     {{-- ========================================== --}}
-    {{-- 6. ADMINISTRASI & SYSTEM (Admin Saja)      --}}
+    {{-- 6. PENGATURAN & SISTEM (Admin Saja)        --}}
     {{-- ========================================== --}}
     @role('admin')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-            ADMINISTRASI
+            PENGATURAN & SISTEM
         </div>
 
         <x-sidebar-menu-dropdown-dashboard routeName="users.*" title="Manajemen Pengguna">

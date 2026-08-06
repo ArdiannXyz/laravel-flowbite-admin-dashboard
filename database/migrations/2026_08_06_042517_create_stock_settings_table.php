@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('stock_settings', function (Blueprint $table) {
             $table->id();
+            $table->integer('default_min_stock')->default(5);
+            $table->boolean('auto_notify_low_stock')->default(true);
+            $table->string('notification_email')->nullable();
             $table->timestamps();
         });
     }

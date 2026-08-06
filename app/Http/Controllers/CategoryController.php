@@ -17,12 +17,12 @@ class CategoryController extends Controller
     public function index(Request $request): View
     {
         $categories = $this->categoryService->getPaginated(15, $request->get('search'));
-        return view('categories.index', compact('categories'));
+        return view('pages.inventory.categories.index', compact('categories'));
     }
 
     public function create(): View
     {
-        return view('categories.create');
+        return view('pages.inventory.categories.create');
     }
 
     public function store(CategoryRequest $request): RedirectResponse
@@ -34,7 +34,7 @@ class CategoryController extends Controller
     public function edit(int $id): View
     {
         $category = $this->categoryService->getDetail($id);
-        return view('categories.edit', compact('category'));
+        return view('pages.inventory.categories.edit', compact('category'));
     }
 
     public function update(CategoryRequest $request, int $id): RedirectResponse

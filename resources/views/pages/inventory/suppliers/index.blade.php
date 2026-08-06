@@ -7,19 +7,14 @@
             <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Daftar Supplier (Pemasok)</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">Informasi relasi vendor dan supplier pengadaan barang gudang.</p>
         </div>
-        <div>
-            @role('admin')
+        @role('admin')
+            <div>
                 <a href="{{ route('suppliers.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Tambah Supplier Baru
                 </a>
-            @else
-                <span class="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Read-Only Mode (Tampilan Informasi)
-                </span>
-            @endrole
-        </div>
+            </div>
+        @endrole
     </div>
 
     <!-- Alert Flash Messages -->

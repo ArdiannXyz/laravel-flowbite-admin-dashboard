@@ -101,8 +101,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
             Route::get('/transaction', [ReportController::class, 'transaction'])->name('transaction');
             Route::get('/activity', [ReportController::class, 'activity'])->name('activity');
-            
-            // Export
+
+            // Export PDF & Excel
             Route::get('/export/stok', [ReportController::class, 'exportStokPdf'])->name('export.stok');
             Route::get('/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('export.stok-excel');
             Route::get('/export/masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('export.masuk');
@@ -115,7 +115,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // =========================================================================
-    // 6. KHUSUS ADMIN - ROUTE STATIS
+    // 6. KHUSUS ADMIN - ROUTE STATIS & MANIPULASI
     // =========================================================================
     Route::middleware(['role:admin'])->group(function () {
         // Produk
