@@ -1,6 +1,6 @@
 <x-sidebar-dashboard>
     {{-- ========================================== --}}
-    {{-- 1. DASHBOARD BERDASARKAN ROLE               --}}
+    {{-- 1. DASHBOARD BERDASARKAN ROLE              --}}
     {{-- ========================================== --}}
     @role('admin')
         <x-sidebar-menu-dashboard routeName="dashboard" title="Dashboard Admin"/>
@@ -16,7 +16,7 @@
 
 
     {{-- ========================================== --}}
-    {{-- 2. MANAJEMEN PRODUK & KATEGORI              --}}
+    {{-- 2. MANAJEMEN PRODUK & KATEGORI             --}}
     {{-- ========================================== --}}
     @hasanyrole('admin|manajer')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
@@ -39,7 +39,7 @@
 
 
     {{-- ========================================== --}}
-    {{-- 3. MANAJEMEN STOK & TRANSAKSI               --}}
+    {{-- 3. MANAJEMEN STOK & TRANSAKSI              --}}
     {{-- ========================================== --}}
     <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
         MANAJEMEN STOK
@@ -74,35 +74,35 @@
     @endrole
 
 
-{{-- ========================================== --}}
-{{-- 4. SUPPLIER                                --}}
-{{-- ========================================== --}}
-@hasanyrole('admin|manajer')
-    <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-        MANAJEMEN SUPPLIER
-    </div>
+    {{-- ========================================== --}}
+    {{-- 4. SUPPLIER                                --}}
+    {{-- ========================================== --}}
+    @hasanyrole('admin|manajer')
+        <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+            MANAJEMEN SUPPLIER
+        </div>
 
-    @role('admin')
-        <x-sidebar-menu-dropdown-dashboard routeName="suppliers.*" title="Supplier">
-            <x-sidebar-menu-dropdown-item-dashboard
+        @role('admin')
+            <x-sidebar-menu-dropdown-dashboard routeName="suppliers.*" title="Supplier">
+                <x-sidebar-menu-dropdown-item-dashboard
+                    routeName="suppliers.index"
+                    title="Daftar Supplier"/>
+
+                <x-sidebar-menu-dropdown-item-dashboard
+                    routeName="suppliers.create"
+                    title="Tambah Supplier"/>
+            </x-sidebar-menu-dropdown-dashboard>
+        @else
+            <x-sidebar-menu-dashboard
                 routeName="suppliers.index"
+                activeRoute="suppliers.*"
                 title="Daftar Supplier"/>
-
-            <x-sidebar-menu-dropdown-item-dashboard
-                routeName="suppliers.create"
-                title="Tambah Supplier"/>
-        </x-sidebar-menu-dropdown-dashboard>
-    @else
-        <x-sidebar-menu-dashboard
-            routeName="suppliers.index"
-            activeRoute="suppliers.*"
-            title="Daftar Supplier"/>
-    @endrole
-@endhasanyrole
+        @endrole
+    @endhasanyrole
 
 
     {{-- ========================================== --}}
-    {{-- 5. LAPORAN & DOKUMEN                        --}}
+    {{-- 5. LAPORAN & DOKUMEN                       --}}
     {{-- ========================================== --}}
     @hasanyrole('admin|manajer')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
@@ -110,6 +110,8 @@
         </div>
 
         <x-sidebar-menu-dropdown-dashboard routeName="report.*" title="Pusat Laporan">
+            {{-- TAMBAHAN: Route index agar halaman utama laporan bisa diakses dari sidebar --}}
+            <x-sidebar-menu-dropdown-item-dashboard routeName="report.index" title="Ringkasan Laporan"/>
             <x-sidebar-menu-dropdown-item-dashboard routeName="report.stock" title="Laporan Stok Barang"/>
             <x-sidebar-menu-dropdown-item-dashboard routeName="report.transaction" title="Laporan Transaksi Masuk/Keluar"/>
             @role('admin')
@@ -120,7 +122,7 @@
 
 
     {{-- ========================================== --}}
-    {{-- 6. ADMINISTRASI & SYSTEM (Admin Saja)       --}}
+    {{-- 6. ADMINISTRASI & SYSTEM (Admin Saja)      --}}
     {{-- ========================================== --}}
     @role('admin')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
