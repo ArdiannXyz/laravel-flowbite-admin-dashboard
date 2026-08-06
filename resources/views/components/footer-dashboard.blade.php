@@ -35,5 +35,5 @@
     </div>
 </footer>
 <p class="my-10 text-sm text-center text-gray-500 dark:text-gray-400">
-    &copy; 2019-{{ date('Y') }} <a href="{{ config('app.homepage') }}" class="hover:underline" target="_blank">Flowbite.com</a>. All rights reserved.
+    &copy; 2019-{{ date('Y') }} <a href="{{ url('/') }}" class="hover:underline">Stockify Inventory Core System</a>. All rights reserved.
 </p>

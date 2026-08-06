@@ -63,7 +63,11 @@
                         <th class="px-6 py-3">Produk</th>
                         <th class="px-6 py-3">SKU</th>
                         <th class="px-6 py-3">Kategori</th>
-                        <th class="px-6 py-3">Harga Beli</th>
+                        <th class="px-6 py-3">
+                            <span class="flex items-center gap-1">
+                                Harga Beli
+                            </span>
+                        </th>
                         <th class="px-6 py-3">Harga Jual</th>
                         <th class="px-6 py-3 text-center">Stok</th>
                         <th class="px-6 py-3 text-right">Aksi</th>
@@ -72,12 +76,12 @@
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                     @forelse($products as $product)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white whitespace-nowrap">
                                 <div class="flex items-center gap-3">
                                     @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" class="h-10 w-10 rounded-md object-cover border" alt="{{ $product->name }}">
+                                        <img src="{{ asset('storage/' . $product->image) }}" class="h-10 w-10 flex-shrink-0 rounded-md object-cover border" alt="{{ $product->name }}">
                                     @else
-                                        <div class="flex h-10 w-10 items-center justify-center rounded-md bg-gray-100 text-gray-400 dark:bg-gray-700">
+                                        <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-400 dark:bg-gray-700">
                                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                                         </div>
                                     @endif
@@ -91,21 +95,21 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 font-mono text-xs text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-xs text-gray-600 dark:text-gray-300">
                                 {{ $product->sku }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
                                     {{ $product->category->name ?? 'Uncategorized' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                 Rp {{ number_format($product->buy_price, 0, ',', '.') }}
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                 Rp {{ number_format($product->sell_price, 0, ',', '.') }}
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
                                 @if($product->isLowStock())
                                     <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-300">
                                         <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
@@ -117,7 +121,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-right whitespace-nowrap">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('products.show', $product->id) }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white" title="Detail">
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>

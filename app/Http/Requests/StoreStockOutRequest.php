@@ -31,4 +31,16 @@ class StoreStockOutRequest extends FormRequest
             'transaction_date.required' => 'Tanggal transaksi wajib diisi.',
         ];
     }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->filled('product_id') && $this->filled('quantity')) {
+                $product = \App\Models\Product::find($this->product_id);
+                if ($product && (int) $this->quantity > $product->current_stock) {
+                    $validator->errors()->add('quantity', "Jumlah barang keluar ({$this->quantity} {$product->unit}) melebihi stok yang tersedia (Maksimal: {$product->current_stock} {$product->unit}).");
+                }
+            }
+        });
+    }
 }

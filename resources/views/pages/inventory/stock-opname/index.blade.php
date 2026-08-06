@@ -8,7 +8,7 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">Hasil audit dan penyesuaian antara stok di sistem dengan perhitungan fisik di gudang.</p>
         </div>
         <div>
-            <a href="{{ route('stock-opname.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800">
+            <a href="{{ route('stock-opname.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 Pemeriksaan Opname Baru
             </a>
@@ -25,7 +25,7 @@
     <div class="mb-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <form method="GET" action="{{ route('stock-opname.index') }}" class="flex flex-col gap-4 md:flex-row md:items-center">
             <div class="flex-1">
-                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari Kode Opname atau Nama Produk..." class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari Kode Opname atau Nama Produk..." class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             </div>
             <div class="flex items-center gap-2">
                 <button type="submit" class="rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600">Filter</button>
@@ -55,7 +55,7 @@
                             <td class="px-6 py-4 text-xs font-medium text-gray-900 dark:text-white">
                                 {{ $opn->opname_date->format('d M Y') }}
                             </td>
-                            <td class="px-6 py-4 font-mono text-xs font-semibold text-purple-700 dark:text-purple-400">
+                            <td class="px-6 py-4 font-mono text-xs font-semibold text-blue-700 dark:text-blue-400">
                                 {{ $opn->opname_code }}
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">

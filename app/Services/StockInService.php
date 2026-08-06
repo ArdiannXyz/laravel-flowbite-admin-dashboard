@@ -35,6 +35,10 @@ class StockInService
             // Generate code TRX-IN-YYYYMMDD-XXXX
             $code = 'TRX-IN-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4));
 
+            $unitPrice = isset($data['unit_price']) && is_numeric($data['unit_price']) 
+                ? (float) $data['unit_price'] 
+                : (float) $product->buy_price;
+
             $transaction = $this->stockTransactionRepository->create([
                 'transaction_code' => $code,
                 'type' => 'in',
@@ -42,14 +46,27 @@ class StockInService
                 'supplier_id' => $data['supplier_id'] ?? $product->supplier_id,
                 'user_id' => $userId,
                 'quantity' => $data['quantity'],
-                'unit_price' => $data['unit_price'] ?? $product->buy_price,
+                'unit_price' => $unitPrice,
                 'transaction_date' => $data['transaction_date'] ?? date('Y-m-d'),
                 'notes' => $data['notes'] ?? null,
             ]);
 
-            // Automatic stock update: Add quantity to product current_stock
-            $newStock = $product->current_stock + $data['quantity'];
-            $this->productRepository->updateStock($product->id, $newStock);
+            // Calculate Moving Average Purchase Price (AVG)
+            $oldStock = max(0, (int) $product->current_stock);
+            $oldPrice = (float) $product->buy_price;
+            $incomingQty = (int) $data['quantity'];
+
+            $newStock = $product->current_stock + $incomingQty;
+            $totalQtyForAvg = $oldStock + $incomingQty;
+
+            if ($totalQtyForAvg > 0) {
+                $newAvgPrice = (($oldStock * $oldPrice) + ($incomingQty * $unitPrice)) / $totalQtyForAvg;
+            } else {
+                $newAvgPrice = $unitPrice;
+            }
+
+            // Update product stock and purchase price (AVG)
+            $this->productRepository->updateStockAndPrice($product->id, $newStock, $newAvgPrice);
 
             return $transaction;
         });
