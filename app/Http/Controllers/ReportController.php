@@ -44,6 +44,36 @@ class ReportController extends Controller
         return view('pages.report.activity', $data);
     }
 
+    // =========================================================================
+    // TAMBAHAN METHOD HALAMAN LAPORAN (YANG SEBELUMNYA HILANG/ERROR)
+    // =========================================================================
+
+    public function stock(Request $request)
+    {
+        $stok = $this->reportService->exportStok($request);
+
+        return view('pages.report.stock', compact('stok'));
+    }
+
+    public function transaction(Request $request)
+    {
+        $barangMasuk = $this->reportService->exportBarangMasuk($request);
+        $barangKeluar = $this->reportService->exportBarangKeluar($request);
+
+        return view('pages.report.transaction', compact('barangMasuk', 'barangKeluar'));
+    }
+
+    public function activity(Request $request)
+    {
+        $aktivitas = $this->reportService->exportAktivitas($request);
+
+        return view('pages.report.activity', compact('aktivitas'));
+    }
+
+    // =========================================================================
+    // METHOD EXPORT (PDF & EXCEL)
+    // =========================================================================
+
     public function exportStokPdf(Request $request)
     {
         $stok = $this->reportService->exportStok($request);

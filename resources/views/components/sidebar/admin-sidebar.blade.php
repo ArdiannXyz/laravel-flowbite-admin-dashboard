@@ -59,7 +59,7 @@
         @endhasanyrole
     </x-sidebar-menu-dropdown-dashboard>
 
-    {{-- Stock Opname & Pengaturan Stok --}}
+    {{-- Stock Opname --}}
     @hasanyrole('admin|manajer')
         <x-sidebar-menu-dropdown-dashboard routeName="stock-opname.*" title="Stock Opname">
             <x-sidebar-menu-dropdown-item-dashboard routeName="stock-opname.index" title="Riwayat Opname"/>
