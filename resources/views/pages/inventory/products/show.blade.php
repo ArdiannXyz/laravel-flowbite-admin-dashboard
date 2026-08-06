@@ -41,8 +41,11 @@
                     <span class="font-semibold text-gray-900 dark:text-white">{{ $product->supplier->name ?? '-' }}</span>
                 </div>
                 <div class="flex justify-between border-b pb-2 dark:border-gray-700">
-                    <span class="text-gray-500 dark:text-gray-400">Harga Beli:</span>
-                    <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($product->buy_price, 0, ',', '.') }}</span>
+                    <span class="text-gray-500 dark:text-gray-400">Harga Beli (AVG):</span>
+                    <div class="text-right">
+                        <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($product->buy_price, 0, ',', '.') }}</span>
+                        <div class="text-[10px] text-gray-400">Weighted Average Cost</div>
+                    </div>
                 </div>
                 <div class="flex justify-between border-b pb-2 dark:border-gray-700">
                     <span class="text-gray-500 dark:text-gray-400">Harga Jual:</span>

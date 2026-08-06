@@ -30,4 +30,16 @@ class StoreStockOpnameRequest extends FormRequest
             'opname_date.required' => 'Tanggal opname wajib diisi.',
         ];
     }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->filled('product_id') && $this->filled('physical_stock')) {
+                $product = \App\Models\Product::find($this->product_id);
+                if ($product && (int) $this->physical_stock > $product->current_stock) {
+                    $validator->errors()->add('physical_stock', "Jumlah stok fisik ({$this->physical_stock} {$product->unit}) tidak boleh melebihi stok yang tercatat di sistem (Maksimal: {$product->current_stock} {$product->unit}).");
+                }
+            }
+        });
+    }
 }

@@ -25,8 +25,10 @@
 
         <x-sidebar-menu-dropdown-dashboard routeName="products.*" title="Produk">
             <x-sidebar-menu-dropdown-item-dashboard routeName="products.index" title="Daftar Produk"/>
-            @role('admin')
+            @hasanyrole('admin|manajer')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="products.create" title="Tambah Produk"/>
+            @endhasanyrole
+            @role('admin')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="categories.index" title="Kategori Produk"/>
                 {{-- <x-sidebar-menu-dropdown-item-dashboard routeName="attributes.index" title="Atribut Produk"/> --}}
             @endrole
@@ -73,12 +75,22 @@
     {{-- ========================================== --}}
     {{-- 4. SUPPLIER                                --}}
     {{-- ========================================== --}}
-    {{-- @hasanyrole('admin|manajer')
+    @role('admin')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-            RELASI
+            MANAJEMEN SUPPLIER
         </div>
-        <x-sidebar-menu-dashboard routeName="suppliers.index" title="Data Supplier"/>
-    @endhasanyrole --}}
+        <x-sidebar-menu-dropdown-dashboard routeName="suppliers.*" title="Supplier">
+            <x-sidebar-menu-dropdown-item-dashboard routeName="suppliers.index" title="Daftar Supplier"/>
+            <x-sidebar-menu-dropdown-item-dashboard routeName="suppliers.create" title="Tambah Supplier"/>
+        </x-sidebar-menu-dropdown-dashboard>
+    @else
+        @role('manajer')
+            <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
+                MANAJEMEN SUPPLIER
+            </div>
+            <x-sidebar-menu-dashboard routeName="suppliers.index" activeRoute="suppliers.*" title="Daftar Supplier"/>
+        @endrole
+    @endrole
 
 
     {{-- ========================================== --}}

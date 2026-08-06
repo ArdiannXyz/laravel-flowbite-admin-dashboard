@@ -24,16 +24,21 @@ class InventorySystemTest extends TestCase
 
     public function test_can_view_warehouse_manager_dashboard()
     {
-        $response = $this->get(route('warehouse.dashboard'));
+        $user = User::role('manajer')->first() ?? User::first();
+        if (!$user->hasRole('manajer')) {
+            $user->assignRole('manajer');
+        }
+        $response = $this->actingAs($user)->get(route('warehouse.dashboard'));
         $response->assertStatus(200);
         $response->assertSee('Dashboard Manajer Gudang');
     }
 
     public function test_can_create_new_product()
     {
+        $user = User::first();
         $category = Category::first();
 
-        $response = $this->post(route('products.store'), [
+        $response = $this->actingAs($user)->post(route('products.store'), [
             'name' => 'Barcode Scanner Wireless High-Speed',
             'category_id' => $category->id,
             'buy_price' => 500000,
@@ -118,5 +123,148 @@ class InventorySystemTest extends TestCase
         $product->refresh();
         $this->assertEquals(42, $product->current_stock);
         $this->assertEquals(-8, $opname->difference);
+    }
+
+    public function test_stock_in_recalculates_moving_average_buy_price()
+    {
+        $product = Product::first();
+        $product->update([
+            'current_stock' => 10,
+            'buy_price' => 100000,
+        ]);
+
+        $stockInService = app(StockInService::class);
+
+        // 1. Barang masuk 10 unit dengan kenaikan harga menjadi Rp 120.000
+        // (10 * 100.000 + 10 * 120.000) / 20 = 110.000
+        $stockInService->recordStockIn([
+            'product_id' => $product->id,
+            'quantity' => 10,
+            'unit_price' => 120000,
+            'transaction_date' => date('Y-m-d'),
+        ]);
+
+        $product->refresh();
+        $this->assertEquals(20, $product->current_stock);
+        $this->assertEquals(110000, (float) $product->buy_price);
+
+        // 2. Barang masuk lagi 10 unit dengan penurunan harga menjadi Rp 80.000
+        // (20 * 110.000 + 10 * 80.000) / 30 = 100.000
+        $stockInService->recordStockIn([
+            'product_id' => $product->id,
+            'quantity' => 10,
+            'unit_price' => 80000,
+            'transaction_date' => date('Y-m-d'),
+        ]);
+
+        $product->refresh();
+        $this->assertEquals(30, $product->current_stock);
+        $this->assertEquals(100000, (float) $product->buy_price);
+    }
+
+    public function test_stock_out_request_validation_fails_when_exceeding_stock()
+    {
+        $user = User::first();
+        $product = Product::first();
+        $product->update(['current_stock' => 29]);
+
+        $response = $this->actingAs($user)->post(route('stock-out.store'), [
+            'product_id' => $product->id,
+            'quantity' => 30, // Exceeds 29
+            'transaction_date' => date('Y-m-d'),
+        ]);
+
+        $response->assertSessionHasErrors(['quantity']);
+    }
+
+    public function test_stock_opname_request_validation_fails_when_exceeding_stock()
+    {
+        $user = User::first();
+        $product = Product::first();
+        $product->update(['current_stock' => 29]);
+
+        $response = $this->actingAs($user)->post(route('stock-opname.store'), [
+            'product_id' => $product->id,
+            'physical_stock' => 30, // Exceeds 29
+            'opname_date' => date('Y-m-d'),
+        ]);
+
+        $response->assertSessionHasErrors(['physical_stock']);
+    }
+
+    public function test_warehouse_manager_can_view_supplier_list_and_details()
+    {
+        $user = User::role('manajer')->first() ?? User::first();
+        if (!$user->hasRole('manajer')) {
+            $user->assignRole('manajer');
+        }
+
+        $supplier = Supplier::first();
+
+        // 1. Can view supplier index page
+        $response = $this->actingAs($user)->get(route('suppliers.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Daftar Supplier (Pemasok)');
+
+        // 2. Can view supplier details page
+        $responseDetails = $this->actingAs($user)->get(route('suppliers.show', $supplier->id));
+        $responseDetails->assertStatus(200);
+        $responseDetails->assertSee($supplier->name);
+    }
+
+    public function test_admin_can_create_update_and_delete_supplier()
+    {
+        $admin = User::role('admin')->first() ?? User::first();
+        if (!$admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
+
+        // 1. Create Supplier
+        $createResponse = $this->actingAs($admin)->post(route('suppliers.store'), [
+            'name' => 'PT Test Supplier Indonesia',
+            'code' => 'SUP-TEST-999',
+            'email' => 'contact@testsupplier.com',
+            'phone' => '081299990000',
+            'address' => 'Jl. Test No. 123',
+        ]);
+
+        $createResponse->assertRedirect(route('suppliers.index'));
+        $this->assertDatabaseHas('suppliers', [
+            'code' => 'SUP-TEST-999',
+            'name' => 'PT Test Supplier Indonesia',
+        ]);
+
+        $supplier = Supplier::where('code', 'SUP-TEST-999')->first();
+
+        // 2. Update Supplier
+        $updateResponse = $this->actingAs($admin)->put(route('suppliers.update', $supplier->id), [
+            'name' => 'PT Test Supplier Indonesia Updated',
+            'code' => 'SUP-TEST-999',
+            'email' => 'updated@testsupplier.com',
+        ]);
+
+        $updateResponse->assertRedirect(route('suppliers.index'));
+        $this->assertDatabaseHas('suppliers', [
+            'id' => $supplier->id,
+            'name' => 'PT Test Supplier Indonesia Updated',
+        ]);
+
+        // 3. Delete Supplier
+        $deleteResponse = $this->actingAs($admin)->delete(route('suppliers.destroy', $supplier->id));
+        $deleteResponse->assertRedirect(route('suppliers.index'));
+        $this->assertDatabaseMissing('suppliers', [
+            'id' => $supplier->id,
+        ]);
+    }
+
+    public function test_global_search_returns_relevant_results()
+    {
+        $user = User::first();
+        $product = Product::first();
+
+        $response = $this->actingAs($user)->get(route('search.global', ['q' => substr($product->name, 0, 4)]));
+        $response->assertStatus(200);
+        $response->assertSee('Hasil Pencarian Global');
+        $response->assertSee($product->name);
     }
 }

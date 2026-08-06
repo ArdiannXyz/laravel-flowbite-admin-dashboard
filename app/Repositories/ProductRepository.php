@@ -91,6 +91,18 @@ class ProductRepository implements ProductRepositoryInterface
         return $product->update(['current_stock' => $newStock]);
     }
 
+    public function updateStockAndPrice(int $id, int $newStock, float $newBuyPrice): bool
+    {
+        $product = Product::find($id);
+        if (!$product) {
+            return false;
+        }
+        return $product->update([
+            'current_stock' => $newStock,
+            'buy_price' => round($newBuyPrice, 2),
+        ]);
+    }
+
     public function delete(int $id): bool
     {
         $product = Product::find($id);
