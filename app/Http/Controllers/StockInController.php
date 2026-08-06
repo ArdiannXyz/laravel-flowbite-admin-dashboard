@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\StockTransaction;
 use Exception;
 
 class StockInController extends Controller
@@ -48,6 +49,26 @@ class StockInController extends Controller
                 ->with('success', "Transaksi Penerimaan Barang ({$transaction->transaction_code}) berhasil dicatat. Stok bertambah {$transaction->quantity}.");
         } catch (Exception $e) {
             return back()->withInput()->with('error', $e->getMessage());
+        }
+    }
+
+    public function confirm(StockTransaction $stockTransaction): RedirectResponse
+    {
+        try {
+            $this->stockInService->confirmStockIn($stockTransaction, Auth::id());
+            return back()->with('success', 'Barang masuk berhasil dikonfirmasi.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function reject(StockTransaction $stockTransaction): RedirectResponse
+    {
+        try {
+            $this->stockInService->rejectStockIn($stockTransaction, Auth::id());
+            return back()->with('success', 'Barang masuk ditolak, stok telah dikembalikan.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
     }
 }

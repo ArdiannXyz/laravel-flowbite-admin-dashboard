@@ -7,6 +7,7 @@ use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Contracts\StockTransactionRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class StockInService
 {
@@ -39,6 +40,7 @@ class StockInService
                 ? (float) $data['unit_price'] 
                 : (float) $product->buy_price;
 
+            // HANYA MENCATAT TRANSAKSI DENGAN STATUS PENDING, STOK TIDAK DITAMBAH DULU
             $transaction = $this->stockTransactionRepository->create([
                 'transaction_code' => $code,
                 'type' => 'in',
@@ -49,14 +51,32 @@ class StockInService
                 'unit_price' => $unitPrice,
                 'transaction_date' => $data['transaction_date'] ?? date('Y-m-d'),
                 'notes' => $data['notes'] ?? null,
+                'status' => 'pending', // Pastikan defaultnya pending
             ]);
 
-            // Calculate Moving Average Purchase Price (AVG)
+            return $transaction;
+        });
+    }
+
+    public function confirmStockIn(StockTransaction $transaction, int $userId): StockTransaction
+    {
+        return DB::transaction(function () use ($transaction, $userId) {
+            if ($transaction->type !== 'in') {
+                throw new \InvalidArgumentException('Transaksi ini bukan transaksi barang masuk.');
+            }
+            if ($transaction->status !== 'pending') {
+                throw new Exception('Transaksi ini sudah diproses sebelumnya.');
+            }
+
+            $product = $this->productRepository->findById($transaction->product_id);
+
+            // LOGIKA PENAMBAHAN STOK & HARGA RATA-RATA DIPINDAH KESINI
             $oldStock = max(0, (int) $product->current_stock);
             $oldPrice = (float) $product->buy_price;
-            $incomingQty = (int) $data['quantity'];
+            $incomingQty = (int) $transaction->quantity;
+            $unitPrice = (float) $transaction->unit_price;
 
-            $newStock = $product->current_stock + $incomingQty;
+            $newStock = $oldStock + $incomingQty;
             $totalQtyForAvg = $oldStock + $incomingQty;
 
             if ($totalQtyForAvg > 0) {
@@ -68,7 +88,33 @@ class StockInService
             // Update product stock and purchase price (AVG)
             $this->productRepository->updateStockAndPrice($product->id, $newStock, $newAvgPrice);
 
+            // Update Status Transaksi
+            $transaction->update([
+                'status'       => 'confirmed',
+                'confirmed_by' => $userId,
+                'confirmed_at' => now(),
+            ]);
+
             return $transaction;
         });
+    }
+
+    public function rejectStockIn(StockTransaction $transaction, int $userId): StockTransaction
+    {
+        if ($transaction->type !== 'in') {
+            throw new \InvalidArgumentException('Transaksi ini bukan transaksi barang masuk.');
+        }
+        if ($transaction->status !== 'pending') {
+            throw new Exception('Transaksi ini sudah diproses sebelumnya.');
+        }
+
+        // TIDAK PERLU REVERT STOK, KARENA STOK MEMANG BELUM DITAMBAH DI AWAL
+        $transaction->update([
+            'status'       => 'rejected',
+            'confirmed_by' => $userId,
+            'confirmed_at' => now(),
+        ]);
+
+        return $transaction;
     }
 }

@@ -12,9 +12,14 @@ class StaffDashboardService
 
     public function getStaffDashboardData(): array
     {
-        // Mengambil transaksi barang masuk & keluar terbaru (top 5 item)
-        $barangMasukPaginated = $this->stockTransactionRepository->getByTypePaginated('in', [], 5);
-        $barangKeluarPaginated = $this->stockTransactionRepository->getByTypePaginated('out', [], 5);
+        // FILTER PENTING: Hanya ambil yang berstatus 'pending'
+        $filters = [
+            'status' => 'pending'
+        ];
+
+        // Mengambil transaksi barang masuk & keluar terbaru (top 5 item) yang masih PENDING
+        $barangMasukPaginated = $this->stockTransactionRepository->getByTypePaginated('in', $filters, 5);
+        $barangKeluarPaginated = $this->stockTransactionRepository->getByTypePaginated('out', $filters, 5);
 
         return [
             'barangMasuk'       => $barangMasukPaginated->items(),
