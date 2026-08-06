@@ -96,15 +96,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
 
         // Laporan
-        Route::get('/report', [ReportController::class, 'index'])->name('report.index');
-        Route::get('/report/export/stok', [ReportController::class, 'exportStokPdf'])->name('report.export.stok');
-        Route::get('/report/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('report.export.stok-excel');
-        Route::get('/report/export/masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('report.export.masuk');
-        Route::get('/report/export/masuk-excel', [ReportController::class, 'exportBarangMasukExcel'])->name('report.export.masuk-excel');
-        Route::get('/report/export/keluar', [ReportController::class, 'exportBarangKeluarPdf'])->name('report.export.keluar');
-        Route::get('/report/export/keluar-excel', [ReportController::class, 'exportBarangKeluarExcel'])->name('report.export.keluar-excel');
-        Route::get('/report/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('report.export.aktivitas');
-        Route::get('/report/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('report.export.aktivitas-excel');
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('index');
+            Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
+            Route::get('/transaction', [ReportController::class, 'transaction'])->name('transaction');
+            Route::get('/activity', [ReportController::class, 'activity'])->name('activity');
+
+            // Export PDF & Excel
+            Route::get('/export/stok', [ReportController::class, 'exportStokPdf'])->name('export.stok');
+            Route::get('/export/stok-excel', [ReportController::class, 'exportStokExcel'])->name('export.stok-excel');
+            Route::get('/export/masuk', [ReportController::class, 'exportBarangMasukPdf'])->name('export.masuk');
+            Route::get('/export/masuk-excel', [ReportController::class, 'exportBarangMasukExcel'])->name('export.masuk-excel');
+            Route::get('/export/keluar', [ReportController::class, 'exportBarangKeluarPdf'])->name('export.keluar');
+            Route::get('/export/keluar-excel', [ReportController::class, 'exportBarangKeluarExcel'])->name('export.keluar-excel');
+            Route::get('/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('export.aktivitas');
+            Route::get('/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('export.aktivitas-excel');
+        });
     });
 
     // =========================================================================

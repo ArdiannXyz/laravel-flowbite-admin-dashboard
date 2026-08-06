@@ -19,9 +19,29 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        $data = $this->reportService->getReportData($request);
+        return redirect()->route('report.stock');
+    }
 
-        return view('pages.report.index', $data);
+    public function stock(Request $request)
+    {
+        $data = $this->reportService->getReportData($request);
+        return view('pages.report.stock', $data);
+    }
+
+    public function transaction(Request $request)
+    {
+        $data = $this->reportService->getReportData($request);
+        return view('pages.report.transaction', $data);
+    }
+
+    public function activity(Request $request)
+    {
+        if (auth()->user()->hasRole('manajer')) {
+            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
+        }
+
+        $data = $this->reportService->getReportData($request);
+        return view('pages.report.activity', $data);
     }
 
     public function exportStokPdf(Request $request)
@@ -62,6 +82,10 @@ class ReportController extends Controller
 
     public function exportAktivitasPdf(Request $request)
     {
+        if (auth()->user()->hasRole('manajer')) {
+            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
+        }
+
         $aktivitas = $this->reportService->exportAktivitas($request);
 
         $pdf = Pdf::loadView('pages.report.pdf.Activity', [
@@ -104,6 +128,10 @@ class ReportController extends Controller
 
     public function exportAktivitasExcel(Request $request)
     {
+        if (auth()->user()->hasRole('manajer')) {
+            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
+        }
+
         $aktivitas = $this->reportService->exportAktivitas($request);
 
         return Excel::download(
