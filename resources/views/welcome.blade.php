@@ -36,7 +36,7 @@
                 </a>
             @else
                 <a href="{{ route('login') }}" class="text-sm font-medium px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors shadow-sm shadow-blue-500/30">
-                    Masuk Sistem
+                    Login
                 </a>
             @endauth
         </div>
