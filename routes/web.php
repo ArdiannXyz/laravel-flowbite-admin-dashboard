@@ -78,6 +78,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // =========================================================================
+    // 3B. KONFIRMASI STOK (Khusus Staff Gudang)
+    // Dipisah dari akses index di atas: manajer/admin yang MENCATAT transaksi
+    // tidak boleh sekaligus jadi pihak yang MENGKONFIRMASI transaksinya sendiri.
+    // =========================================================================
+    Route::middleware(['role:staff'])->group(function () {
+
+        // Konfirmasi/Tolak Barang Masuk
+        Route::post('stock-in/{stockTransaction}/confirm', [StockInController::class, 'confirm'])->name('stock-in.confirm');
+        Route::post('stock-in/{stockTransaction}/reject', [StockInController::class, 'reject'])->name('stock-in.reject');
+
+        // Konfirmasi/Tolak Barang Keluar
+        Route::post('stock-out/{stockTransaction}/confirm', [StockOutController::class, 'confirm'])->name('stock-out.confirm');
+        Route::post('stock-out/{stockTransaction}/reject', [StockOutController::class, 'reject'])->name('stock-out.reject');
+    });
+
+    // =========================================================================
     // 4. AKSES MANAJERIAL (Admin & Manajer Gudang)
     // =========================================================================
     Route::middleware(['role:admin|manajer'])->group(function () {

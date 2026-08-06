@@ -29,9 +29,11 @@
                     <select name="product_id" id="product_select" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                         <option value="">-- Pilih Produk --</option>
                         @foreach($products as $p)
+                            <!-- TAMBAHAN: data-price dimasukkan di sini -->
                             <option value="{{ $p->id }}" 
                                     data-stock="{{ $p->current_stock }}" 
                                     data-unit="{{ $p->unit }}"
+                                    data-price="{{ $p->sell_price }}"
                                     {{ (old('product_id') ?? $selectedProductId) == $p->id ? 'selected' : '' }}>
                                 {{ $p->name }} (SKU: {{ $p->sku }} | Stok Tersedia: {{ $p->current_stock }} {{ $p->unit }})
                             </option>
@@ -55,7 +57,8 @@
                     </div>
                     <div>
                         <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Harga Jual Per Satuan (Rp)</label>
-                        <input type="number" step="0.01" name="unit_price" value="{{ old('unit_price') }}" placeholder="Default harga jual produk" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <!-- TAMBAHAN: id="unit_price_input" ditambahkan di sini -->
+                        <input type="number" step="0.01" name="unit_price" id="unit_price_input" value="{{ old('unit_price') }}" placeholder="Default harga jual produk" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     </div>
                 </div>
 
@@ -88,6 +91,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const productSelect = document.getElementById('product_select');
     const quantityInput = document.getElementById('quantity_input');
+    const unitPriceInput = document.getElementById('unit_price_input'); // Deklarasi input harga
     const stockBadge = document.getElementById('stock_info_badge');
     const quantityWarning = document.getElementById('quantity_warning');
     const submitBtn = document.getElementById('submit_btn');
@@ -136,12 +140,26 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             quantityInput.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
             quantityInput.classList.add('border-gray-300', 'focus:border-blue-500');
-            const remaining = stock - val;
+            // const remaining = stock - val; (Disembunyikan agar warning tidak menampilkan sisa stok yang membingungkan)
             quantityWarning.className = 'mt-1.5 text-xs font-medium text-green-600 dark:text-green-400';
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
     }
+
+    // TAMBAHAN: Event listener terpisah khusus untuk menangani autofill Harga Satuan
+    productSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        
+        if (selectedOption && selectedOption.value) {
+            const price = selectedOption.getAttribute('data-price');
+            // Isi otomatis jika data price ada, jika tidak kosongkan
+            unitPriceInput.value = price ? price : '';
+        } else {
+            // Jika memilih opsi "-- Pilih Produk --", kosongkan input harga
+            unitPriceInput.value = '';
+        }
+    });
 
     productSelect.addEventListener('change', updateStockLimits);
     quantityInput.addEventListener('input', updateStockLimits);
