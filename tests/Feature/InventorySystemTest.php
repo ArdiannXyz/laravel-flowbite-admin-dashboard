@@ -35,7 +35,7 @@ class InventorySystemTest extends TestCase
 
     public function test_can_create_new_product()
     {
-        $user = User::first();
+        $user = User::role('admin')->first() ?? User::first();
         $category = Category::first();
 
         $response = $this->actingAs($user)->post(route('products.store'), [
@@ -53,6 +53,56 @@ class InventorySystemTest extends TestCase
             'name' => 'Barcode Scanner Wireless High-Speed',
             'current_stock' => 10,
         ]);
+    }
+
+    public function test_warehouse_manager_can_view_product_list_and_details()
+    {
+        $manager = User::role('manajer')->first();
+        $product = Product::first();
+
+        // 1. Can view index
+        $indexResponse = $this->actingAs($manager)->get(route('products.index'));
+        $indexResponse->assertStatus(200);
+        $indexResponse->assertSee($product->name);
+        $indexResponse->assertDontSee('Tambah Produk Baru');
+
+        // 2. Can view details
+        $showResponse = $this->actingAs($manager)->get(route('products.show', $product->id));
+        $showResponse->assertStatus(200);
+        $showResponse->assertSee($product->name);
+        $showResponse->assertDontSee('Edit Produk');
+    }
+
+    public function test_warehouse_manager_cannot_create_edit_or_delete_product()
+    {
+        $manager = User::role('manajer')->first();
+        $product = Product::first();
+        $category = Category::first();
+
+        // 1. Cannot access create form
+        $this->actingAs($manager)->get(route('products.create'))->assertStatus(403);
+
+        // 2. Cannot store product
+        $this->actingAs($manager)->post(route('products.store'), [
+            'name' => 'Unauthorized Product',
+            'category_id' => $category->id,
+            'buy_price' => 10000,
+            'sell_price' => 15000,
+            'min_stock' => 1,
+            'current_stock' => 5,
+            'unit' => 'unit',
+        ])->assertStatus(403);
+
+        // 3. Cannot access edit form
+        $this->actingAs($manager)->get(route('products.edit', $product->id))->assertStatus(403);
+
+        // 4. Cannot update product
+        $this->actingAs($manager)->put(route('products.update', $product->id), [
+            'name' => 'Updated Name',
+        ])->assertStatus(403);
+
+        // 5. Cannot delete product
+        $this->actingAs($manager)->delete(route('products.destroy', $product->id))->assertStatus(403);
     }
 
     public function test_stock_in_increases_product_stock_automatically()
@@ -210,6 +260,12 @@ class InventorySystemTest extends TestCase
         $responseDetails = $this->actingAs($user)->get(route('suppliers.show', $supplier->id));
         $responseDetails->assertStatus(200);
         $responseDetails->assertSee($supplier->name);
+
+        // 3. Cannot access supplier create form
+        $this->actingAs($user)->get(route('suppliers.create'))->assertStatus(403);
+
+        // 4. Cannot access supplier edit form
+        $this->actingAs($user)->get(route('suppliers.edit', $supplier->id))->assertStatus(403);
     }
 
     public function test_admin_can_create_update_and_delete_supplier()

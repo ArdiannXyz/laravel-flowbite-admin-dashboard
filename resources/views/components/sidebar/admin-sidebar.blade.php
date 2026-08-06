@@ -25,9 +25,9 @@
 
         <x-sidebar-menu-dropdown-dashboard routeName="products.*" title="Produk">
             <x-sidebar-menu-dropdown-item-dashboard routeName="products.index" title="Daftar Produk"/>
-            @hasanyrole('admin|manajer')
+            @role('admin')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="products.create" title="Tambah Produk"/>
-            @endhasanyrole
+            @endrole
             @role('admin')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="categories.index" title="Kategori Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="attributes.index" title="Atribut Produk"/>

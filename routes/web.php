@@ -98,13 +98,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // =========================================================================
     Route::middleware(['role:admin|manajer'])->group(function () {
         
-        // Produk (CRUD)
+        // Produk (Read Only untuk Manajer Gudang, Full untuk Admin)
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
-        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('products', [ProductController::class, 'store'])->name('products.store');
-        Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
-        Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
         Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
 
         // Transaksi Stock
@@ -130,49 +125,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/report/export/aktivitas', [ReportController::class, 'exportAktivitasPdf'])->name('report.export.aktivitas');
         Route::get('/report/export/aktivitas-excel', [ReportController::class, 'exportAktivitasExcel'])->name('report.export.aktivitas-excel');
 
-        // Supplier (Read-Only List)
+        // Supplier (Read-Only List & Detail)
         Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-    });
-
-    // =========================================================================
-    // 5. KHUSUS ADMIN SYSTEM
-    // =========================================================================
-    Route::middleware(['role:admin'])->group(function () {
-        // Master Data Kategori (CRUD)
-        Route::resource('categories', CategoryController::class)->except(['show']);
-
-        // Supplier CRUD (Khusus Admin)
-        Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
-        Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-        Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-        Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-        Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-    });
-
-    // Supplier Show (Bisa diakses Admin & Manajer)
-    Route::middleware(['role:admin|manajer'])->group(function () {
         Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
     });
 
     // =========================================================================
-    // 6. PROFILE
+    // 5. PROFILE
     // =========================================================================
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // =========================================================================
-    // 5. KHUSUS ADMIN SYSTEM
+    // 6. KHUSUS ADMIN SYSTEM (Master Data & Manipulasi Produk)
     // =========================================================================
     Route::middleware(['role:admin'])->group(function () {
 
     // ---------------------------------------------------------------------
-    // Produk
+    // Produk (CRUD Khusus Admin)
     // ---------------------------------------------------------------------
     Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    //Route::put('products/{product}', [ProductController::class, 'update')->name('products.update');
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Import / Export Produk
@@ -190,8 +166,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Atribut Produk
     Route::resource('attributes', AttributeController::class)->except(['show']);
 
-    // Supplier
-    Route::resource('suppliers', SupplierController::class)->except(['show']);
+    // Supplier (Create, Edit, Update, Delete Khusus Admin)
+    Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+    Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+    Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
     // Pengguna
     Route::resource('users', UserController::class)->except(['show']);
