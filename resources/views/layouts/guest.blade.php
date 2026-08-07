@@ -1,37 +1,225 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Stockify') }}</title>
+<head>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div>
-                {{-- <a href="/" class="flex items-center gap-2">
-                    <!-- Logo Stockify: ikon kotak (box) merepresentasikan stok barang -->
-                    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 shadow-md shadow-indigo-200 dark:shadow-none">
-                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M20.25 7.5l-8.25-4.5L3.75 7.5m16.5 0l-8.25 4.5m8.25-4.5v9l-8.25 4.5m0-9L3.75 7.5m8.25 4.5v9M3.75 7.5v9l8.25 4.5" />
-                        </svg>
-                    </div>
-                    <span class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Stockify</span>
-                </a> --}}
-            </div>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+    <title>{{ config('app.name', 'Stockify') }}</title>
+
+    <link rel="preconnect"
+        href="https://fonts.bunny.net">
+
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap"
+        rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+</head>
+
+<body class="font-sans antialiased bg-gray-100 dark:bg-gray-950">
+
+<div class="min-h-screen grid lg:grid-cols-2">
+
+    <!-- ================= LEFT ================= -->
+
+    <div class="hidden lg:flex relative overflow-hidden bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800">
+
+        <!-- Blur Circle -->
+        <div
+            class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-white/10 blur-3xl">
         </div>
-    </body>
+
+        <div
+            class="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-white/10 blur-3xl">
+        </div>
+
+        <div class="relative z-10 flex flex-col justify-center px-20 text-white w-full">
+
+            <!-- Logo -->
+
+            <div class="flex items-center gap-4">
+
+                <div class="h-16 w-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shadow-lg">
+
+                    <svg
+                        class="w-9 h-9"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M20 7L12 3L4 7M20 7L12 11M20 7V17L12 21M12 11L4 7M12 11V21M4 7V17L12 21"/>
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h1 class="text-4xl font-bold">
+
+                        Stockify
+
+                    </h1>
+
+                    <p class="text-emerald-100">
+
+                        Inventory Management System
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <h2 class="mt-12 text-5xl font-bold leading-tight">
+
+                Kelola Stok Barang
+
+                <br>
+
+                Menjadi Lebih Mudah.
+
+            </h2>
+
+            <p class="mt-6 text-lg text-emerald-100 leading-8 max-w-xl">
+
+                Stockify membantu perusahaan mengelola produk,
+                supplier, transaksi barang masuk,
+                barang keluar,
+                hingga laporan stok secara real-time.
+
+            </p>
+
+            <!-- Feature -->
+
+            <div class="grid grid-cols-2 gap-5 mt-14">
+
+                <div class="rounded-2xl bg-white/10 backdrop-blur p-5">
+
+                    <div class="text-3xl">
+
+                        📦
+
+                    </div>
+
+                    <h3 class="mt-3 font-semibold">
+
+                        Produk
+
+                    </h3>
+
+                    <p class="mt-2 text-sm text-emerald-100">
+
+                        Kelola seluruh produk dalam satu tempat.
+
+                    </p>
+
+                </div>
+
+                <div class="rounded-2xl bg-white/10 backdrop-blur p-5">
+
+                    <div class="text-3xl">
+
+                        🚚
+
+                    </div>
+
+                    <h3 class="mt-3 font-semibold">
+
+                        Supplier
+
+                    </h3>
+
+                    <p class="mt-2 text-sm text-emerald-100">
+
+                        Data supplier tersimpan dengan aman.
+
+                    </p>
+
+                </div>
+
+                <div class="rounded-2xl bg-white/10 backdrop-blur p-5">
+
+                    <div class="text-3xl">
+
+                        📊
+
+                    </div>
+
+                    <h3 class="mt-3 font-semibold">
+
+                        Dashboard
+
+                    </h3>
+
+                    <p class="mt-2 text-sm text-emerald-100">
+
+                        Statistik stok secara realtime.
+
+                    </p>
+
+                </div>
+
+                <div class="rounded-2xl bg-white/10 backdrop-blur p-5">
+
+                    <div class="text-3xl">
+
+                        📑
+
+                    </div>
+
+                    <h3 class="mt-3 font-semibold">
+
+                        Laporan
+
+                    </h3>
+
+                    <p class="mt-2 text-sm text-emerald-100">
+
+                        Export PDF & Excel.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RIGHT ================= -->
+
+    <div class="relative flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-black">
+
+        <!-- Background Decoration -->
+
+        <div class="absolute inset-0 overflow-hidden">
+
+            <div class="absolute -top-24 right-0 w-72 h-72 rounded-full bg-emerald-200/30 blur-3xl"></div>
+
+            <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-teal-200/20 blur-3xl"></div>
+
+        </div>
+
+        <div class="relative z-10 w-full max-w-md">
+
+            @yield('content')
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
 </html>
