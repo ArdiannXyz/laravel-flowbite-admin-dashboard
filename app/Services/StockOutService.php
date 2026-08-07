@@ -38,10 +38,21 @@ class StockOutService
                 throw new Exception("Stok tidak mencukupi! Stok saat ini: {$product->current_stock} {$product->unit}, jumlah diminta: {$data['quantity']} {$product->unit}.");
             }
 
+            // Pengecekan role pengguna
+            $user = $userId ? \App\Models\User::find($userId) : null;
+            $isAdminOrManager = $user && ($user->hasRole('admin') || $user->hasRole('manajer') || ($user->role ?? '') === 'admin' || ($user->role ?? '') === 'manajer');
+
             // Generate code TRX-OUT-YYYYMMDD-XXXX
             $code = 'TRX-OUT-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4));
 
-            // HANYA MENCATAT TRANSAKSI, STOK TIDAK DIKURANGI DULU
+            $status = $isAdminOrManager ? 'confirmed' : 'pending';
+
+            // Jika dibuat oleh Admin atau Manajer, langsung kurangi stok
+            if ($isAdminOrManager) {
+                $newStock = $product->current_stock - $data['quantity'];
+                $this->productRepository->updateStock($product->id, $newStock);
+            }
+
             $transaction = $this->stockTransactionRepository->create([
                 'transaction_code' => $code,
                 'type' => 'out',
@@ -52,7 +63,9 @@ class StockOutService
                 'unit_price' => $data['unit_price'] ?? $product->sell_price,
                 'transaction_date' => $data['transaction_date'] ?? date('Y-m-d'),
                 'notes' => $data['notes'] ?? null,
-                'status' => 'pending', // Pastikan defaultnya pending
+                'status' => $status,
+                'confirmed_by' => $isAdminOrManager ? $userId : null,
+                'confirmed_at' => $isAdminOrManager ? now() : null,
             ]);
 
             return $transaction;

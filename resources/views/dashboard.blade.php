@@ -20,12 +20,6 @@
             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah Produk
         </a>
-
-        <a href="{{ route('report.index') }}"
-           class="inline-flex items-center justify-center text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
-            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Pusat Laporan
-        </a>
     </div>
 </div>
 
@@ -101,39 +95,131 @@
 
     <!-- 2. GRAFIK STOK BARANG PER KATEGORI -->
     <div class="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div class="mb-4 flex items-center justify-between">
+        <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Grafik Distribusi Stok per Kategori</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400">Visualisasi jumlah fisik stok barang berdasarkan kategori produk.</p>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Grafik Distribusi Stok per Kategori
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Visualisasi interaktif jumlah fisik stok barang berdasarkan kategori produk.</p>
             </div>
-            <span class="rounded bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
+                <span class="h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
                 Real-time Data
             </span>
         </div>
 
-        @php
-            $maxStock = max(1, ($categoryChartData ?? collect())->max('stock') ?? 1);
-        @endphp
-
-        <div class="space-y-4 pt-2">
-            @forelse($categoryChartData ?? [] as $item)
-                @php
-                    $percentage = min(100, round(($item['stock'] / $maxStock) * 100));
-                @endphp
-                <div>
-                    <div class="mb-1 flex justify-between text-sm">
-                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $item['name'] }}</span>
-                        <span class="font-bold text-blue-600 dark:text-blue-400">{{ number_format($item['stock']) }} Unit</span>
-                    </div>
-                    <div class="h-3 w-full rounded-full bg-gray-100 dark:bg-gray-700">
-                        <div class="h-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500" style="width: {{ max(4, $percentage) }}%"></div>
-                    </div>
-                </div>
-            @empty
-                <div class="py-6 text-center text-sm text-gray-500">Belum ada data kategori untuk ditampilkan pada grafik.</div>
-            @endforelse
-        </div>
+        <!-- Interactive ApexChart -->
+        <div id="categoryStockChart" class="w-full min-h-[300px]"></div>
     </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const chartData = @json($categoryChartData ?? []);
+    if (!chartData || chartData.length === 0) return;
+
+    const categories = chartData.map(item => item.name);
+    const stocks = chartData.map(item => item.stock);
+    const palette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#6366f1'];
+
+    function getOptions() {
+        const isDark = document.documentElement.classList.contains('dark');
+        const labelColor = isDark ? '#ffffff' : '#1f2937';
+        const axisColor = isDark ? '#9ca3af' : '#4b5563';
+
+        return {
+            series: [{
+                name: 'Jumlah Stok',
+                data: stocks
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                toolbar: { show: false },
+                fontFamily: 'Inter, sans-serif',
+                background: 'transparent',
+                foreColor: labelColor
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 6,
+                    horizontal: true,
+                    barHeight: '55%',
+                    distributed: true
+                }
+            },
+            colors: palette,
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val.toLocaleString('id-ID') + " Unit";
+                },
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    colors: ['#ffffff']
+                },
+                dropShadow: {
+                    enabled: true,
+                    top: 1,
+                    left: 1,
+                    blur: 1,
+                    color: '#000',
+                    opacity: 0.5
+                }
+            },
+            xaxis: {
+                categories: categories,
+                labels: {
+                    style: {
+                        colors: categories.map(() => axisColor),
+                        fontFamily: 'Inter, sans-serif'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: categories.map(() => labelColor),
+                        fontSize: '13px',
+                        fontWeight: 700,
+                        fontFamily: 'Inter, sans-serif'
+                    }
+                }
+            },
+            legend: { show: false },
+            grid: {
+                borderColor: isDark ? '#374151' : '#e5e7eb',
+                strokeDashArray: 4
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                y: {
+                    formatter: function (val) {
+                        return val.toLocaleString('id-ID') + " Unit Stok";
+                    }
+                }
+            }
+        };
+    }
+
+    const chartEl = document.querySelector("#categoryStockChart");
+    if (chartEl && typeof ApexCharts !== 'undefined') {
+        let chart = new ApexCharts(chartEl, getOptions());
+        chart.render();
+
+        // Dynamic update on theme toggle
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.attributeName === 'class') {
+                    chart.updateOptions(getOptions());
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+    }
+});
+</script>
 
     <!-- 3. GRID KONTEN UTAMA: AKTIVITAS & PERINGATAN STOK -->
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3 mb-6">

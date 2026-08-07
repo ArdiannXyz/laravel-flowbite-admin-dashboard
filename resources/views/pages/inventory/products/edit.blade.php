@@ -23,7 +23,7 @@
     @endif
 
     <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data" data-confirm-edit="Apakah Anda yakin ingin menyimpan perubahan pada produk '{{ $product->name }}'?" data-confirm-title="Simpan Perubahan Produk">
             @csrf
             @method('PUT')
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">

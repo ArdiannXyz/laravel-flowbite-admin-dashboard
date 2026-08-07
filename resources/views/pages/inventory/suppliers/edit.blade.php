@@ -19,7 +19,7 @@
     @endif
 
     <div class="max-w-3xl rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
+        <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST" data-confirm-edit="Apakah Anda yakin ingin menyimpan perubahan pada supplier '{{ $supplier->name }}'?" data-confirm-title="Simpan Perubahan Supplier">
             @csrf
             @method('PUT')
             <div class="space-y-6">

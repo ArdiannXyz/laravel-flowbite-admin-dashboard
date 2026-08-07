@@ -1,0 +1,2477 @@
+# Workspace Structure
+
+Files listed in .gitignore will be excluded.
+
+## Project Info
+- Name: undefined
+- Version: undefined
+- Description: No description provided
+
+## Configuration Files
+
+### package.json
+```
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "alpinejs": "^3.15.12",
+        "autoprefixer": "^10.4.2",
+        "axios": "^1.1.2",
+        "flowbite": "^2.5.2",
+        "laravel-vite-plugin": "^0.7.2",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.1.0",
+        "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "apexcharts": "^3.54.0",
+        "flowbite-typography": "^1.0.4"
+    }
+}
+
+```
+
+## File Structure
+
+- 📄 .editorconfig
+- 📄 .env.example
+- 📄 .gitattributes
+- 📄 .gitignore
+- 📄 .phpunit.result.cache
+- 📄 README.md
+- 📁 app/
+  - 📁 Console/
+    - 📄 Kernel.php
+  - 📁 Exceptions/
+    - 📄 Handler.php
+  - 📁 Exports/
+    - 📄 ActivityExport.php
+    - 📄 StockExport.php
+    - 📄 StockInExport.php
+    - 📄 StockOutExport.php
+  - 📁 Http/
+    - 📁 Controllers/
+      - 📄 AttributeController.php
+      - 📁 Auth/
+        - 📄 AuthenticatedSessionController.php
+        - 📄 ConfirmablePasswordController.php
+        - 📄 EmailVerificationNotificationController.php
+        - 📄 EmailVerificationPromptController.php
+        - 📄 NewPasswordController.php
+        - 📄 PasswordController.php
+        - 📄 PasswordResetLinkController.php
+        - 📄 RegisteredUserController.php
+        - 📄 VerifyEmailController.php
+      - 📄 CategoryController.php
+      - 📄 Controller.php
+      - 📄 DashboardController.php
+      - 📄 GlobalSearchController.php
+      - 📄 ProductController.php
+      - 📄 ProfileController.php
+      - 📄 ReportController.php
+      - 📄 SettingController.php
+      - 📄 StaffDashboardController.php
+      - 📄 StockInController.php
+      - 📄 StockOpnameController.php
+      - 📄 StockOutController.php
+      - 📄 StockSettingController.php
+      - 📄 SupplierController.php
+      - 📄 UserController.php
+      - 📄 WarehouseDashboardController.php
+    - 📄 Kernel.php
+    - 📁 Middleware/
+      - 📄 Authenticate.php
+      - 📄 EncryptCookies.php
+      - 📄 PreventRequestsDuringMaintenance.php
+      - 📄 RedirectIfAuthenticated.php
+      - 📄 TrimStrings.php
+      - 📄 TrustHosts.php
+      - 📄 TrustProxies.php
+      - 📄 ValidateSignature.php
+      - 📄 VerifyCsrfToken.php
+    - 📁 Requests/
+      - 📁 Auth/
+        - 📄 LoginRequest.php
+      - 📄 CategoryRequest.php
+      - 📄 ProfileUpdateRequest.php
+      - 📄 StoreProductRequest.php
+      - 📄 StoreStockInRequest.php
+      - 📄 StoreStockOpnameRequest.php
+      - 📄 StoreStockOutRequest.php
+      - 📄 StoreSupplierRequest.php
+      - 📄 UpdateProductRequest.php
+      - 📄 UpdateSupplierRequest.php
+  - 📁 Models/
+    - 📄 Attribute.php
+    - 📄 Category.php
+    - 📄 Product.php
+    - 📄 Setting.php
+    - 📄 StockOpname.php
+    - 📄 StockSetting.php
+    - 📄 StockTransaction.php
+    - 📄 Supplier.php
+    - 📄 User.php
+  - 📁 Providers/
+    - 📄 AppServiceProvider.php
+    - 📄 AuthServiceProvider.php
+    - 📄 BroadcastServiceProvider.php
+    - 📄 EventServiceProvider.php
+    - 📄 RepositoryServiceProvider.php
+    - 📄 RouteServiceProvider.php
+  - 📁 Repositories/
+    - 📄 AttributeRepository.php
+    - 📁 Contracts/
+      - 📄 AttributeRepositoryInterface.php
+      - 📄 CategoryRepositoryInterface.php
+      - 📄 ProductRepositoryInterface.php
+      - 📄 SettingRepositoryInterface.php
+      - 📄 StockOpnameRepositoryInterface.php
+      - 📄 StockSettingRepositoryInterface.php
+      - 📄 StockTransactionRepositoryInterface.php
+      - 📄 SupplierRepositoryInterface.php
+      - 📄 UserRepositoryInterface.php
+    - 📁 Eloquent/
+      - 📄 CategoryRepository.php
+    - 📄 ProductRepository.php
+    - 📄 SettingRepository.php
+    - 📄 StockOpnameRepository.php
+    - 📄 StockSettingRepository.php
+    - 📄 StockTransactionRepository.php
+    - 📄 SupplierRepository.php
+    - 📄 UserRepository.php
+  - 📁 Services/
+    - 📄 CategoryService.php
+    - 📄 ProductService.php
+    - 📄 ReportService.php
+    - 📄 StaffDashboardService.php
+    - 📄 StockInService.php
+    - 📄 StockOpnameService.php
+    - 📄 StockOutService.php
+    - 📄 SupplierService.php
+    - 📄 WarehouseDashboardService.php
+  - 📁 View/
+    - 📁 Components/
+      - 📄 AppLayout.php
+      - 📄 GuestLayout.php
+      - 📄 NavbarDashboard.php
+      - 📄 SidebarDashboard.php
+      - 📄 SidebarMenuDashboard.php
+      - 📄 SidebarMenuDropdown.php
+      - 📄 footerDashboard.php
+      - 📁 sidebar/
+        - 📄 adminSidebar.php
+        - 📄 financeSidebar.php
+      - 📄 sidebarMenuDropdownDashboard.php
+      - 📄 sidebarMenuDropdownItemDashboard.php
+- 📄 artisan
+- 📁 bootstrap/
+  - 📄 app.php
+  - 📁 cache/
+    - 📄 .gitignore
+    - 📄 packages.php
+    - 📄 services.php
+- 📄 composer.json
+- 📄 composer.lock
+- 📁 config/
+  - 📄 app.php
+  - 📄 auth.php
+  - 📄 broadcasting.php
+  - 📄 cache.php
+  - 📄 cors.php
+  - 📄 database.php
+  - 📄 debugbar.php
+  - 📄 easy-repository.php
+  - 📄 filesystems.php
+  - 📄 hashing.php
+  - 📄 logging.php
+  - 📄 mail.php
+  - 📄 permission.php
+  - 📄 queue.php
+  - 📄 sanctum.php
+  - 📄 services.php
+  - 📄 session.php
+  - 📄 view.php
+- 📁 database/
+  - 📄 .gitignore
+  - 📁 factories/
+    - 📄 UserFactory.php
+  - 📁 migrations/
+    - 📄 2014_10_12_000000_create_users_table.php
+    - 📄 2014_10_12_100000_create_password_reset_tokens_table.php
+    - 📄 2019_08_19_000000_create_failed_jobs_table.php
+    - 📄 2019_12_14_000001_create_personal_access_tokens_table.php
+    - 📄 2026_08_04_000001_create_categories_table.php
+    - 📄 2026_08_04_000002_create_suppliers_table.php
+    - 📄 2026_08_04_000003_create_products_table.php
+    - 📄 2026_08_04_000004_create_stock_transactions_table.php
+    - 📄 2026_08_04_000005_create_stock_opnames_table.php
+    - 📄 2026_08_04_091518_create_permission_tables.php
+    - 📄 2026_08_06_032013_add_status_to_stock_transactions_table.php
+    - 📄 2026_08_06_042504_create_attributes_table.php
+    - 📄 2026_08_06_042517_create_stock_settings_table.php
+    - 📄 2026_08_06_042524_create_settings_table.php
+    - 📄 2026_08_06_143700_add_columns_to_settings_table.php
+  - 📁 seeders/
+    - 📄 CategorySeeder.php
+    - 📄 DatabaseSeeder.php
+    - 📄 ProductSeeder.php
+    - 📄 RolePermissionSeeder.php
+    - 📄 SupplierSeeder.php
+- 📄 package-lock.json
+- 📄 package.json
+- 📄 phpunit.xml
+- 📄 postcss.config.js
+- 📁 public/
+  - 📄 .htaccess
+  - 📁 build/
+    - 📁 assets/
+      - 📄 app-4e8eab53.js
+        - Functions:
+          - Va
+          - Lt
+          - ul
+          - El
+          - dn
+          - qa
+          - We
+          - Yi
+          - Ll
+          - Kl
+          - tu
+          - xr
+          - Xa
+          - Ft
+          - In
+          - au
+          - Li
+          - cu
+          - lu
+          - a
+          - Ti
+          - du
+          - fu
+          - s
+          - a
+          - s
+          - s
+          - hu
+          - pu
+          - js
+          - gu
+          - Ji
+          - Za
+          - Ii
+          - mu
+          - yi
+          - d
+          - v
+          - m
+          - y
+          - g
+          - Fs
+          - kr
+          - _u
+          - eo
+          - Cu
+          - to
+          - Lu
+          - Tu
+          - no
+          - t
+          - gt
+          - Iu
+          - Ri
+          - io
+          - ro
+          - Pu
+          - Mu
+          - Bu
+          - Vn
+          - Fu
+          - Hu
+          - $u
+          - Uu
+          - qu
+          - Wu
+          - Us
+          - so
+          - tt
+          - i
+          - r
+          - s
+          - a
+          - o
+          - c
+          - Ju
+          - ao
+          - p
+          - h
+          - a
+          - ud
+          - fe
+          - vd
+          - Pi
+          - Mi
+          - r
+          - md
+          - s
+          - n
+          - _d
+          - bd
+          - uo
+          - e
+          - e
+          - e
+          - Ir
+          - e
+          - Rr
+          - e
+          - Pr
+          - e
+          - Mr
+          - Ee
+          - ie
+          - nt
+          - oe
+          - Nr
+          - Vd
+          - zd
+          - we
+          - Qi
+          - mo
+          - At
+          - jr
+          - yo
+          - Ae
+          - Ud
+          - He
+          - bi
+          - ia
+          - qd
+          - pn
+          - Fr
+          - Kt
+          - Wd
+          - _o
+          - bo
+          - wo
+          - Yd
+          - Jd
+          - St
+          - Zd
+          - ra
+          - Qd
+          - tf
+          - Bn
+          - sa
+          - Hr
+          - Vr
+          - af
+          - of
+          - zr
+          - Eo
+          - Yt
+          - er
+          - cf
+          - aa
+          - lf
+          - uf
+          - xo
+          - nn
+          - df
+          - ff
+          - hf
+          - oa
+          - ca
+          - gf
+          - mf
+          - yf
+          - bf
+          - Ef
+          - xf
+          - Of
+          - Af
+          - Sf
+          - Df
+          - Cf
+          - r
+          - Lf
+          - Tf
+          - If
+          - ua
+          - Rf
+          - y
+          - p
+          - e
+          - Ur
+          - e
+          - qr
+          - e
+          - Wr
+          - e
+          - Kr
+          - e
+          - Yr
+          - e
+          - Jr
+          - e
+          - Xr
+          - e
+          - Gr
+          - e
+          - Zr
+          - nr
+          - Uf
+          - qf
+          - Wf
+          - Qr
+          - ot
+          - fa
+          - ct
+          - rn
+          - Ne
+          - es
+          - Ro
+          - Kf
+          - Yf
+          - Jf
+          - Xf
+          - Gf
+          - ir
+          - ne
+          - Zf
+          - gn
+          - Qf
+          - eh
+          - ri
+          - Po
+          - Se
+          - ts
+          - it
+          - Bi
+          - ns
+          - Mo
+          - Dt
+          - is
+          - rr
+          - lt
+          - Be
+          - mt
+          - th
+          - si
+          - yt
+          - ha
+          - ai
+          - nh
+          - ze
+          - Bo
+          - xn
+          - No
+          - sn
+          - an
+          - rs
+          - Fo
+          - e
+          - Ho
+          - Vo
+          - De
+          - Xt
+          - Gt
+          - ci
+          - oh
+          - ma
+          - ya
+          - _a
+          - Fi
+          - Hi
+          - e
+          - t
+          - ba
+          - t
+          - gh
+          - t
+          - _t
+          - li
+          - zo
+          - $o
+          - Ea
+          - vh
+          - mh
+          - yh
+          - _h
+          - bh
+          - wh
+          - Eh
+          - xa
+          - ka
+          - Oa
+          - Vi
+          - e
+          - Uo
+          - kn
+          - kh
+          - Oh
+          - Ah
+          - Sh
+          - Dh
+          - Ch
+          - qo
+          - Wo
+          - ui
+          - Aa
+          - e
+          - Sa
+          - Da
+          - zt
+          - e
+          - e
+          - as
+          - Th
+          - Rh
+          - Ph
+          - Mh
+          - Bh
+          - Nh
+          - Yo
+          - jh
+          - Fh
+          - Hh
+          - Ca
+          - Vh
+          - t
+          - Xo
+          - zh
+          - $h
+          - cs
+          - ec
+          - tc
+          - nc
+          - Uh
+          - ds
+          - ic
+          - qh
+          - F
+          - Wh
+          - Kh
+          - hs
+          - rc
+          - mn
+          - rt
+          - st
+          - sc
+          - Jh
+          - ps
+          - ac
+          - Xh
+          - ur
+          - ve
+          - on
+          - Gh
+          - Zh
+          - cn
+          - Qh
+          - ep
+          - lc
+          - Xe
+          - J
+          - uc
+          - tp
+          - np
+          - ip
+          - rp
+          - sp
+          - ap
+          - ln
+          - op
+          - cp
+          - Pt
+          - lp
+          - V
+          - up
+          - vs
+          - fc
+          - dp
+          - n
+          - pc
+          - fp
+          - n
+          - a
+          - gc
+          - mc
+          - ms
+          - _c
+          - bc
+          - hp
+          - pp
+          - Zt
+          - at
+          - xe
+          - gp
+          - Ec
+          - xc
+          - kc
+          - Oc
+          - wi
+          - Oe
+          - vp
+          - mp
+          - Ce
+          - Mt
+          - _p
+          - bs
+          - pr
+          - bp
+          - ws
+          - gr
+          - Ta
+          - wp
+          - Ei
+          - Ep
+          - xp
+          - kp
+          - vr
+          - Op
+          - Ap
+          - Sc
+          - s
+          - Dc
+          - mr
+          - Sp
+          - Ut
+          - Ve
+          - Dp
+          - xi
+          - Cp
+          - Lp
+          - Tp
+          - Lc
+          - Tc
+          - Ip
+          - Rp
+          - Pp
+          - Mp
+          - Ic
+          - Bp
+          - Np
+          - jp
+          - Fp
+          - Hp
+          - jn
+          - Rc
+          - zp
+          - $p
+          - Up
+          - Pc
+          - pi
+          - Es
+          - Mc
+          - Bc
+          - Nc
+          - Ui
+          - qp
+          - Wp
+          - Kp
+          - Yp
+          - Jp
+          - Fc
+          - Xp
+          - Gp
+          - Qp
+          - ag
+          - og
+          - cg
+          - ug
+          - Uc
+          - dg
+          - fg
+          - qc
+          - ge
+          - Fe
+          - vg
+          - Kc
+          - yg
+          - _g
+          - bg
+          - wg
+          - On
+          - An
+          - Sn
+          - Pa
+          - Ma
+          - Ba
+          - Na
+          - Dn
+          - Cn
+          - Te
+          - kg
+          - Yc
+          - Jc
+          - Rg
+          - Pg
+          - Cs
+          - Zc
+          - Qc
+          - P
+          - wr
+          - Mg
+          - el
+          - Bg
+          - Ng
+          - jg
+          - tl
+          - a
+          - ja
+          - nl
+          - vt
+          - il
+          - Hg
+          - Vg
+          - gi
+          - zg
+          - $g
+          - rl
+          - Ug
+          - Fa
+          - c
+          - Ln
+          - Wi
+          - qg
+          - Wg
+          - Ha
+          - sl
+          - Kg
+          - Yg
+          - s
+          - Jg
+          - Xg
+          - Gg
+          - Zg
+          - Qg
+          - ev
+          - al
+          - Si
+        - Classes:
+          - mi
+          - W
+          - bu
+          - Ru
+          - zn
+          - Tr
+          - as
+        - Methods:
+          - function
+          - ul
+          - dn
+          - qa
+          - function
+          - tu
+          - xr
+          - au
+          - cu
+          - lu
+          - a
+          - du
+          - fu
+          - set
+          - s
+          - get
+          - has
+          - delete
+          - s
+          - clear
+          - normalize
+          - concat
+          - from
+          - concat
+          - accessor
+          - s
+          - set
+          - hu
+          - pu
+          - js
+          - gu
+          - from
+          - map
+          - mu
+          - yi
+          - d
+          - v
+          - m
+          - stringify
+          - y
+          - g
+          - function
+          - kr
+          - function
+          - function
+          - map
+          - _u
+          - eo
+          - use
+          - eject
+          - clear
+          - yi
+          - to
+          - no
+          - t
+          - function
+          - function
+          - function
+          - io
+          - ro
+          - function
+          - write
+          - read
+          - remove
+          - write
+          - read
+          - remove
+          - $u
+          - qu
+          - so
+          - tt
+          - i
+          - r
+          - s
+          - a
+          - o
+          - c
+          - function
+          - ao
+          - function
+          - p
+          - h
+          - ro
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - cancel
+          - ud
+          - s
+          - vd
+          - then
+          - function
+          - function
+          - function
+          - r
+          - function
+          - md
+          - request
+          - _request
+          - function
+          - n
+          - function
+          - function
+          - t
+          - subscribe
+          - unsubscribe
+          - source
+          - _d
+          - function
+          - bd
+          - uo
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - filter
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - map
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - map
+          - function
+          - function
+          - function
+          - map
+          - map
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - reduce
+          - reduce
+          - ie
+          - nt
+          - oe
+          - zd
+          - function
+          - reduce
+          - we
+          - map
+          - mo
+          - jr
+          - yo
+          - bi
+          - ia
+          - qd
+          - pn
+          - _o
+          - bo
+          - wo
+          - reduce
+          - function
+          - ra
+          - tf
+          - function
+          - function
+          - replace
+          - sa
+          - replace
+          - af
+          - of
+          - zr
+          - er
+          - cf
+          - aa
+          - lf
+          - filter
+          - uf
+          - reduce
+          - xo
+          - nn
+          - df
+          - filter
+          - filter
+          - reduce
+          - sort
+          - ff
+          - hf
+          - reduce
+          - every
+          - find
+          - every
+          - oa
+          - ca
+          - some
+          - gf
+          - mf
+          - yf
+          - reduce
+          - bf
+          - xf
+          - r
+          - reduce
+          - concat
+          - function
+          - then
+          - reduce
+          - map
+          - ua
+          - some
+          - function
+          - function
+          - filter
+          - function
+          - function
+          - then
+          - y
+          - function
+          - p
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - qr
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - map
+          - map
+          - map
+          - map
+          - function
+          - map
+          - map
+          - map
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - filter
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - nr
+          - qf
+          - ot
+          - fa
+          - ct
+          - rn
+          - function
+          - function
+          - es
+          - call
+          - return
+          - ir
+          - function
+          - ne
+          - gn
+          - eh
+          - ri
+          - function
+          - function
+          - ts
+          - it
+          - ns
+          - reduce
+          - is
+          - rr
+          - lt
+          - mt
+          - th
+          - si
+          - yt
+          - ha
+          - ai
+          - nh
+          - ze
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - xn
+          - map
+          - reduce
+          - find
+          - function
+          - reduce
+          - reduce
+          - function
+          - reduce
+          - sn
+          - an
+          - rs
+          - e
+          - function
+          - function
+          - ci
+          - oh
+          - ma
+          - ya
+          - _a
+          - reduce
+          - find
+          - find
+          - function
+          - e
+          - ct
+          - function
+          - function
+          - t
+          - ct
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - ba
+          - function
+          - t
+          - ct
+          - function
+          - function
+          - function
+          - reduce
+          - map
+          - function
+          - function
+          - function
+          - gh
+          - reduce
+          - function
+          - t
+          - ct
+          - function
+          - function
+          - function
+          - reduce
+          - map
+          - function
+          - function
+          - function
+          - _t
+          - li
+          - zo
+          - $o
+          - vh
+          - mh
+          - yh
+          - _h
+          - bh
+          - wh
+          - xa
+          - ka
+          - function
+          - e
+          - ct
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - kn
+          - function
+          - function
+          - function
+          - kh
+          - qo
+          - map
+          - reduce
+          - reduce
+          - filter
+          - ui
+          - function
+          - e
+          - ct
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - zt
+          - function
+          - e
+          - ct
+          - function
+          - function
+          - function
+          - function
+          - function
+          - map
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - e
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - function
+          - as
+          - jh
+          - zh
+          - $h
+          - cs
+          - ec
+          - tc
+          - nc
+          - ds
+          - ic
+          - qh
+          - hs
+          - rc
+          - mn
+          - rt
+          - st
+          - sc
+          - has
+          - get
+          - set
+          - ps
+          - initialize
+          - ur
+          - ve
+          - on
+          - cn
+          - ep
+          - lc
+          - tp
+          - np
+          - ip
+          - rp
+          - sp
+          - n
+          - ap
+          - ln
+          - op
+          - cp
+          - o
+          - lp
+          - before
+          - up
+          - vs
+          - fc
+          - dp
+          - pc
+          - fp
+          - ms
+          - _c
+          - hp
+          - pp
+          - at
+          - xe
+          - gp
+          - xc
+          - kc
+          - wi
+          - vp
+          - mp
+          - _p
+          - pr
+          - bp
+          - ws
+          - gr
+          - wp
+          - xp
+          - kp
+          - function
+          - function
+          - during
+          - end
+          - cleanup
+          - vr
+          - xi
+          - jp
+          - jn
+          - zp
+          - $p
+          - pi
+          - function
+          - function
+          - function
+          - qp
+          - reactive
+          - release
+          - effect
+          - raw
+          - transaction
+          - ag
+          - og
+          - cg
+          - ug
+          - function
+          - dg
+          - fg
+          - qc
+          - ge
+          - vg
+          - function
+          - yg
+          - function
+          - _g
+          - bg
+          - wg
+          - set
+          - function
+          - function
+          - next
+          - function
+          - kg
+          - get
+          - size
+          - get
+          - size
+          - get
+          - size
+          - has
+          - get
+          - size
+          - has
+          - wr
+          - el
+          - jg
+          - tl
+          - set
+          - get
+          - set
+          - ja
+          - vt
+          - il
+          - gi
+          - zg
+          - $g
+          - rl
+          - get
+          - set
+          - qg
+          - ev
+          - al
+        - Components:
+          - We
+          - Ll
+          - Vn
+      - 📄 app-53efeddd.css
+    - 📄 manifest.json
+  - 📁 data/
+    - 📄 products.json
+    - 📄 sidebar.json
+    - 📄 users.json
+  - 📄 favicon.ico
+  - 📄 index.php
+  - 📄 robots.txt
+  - 📁 static/
+    - 📄 CNAME
+    - 📄 android-chrome-192x192.png
+    - 📄 android-chrome-512x512.png
+    - 📄 android-icon-144x144.png
+    - 📄 android-icon-192x192.png
+    - 📄 android-icon-36x36.png
+    - 📄 android-icon-48x48.png
+    - 📄 android-icon-72x72.png
+    - 📄 android-icon-96x96.png
+    - 📄 apple-icon-114x114.png
+    - 📄 apple-icon-120x120.png
+    - 📄 apple-icon-144x144.png
+    - 📄 apple-icon-152x152.png
+    - 📄 apple-icon-180x180.png
+    - 📄 apple-icon-57x57.png
+    - 📄 apple-icon-60x60.png
+    - 📄 apple-icon-72x72.png
+    - 📄 apple-icon-76x76.png
+    - 📄 apple-icon-precomposed.png
+    - 📄 apple-icon.png
+    - 📄 apple-touch-icon.png
+    - 📄 browserconfig.xml
+    - 📄 favicon-16x16.png
+    - 📄 favicon-32x32.png
+    - 📄 favicon-96x96.png
+    - 📄 favicon.ico
+    - 📁 images/
+      - 📁 authentication/
+        - 📄 create-account.jpg
+        - 📄 login.jpg
+        - 📄 reset-password.jpg
+      - 📁 blog/
+        - 📄 image-1.jpg
+        - 📄 image-2.jpg
+        - 📄 image-3.jpg
+        - 📄 image-4.jpg
+        - 📄 image-7.jpg
+      - 📁 feed/
+        - 📄 image-1.jpg
+        - 📄 image-2.jpg
+      - 📁 flags/
+        - 📄 ad.svg
+        - 📄 ae.svg
+        - 📄 af.svg
+        - 📄 ag.svg
+        - 📄 ai.svg
+        - 📄 al.svg
+        - 📄 am.svg
+        - 📄 an.svg
+        - 📄 ao.svg
+        - 📄 ar.svg
+        - 📄 at.svg
+        - 📄 au.svg
+        - 📄 aw.svg
+        - 📄 ax.svg
+        - 📄 az.svg
+        - 📄 ba.svg
+        - 📄 bb.svg
+        - 📄 bd.svg
+        - 📄 be.svg
+        - 📄 bf.svg
+        - 📄 bg.svg
+        - 📄 bh.svg
+        - 📄 bi.svg
+        - 📄 bj.svg
+        - 📄 bm.svg
+        - 📄 bn.svg
+        - 📄 bo.svg
+        - 📄 br.svg
+        - 📄 bs.svg
+        - 📄 bt.svg
+        - 📄 bw.svg
+        - 📄 by.svg
+        - 📄 bz.svg
+        - 📄 ca.svg
+        - 📄 caf.svg
+        - 📄 cas.svg
+        - 📄 cd.svg
+        - 📄 ceu.svg
+        - 📄 cf.svg
+        - 📄 cg.svg
+        - 📄 ch.svg
+        - 📄 ci.svg
+        - 📄 cl.svg
+        - 📄 cm.svg
+        - 📄 cn.svg
+        - 📄 cna.svg
+        - 📄 co.svg
+        - 📄 coc.svg
+        - 📄 cr.svg
+        - 📄 csa.svg
+        - 📄 cu.svg
+        - 📄 cv.svg
+        - 📄 cy.svg
+        - 📄 cz.svg
+        - 📄 de.svg
+        - 📄 dj.svg
+        - 📄 dk.svg
+        - 📄 dm.svg
+        - 📄 do.svg
+        - 📄 dz.svg
+        - 📄 ec.svg
+        - 📄 ee.svg
+        - 📄 eg.svg
+        - 📄 er.svg
+        - 📄 es.svg
+        - 📄 et.svg
+        - 📄 eu.svg
+        - 📄 fi.svg
+        - 📄 fj.svg
+        - 📄 fk.svg
+        - 📄 fm.svg
+        - 📄 fr.svg
+        - 📄 ga.svg
+        - 📄 gb.svg
+        - 📄 gd.svg
+        - 📄 ge.svg
+        - 📄 gg.svg
+        - 📄 gh.svg
+        - 📄 gi.svg
+        - 📄 gm.svg
+        - 📄 gn.svg
+        - 📄 gq.svg
+        - 📄 gr.svg
+        - 📄 gt.svg
+        - 📄 gw.svg
+        - 📄 gy.svg
+        - 📄 hk.svg
+        - 📄 hn.svg
+        - 📄 hr.svg
+        - 📄 ht.svg
+        - 📄 hu.svg
+        - 📄 id.svg
+        - 📄 ie.svg
+        - 📄 il.svg
+        - 📄 im.svg
+        - 📄 in.svg
+        - 📄 iq.svg
+        - 📄 ir.svg
+        - 📄 is.svg
+        - 📄 it.svg
+        - 📄 je.svg
+        - 📄 jm.svg
+        - 📄 jo.svg
+        - 📄 jp.svg
+        - 📄 ke.svg
+        - 📄 kg.svg
+        - 📄 kh.svg
+        - 📄 km.svg
+        - 📄 kn.svg
+        - 📄 kp.svg
+        - 📄 kr.svg
+        - 📄 kw.svg
+        - 📄 ky.svg
+        - 📄 kz.svg
+        - 📄 la.svg
+        - 📄 lb.svg
+        - 📄 lc.svg
+        - 📄 li.svg
+        - 📄 lk.svg
+        - 📄 lr.svg
+        - 📄 ls.svg
+        - 📄 lt.svg
+        - 📄 lu.svg
+        - 📄 lv.svg
+        - 📄 ly.svg
+        - 📄 ma.svg
+        - 📄 mc.svg
+        - 📄 md.svg
+        - 📄 me.svg
+        - 📄 mg.svg
+        - 📄 mk.svg
+        - 📄 ml.svg
+        - 📄 mm.svg
+        - 📄 mn.svg
+        - 📄 mo.svg
+        - 📄 mr.svg
+        - 📄 ms.svg
+        - 📄 mt.svg
+        - 📄 mu.svg
+        - 📄 mv.svg
+        - 📄 mw.svg
+        - 📄 mx.svg
+        - 📄 my.svg
+        - 📄 mz.svg
+        - 📄 na.svg
+        - 📄 ne.svg
+        - 📄 ng.svg
+        - 📄 ni.svg
+        - 📄 nl.svg
+        - 📄 no.svg
+        - 📄 np.svg
+        - 📄 nz.svg
+        - 📄 om.svg
+        - 📄 pa.svg
+        - 📄 pe.svg
+        - 📄 pf.svg
+        - 📄 pg.svg
+        - 📄 ph.svg
+        - 📄 pk.svg
+        - 📄 pl.svg
+        - 📄 pr.svg
+        - 📄 pt.svg
+        - 📄 pw.svg
+        - 📄 py.svg
+        - 📄 qa.svg
+        - 📄 ro.svg
+        - 📄 rs.svg
+        - 📄 ru.svg
+        - 📄 rw.svg
+        - 📄 sa.svg
+        - 📄 sb.svg
+        - 📄 sc.svg
+        - 📄 sd.svg
+        - 📄 se.svg
+        - 📄 sg.svg
+        - 📄 sh.svg
+        - 📄 si.svg
+        - 📄 sk.svg
+        - 📄 sl.svg
+        - 📄 sm.svg
+        - 📄 sn.svg
+        - 📄 so.svg
+        - 📄 sr.svg
+        - 📄 st.svg
+        - 📄 sv.svg
+        - 📄 sy.svg
+        - 📄 sz.svg
+        - 📄 tc.svg
+        - 📄 td.svg
+        - 📄 tg.svg
+        - 📄 th.svg
+        - 📄 tj.svg
+        - 📄 tl.svg
+        - 📄 tm.svg
+        - 📄 tn.svg
+        - 📄 to.svg
+        - 📄 tr.svg
+        - 📄 tt.svg
+        - 📄 tw.svg
+        - 📄 tz.svg
+        - 📄 ua.svg
+        - 📄 ug.svg
+        - 📄 us.svg
+        - 📄 uy.svg
+        - 📄 uz.svg
+        - 📄 vc.svg
+        - 📄 ve.svg
+        - 📄 vg.svg
+        - 📄 vn.svg
+        - 📄 vu.svg
+        - 📄 ws.svg
+        - 📄 ww.svg
+        - 📄 ye.svg
+        - 📄 za.svg
+        - 📄 zm.svg
+        - 📄 zw.svg
+      - 📁 illustrations/
+        - 📄 404.svg
+        - 📄 500.svg
+        - 📄 maintenance.svg
+        - 📄 sign-in.svg
+      - 📁 kanban/
+        - 📄 task-1.jpg
+        - 📄 task-2.jpg
+        - 📄 task-3.jpg
+      - 📄 logo.svg
+      - 📄 og-image.png
+      - 📁 products/
+        - 📄 apple-imac-1.png
+        - 📄 apple-imac-2.png
+        - 📄 apple-imac-3.png
+        - 📄 imac.png
+        - 📄 ipad.png
+        - 📄 iphone.png
+        - 📄 watch.png
+      - 📄 themesberg.svg
+      - 📁 users/
+        - 📄 bonnie-green-2x.png
+        - 📄 bonnie-green.png
+        - 📄 helene-engels.png
+        - 📄 jese-leos-2x.png
+        - 📄 jese-leos.png
+        - 📄 joseph-mcfall.png
+        - 📄 lana-byrd.png
+        - 📄 leslie-livingston.png
+        - 📄 michael-gough.png
+        - 📄 neil-sims.png
+        - 📄 robert-brown.png
+        - 📄 roberta-casas-2x.png
+        - 📄 roberta-casas.png
+        - 📄 thomas-lean.png
+    - 📄 manifest.json
+    - 📄 ms-icon-144x144.png
+    - 📄 ms-icon-150x150.png
+    - 📄 ms-icon-310x310.png
+    - 📄 ms-icon-70x70.png
+    - 📄 mstile-150x150.png
+    - 📄 safari-pinned-tab.svg
+    - 📄 site.webmanifest
+  - 📁 storage/
+    - 📄 .gitignore
+    - 📁 products/
+      - 📄 4e2jBN3RMTTRE65OO6r1cyUUdkGudSuSIvcJo79z.jpg
+      - 📄 FMvPC7JXPtLlJaRqP7kFK6o0S8IwUHb1kz7vJ5tV.jpg
+      - 📄 HA1J5nBgvQDoRwIzrB928djFvWTDlax7j4NqMJYB.jpg
+      - 📄 KFYZhpj1QWswDDb8QAU4gk6oV2AHA8HDlFLnOLbB.jpg
+      - 📄 KbjNlocftakQJCuLqSgX8mYamQIpsz89kwSHIAaO.jpg
+      - 📄 LxefNgDC5VhY5MHD4HCb40SIHFOjnFtme4YohI7n.jpg
+      - 📄 Nb8XXedovZtyKWLstNRn8Kn41p4mBp8grPHF8fP4.jpg
+      - 📄 OU8Zp6e2XGD51b6FnGLjGB3drXrzAJwOGuGEeX2o.jpg
+      - 📄 UJV9Qmpv8DClgxJaPpeBu44I1q7gmN8MwvCympWd.jpg
+      - 📄 V1Pacr1qKatuqdI6AsKuSZLsmTkmawAhDfKSnFor.jpg
+      - 📄 c0Qo69fOZX8DKLlJ90e4GKjVsZ9wUvQxTczcHQj3.jpg
+      - 📄 lbfgtPeGKYcb5unY2HRVe6aFe3e2svFTPd6lQ8vW.jpg
+      - 📄 mQVtqaH5c1nMrSq6V21ta5Q57iWWiRdvhYQGQmoX.jpg
+      - 📄 ovYhRiGaajZKwS4gvQhVgq2Sksc8QrN1u8K5mt5p.jpg
+      - 📄 rqEHkfUaBHbjEvoRadjpHTQuKv9dGRUOaRpZuFlb.jpg
+      - 📄 vMGh0eJp5chZGab4jQPOswW982dXvP8qvzIQ2JXg.jpg
+      - 📄 wYygSzbPYHi7GO8dqzIrGoyZltYNYZhxRy7taXU8.jpg
+    - 📁 settings/
+      - 📄 5llmJ1PwprJ9bVOaCa0X54jkOUUEfdgoRrnxuWFl.jpg
+- 📁 resources/
+  - 📁 css/
+    - 📄 app.css
+  - 📁 js/
+    - 📄 app.js
+      - Imports:
+        - import Alpine from 'alpinejs'
+    - 📄 bootstrap.js
+      - Imports:
+        - import axios from 'axios'
+    - 📄 charts.js
+      - Imports:
+        - import ApexCharts from 'apexcharts'
+      - Functions:
+        - getMainChartOptions
+        - getVisitorsChartOptions
+        - getSignupsChartOptions
+        - getTrafficChannelsChartOptions
+      - Methods:
+        - function
+        - function
+        - function
+    - 📄 constants.js
+    - 📄 dark-mode.js
+    - 📄 index.js
+    - 📄 sidebar.js
+      - Functions:
+        - toggleSidebarMobile
+  - 📁 views/
+    - 📁 auth/
+      - 📄 confirm-password.blade.php
+      - 📄 forgot-password.blade.php
+      - 📄 login.blade.php
+      - 📄 register.blade.php
+      - 📄 reset-password.blade.php
+      - 📄 verify-email.blade.php
+    - 📁 components/
+      - 📄 application-logo.blade.php
+      - 📄 auth-session-status.blade.php
+      - 📄 danger-button.blade.php
+      - 📄 dropdown-link.blade.php
+      - 📄 dropdown.blade.php
+      - 📄 footer-dashboard.blade.php
+      - 📄 input-error.blade.php
+      - 📄 input-label.blade.php
+      - 📄 modal.blade.php
+      - 📄 nav-link.blade.php
+      - 📄 navbar-dashboard.blade.php
+      - 📄 primary-button.blade.php
+      - 📄 responsive-nav-link.blade.php
+      - 📄 secondary-button.blade.php
+      - 📁 sidebar/
+        - 📄 admin-sidebar.blade.php
+      - 📄 sidebar-dashboard.blade.php
+      - 📄 sidebar-menu-dashboard.blade.php
+      - 📄 sidebar-menu-dropdown-dashboard.blade.php
+      - 📄 sidebar-menu-dropdown-item-dashboard.blade.php
+      - 📄 sweetalert.blade.php
+      - 📄 text-input.blade.php
+    - 📄 dashboard.blade.php
+    - 📁 example/
+      - 📁 content/
+        - 📄 _index.blade.php
+        - 📁 authentication/
+          - 📄 forgot-password.blade.php
+          - 📄 profile-lock.blade.php
+          - 📄 reset-password.blade.php
+          - 📄 sign-in.blade.php
+          - 📄 sign-up.blade.php
+        - 📁 crud/
+          - 📄 attribute.blade.php
+          - 📄 category.blade.php
+          - 📄 dashboard.blade.php
+          - 📄 products.blade.php
+          - 📄 report.blade.php
+          - 📄 setting.blade.php
+          - 📄 stock-in.blade.php
+          - 📄 stock-opname.blade.php
+          - 📄 stock-out.blade.php
+          - 📄 stock-setting.blade.php
+          - 📄 supplier.blade.php
+          - 📄 users.blade.php
+        - 📁 layouts/
+          - 📄 sidebar.blade.php
+          - 📄 stacked.blade.php
+        - 📁 pages/
+          - 📄 404.blade.php
+          - 📄 500.blade.php
+          - 📄 maintenance.blade.php
+          - 📄 pricing.blade.php
+        - 📁 playground/
+          - 📄 sidebar.blade.php
+          - 📄 stacked.blade.php
+        - 📄 settings.blade.php
+      - 📄 index.blade.php
+      - 📁 layouts/
+        - 📄 alias.blade.php
+        - 📁 default/
+          - 📄 404.blade.php
+          - 📄 baseof.blade.php
+          - 📄 dashboard.blade.php
+          - 📄 examples.blade.php
+          - 📄 main.blade.php
+          - 📄 redirect.blade.php
+          - 📄 single.blade.php
+          - 📄 stacked-layout.blade.php
+        - 📁 partials/
+          - 📄 analytics.blade.php
+          - 📄 favicons.blade.php
+          - 📄 footer-dashboard.blade.php
+          - 📄 footer-main.blade.php
+          - 📄 footer-stacked-layout.blade.php
+          - 📄 header.blade.php
+          - 📄 navbar-dashboard.blade.php
+          - 📄 navbar-main.blade.php
+          - 📄 navbar-stacked-layout.blade.php
+          - 📄 redirect.blade.php
+          - 📄 scripts.blade.php
+          - 📄 sidebar.blade.php
+          - 📄 social.blade.php
+          - 📄 stylesheet.blade.php
+        - 📁 shortcodes/
+          - 📄 card.blade.php
+        - 📄 sitemap.xml
+      - 📄 welcome.blade.php
+    - 📁 layouts/
+      - 📄 app.blade.php
+      - 📄 dashboard.blade.php
+      - 📄 guest.blade.php
+      - 📄 navigation.blade.php
+    - 📁 pages/
+      - 📁 admin/
+        - 📁 settings/
+          - 📄 index.blade.php
+        - 📁 stock-settings/
+          - 📄 index.blade.php
+        - 📁 users/
+          - 📄 create.blade.php
+          - 📄 edit.blade.php
+          - 📄 index.blade.php
+      - 📁 dashboard-staff/
+        - 📄 index.blade.php
+      - 📁 inventory/
+        - 📁 attributes/
+          - 📄 create.blade.php
+          - 📄 edit.blade.php
+          - 📄 index.blade.php
+        - 📁 categories/
+          - 📄 create.blade.php
+          - 📄 edit.blade.php
+          - 📄 index.blade.php
+        - 📁 products/
+          - 📄 create.blade.php
+          - 📄 edit.blade.php
+          - 📄 import.blade.php
+          - 📄 index.blade.php
+          - 📄 show.blade.php
+        - 📁 stock-in/
+          - 📄 create.blade.php
+          - 📄 index.blade.php
+        - 📁 stock-opname/
+          - 📄 create.blade.php
+          - 📄 index.blade.php
+        - 📁 stock-out/
+          - 📄 create.blade.php
+          - 📄 index.blade.php
+        - 📁 suppliers/
+          - 📄 create.blade.php
+          - 📄 edit.blade.php
+          - 📄 index.blade.php
+          - 📄 show.blade.php
+      - 📁 practice/
+        - 📄 1.blade.php
+        - 📄 2.blade.php
+        - 📄 index.blade.php
+      - 📁 report/
+        - 📄 activity.blade.php
+        - 📄 index.blade.php
+        - 📁 pdf/
+          - 📄 Activity.blade.php
+          - 📄 Stock.blade.php
+          - 📄 StockIn.blade.php
+          - 📄 StockOut.blade.php
+        - 📄 stock.blade.php
+        - 📄 transaction.blade.php
+      - 📁 search/
+        - 📄 results.blade.php
+      - 📄 testing.blade.php
+      - 📁 warehouse/
+        - 📄 dashboard.blade.php
+    - 📁 profile/
+      - 📄 edit.blade.php
+      - 📁 partials/
+        - 📄 delete-user-form.blade.php
+        - 📄 update-password-form.blade.php
+        - 📄 update-profile-information-form.blade.php
+    - 📄 welcome.blade.php
+- 📁 routes/
+  - 📄 api.php
+  - 📄 auth.php
+  - 📄 channels.php
+  - 📄 console.php
+  - 📄 example.php
+  - 📄 web.php
+- 📁 storage/
+  - 📁 app/
+    - 📄 .gitignore
+    - 📁 public/
+      - 📄 .gitignore
+      - 📁 products/
+        - 📄 4e2jBN3RMTTRE65OO6r1cyUUdkGudSuSIvcJo79z.jpg
+        - 📄 FMvPC7JXPtLlJaRqP7kFK6o0S8IwUHb1kz7vJ5tV.jpg
+        - 📄 HA1J5nBgvQDoRwIzrB928djFvWTDlax7j4NqMJYB.jpg
+        - 📄 KFYZhpj1QWswDDb8QAU4gk6oV2AHA8HDlFLnOLbB.jpg
+        - 📄 KbjNlocftakQJCuLqSgX8mYamQIpsz89kwSHIAaO.jpg
+        - 📄 LxefNgDC5VhY5MHD4HCb40SIHFOjnFtme4YohI7n.jpg
+        - 📄 Nb8XXedovZtyKWLstNRn8Kn41p4mBp8grPHF8fP4.jpg
+        - 📄 OU8Zp6e2XGD51b6FnGLjGB3drXrzAJwOGuGEeX2o.jpg
+        - 📄 UJV9Qmpv8DClgxJaPpeBu44I1q7gmN8MwvCympWd.jpg
+        - 📄 V1Pacr1qKatuqdI6AsKuSZLsmTkmawAhDfKSnFor.jpg
+        - 📄 c0Qo69fOZX8DKLlJ90e4GKjVsZ9wUvQxTczcHQj3.jpg
+        - 📄 lbfgtPeGKYcb5unY2HRVe6aFe3e2svFTPd6lQ8vW.jpg
+        - 📄 mQVtqaH5c1nMrSq6V21ta5Q57iWWiRdvhYQGQmoX.jpg
+        - 📄 ovYhRiGaajZKwS4gvQhVgq2Sksc8QrN1u8K5mt5p.jpg
+        - 📄 rqEHkfUaBHbjEvoRadjpHTQuKv9dGRUOaRpZuFlb.jpg
+        - 📄 vMGh0eJp5chZGab4jQPOswW982dXvP8qvzIQ2JXg.jpg
+        - 📄 wYygSzbPYHi7GO8dqzIrGoyZltYNYZhxRy7taXU8.jpg
+      - 📁 settings/
+        - 📄 5llmJ1PwprJ9bVOaCa0X54jkOUUEfdgoRrnxuWFl.jpg
+  - 📁 debugbar/
+    - 📄 .gitignore
+    - 📄 X07814e62b32e3967bd749a97bdfcba87.json
+    - 📄 X08604ac128e615c5461ad0f2029d8879.json
+    - 📄 X0ad43a7964674fc36470b6326caee50a.json
+    - 📄 X0c70175664876759c1003823c7e8bd8a.json
+    - 📄 X0f750477f3d876011d5c3de1046696f2.json
+    - 📄 X12e25970bbfc83ec95a761439a7e26b2.json
+    - 📄 X1496652fce4bdb4e6e352fb22210d00c.json
+    - 📄 X149a5390fc312de35e6d936824d6f9e9.json
+    - 📄 X154ed704ee469b7f36facb1555e75fb2.json
+    - 📄 X1598d51447ca9b3856676634e8bac5bb.json
+    - 📄 X15a34827b4650eb14f6a9b887c9667c0.json
+    - 📄 X1af80c2511a9be45a1a0283167d46fb5.json
+    - 📄 X1eb773a52c250c0bc78386ad455cbc2f.json
+    - 📄 X208cd58a7ad867ad5d33ac997ce4b026.json
+    - 📄 X20d0d456b5f065bb9c6bd8bf19532f0b.json
+    - 📄 X214b7121c2d7d02a3eb48d9da2879fe3.json
+    - 📄 X21be45450c786bdb6dd4795f1417b570.json
+    - 📄 X24551b8843f38c1e99ffc5f0c9eeb639.json
+    - 📄 X269d228c7854857ee3f419001f1bcc86.json
+    - 📄 X2722f502631c0cc2c099d3c57a83394d.json
+    - 📄 X27bcab0c41bc4765b641cd47fc8b110f.json
+    - 📄 X27deb6d50000c49a1d7ebbdd5a7f7e39.json
+    - 📄 X28eaa103372abbbdb439f38a09295e97.json
+    - 📄 X2a3f1f2e7a115a001c1d10aba6c80865.json
+    - 📄 X2abd06bb1b3de314a6d249602eb1e130.json
+    - 📄 X2b53eb9d5a0bf380e879d382a51288b1.json
+    - 📄 X2d1b13ad3bc9ceb047f54f27e2349f4f.json
+    - 📄 X2dd2895ea493b5a7a6dafa699de70831.json
+    - 📄 X2dde414d1763c6a526ec10179ed05b4e.json
+    - 📄 X2eca724947f2b03e557d266440a236bc.json
+    - 📄 X2fbc2f5e05fc7b3e600b1f061b183dd3.json
+    - 📄 X303062e880b14289c80298fab62b1eff.json
+    - 📄 X31949be4c2c63298f71bd25d0458fd74.json
+    - 📄 X32d6be0993edf23281db4d7e38084b97.json
+    - 📄 X333344accf7f519a92f3d3bdd9ea2e50.json
+    - 📄 X362f421821f7b3d9468a7d3df025f576.json
+    - 📄 X39e7c74d3d4be133e4bbea9a268cec93.json
+    - 📄 X3ae5899c87cbc9ce127f5ef55a60ee89.json
+    - 📄 X3afd1d0447e8fe819cc29c42efdbd0f6.json
+    - 📄 X3b0e0554e74821fa9bbad9cbb1a91696.json
+    - 📄 X3c9641279aa6f85ad43a9723c2d48294.json
+    - 📄 X3dc0dfe50caa3d0eb6a1c939ad14cf97.json
+    - 📄 X41ec73a0d953ef944da4958de5763ed0.json
+    - 📄 X42b0defdfad4734f10f2a677e58d7f97.json
+    - 📄 X44fe216c0f74bc04938cfa354ceddda0.json
+    - 📄 X485d6485873c856eb414190c1dfb459c.json
+    - 📄 X48d67ea88b1cad81954616a9e75c5738.json
+    - 📄 X49afbe25883fc246912f2243c0b825e6.json
+    - 📄 X4b120285107c6669d29cf1cf1bdca9b0.json
+    - 📄 X50d091fd3818e82c3e3d99482ab49868.json
+    - 📄 X50d51cd08ccb45176134aa0e07fc9ebf.json
+    - 📄 X51e14ab7aab24e639366d0aa2bf92de1.json
+    - 📄 X52fbebc7d9c1d1429521e9b61a353cc3.json
+    - 📄 X54486016ca6bf740edaa87e014496530.json
+    - 📄 X54a98aa0a4ff90d3a28bca025e55f795.json
+    - 📄 X5517d99c1ee71ab501da2a96f31986e8.json
+    - 📄 X57682f8fecc54a5253ab01c5f3b2989f.json
+    - 📄 X5963f9b1d3903a8ccaab267a36e0d139.json
+    - 📄 X5d26445edce4dfe4d2c689336e7a5d6f.json
+    - 📄 X60165846f8991aa2b1477c22023842e9.json
+    - 📄 X611bdf7042978fdb2bf6c8e96aa869a4.json
+    - 📄 X638fbe8dc582a2c72a6ebe4662deca56.json
+    - 📄 X640c7ed307ecc36aff16044ca92d7919.json
+    - 📄 X651ab1851b990329703cf5fde8000457.json
+    - 📄 X66b6a0815806b09f0d6b3e2f0926c9a8.json
+    - 📄 X67275cc3845cd2c6b02256f1a39de087.json
+    - 📄 X675efdcd935dc95cb3ecf4739a58250d.json
+    - 📄 X684da4e8a421c084f205bb1d562088ad.json
+    - 📄 X6cea2b5c433ca924d04d052b4ff5c899.json
+    - 📄 X6ecff3497851fba632c6f670c3454f54.json
+    - 📄 X6fa2a8bcb6714555c049165f32d09580.json
+    - 📄 X72836bcecbe93cd9149ce21e16bbb378.json
+    - 📄 X729b156d1d2dd567a7b170e9f7985d23.json
+    - 📄 X72e725a6e2e83792dd3f3dc20b48c54f.json
+    - 📄 X739f31619af474750af37752504b7b22.json
+    - 📄 X73df51db8b804fbe1d036f1d21c6d256.json
+    - 📄 X7495f6547caaeb0c66e4739ed168acbb.json
+    - 📄 X7513f2325fe3c9b6b3b1e8e3d6e1f657.json
+    - 📄 X77db3f852304b4a8da0aee1b0b12b891.json
+    - 📄 X77dcea199d0b2a41ab6c7c268c6f39aa.json
+    - 📄 X79ae3cf72dfe79aae42f93cddcc882f0.json
+    - 📄 X7ca27a1667d7a58e13a92e33a7092d45.json
+    - 📄 X7e22cc31f665ca60977685d0b6c1a64b.json
+    - 📄 X80317157eb665f7532081c184d52b7c8.json
+    - 📄 X80d433e559dace144218f1e75eac2dde.json
+    - 📄 X87fa85612b5829aad62f92bdc882eb62.json
+    - 📄 X8be6cd2c1d559ce97f0fee27c2549965.json
+    - 📄 X8c29720103ae2d847816df3cda082c10.json
+    - 📄 X8cecec48cbc23908d849c03f013325eb.json
+    - 📄 X8d280023ffd9efbe020507404cffd147.json
+    - 📄 X8d7f34e56eef1b2e8382339c68e221ca.json
+    - 📄 X93ae2fdf8a8e0a2ee84478558c0403ae.json
+    - 📄 X95d8c75674f8ca83352c852e2c7738ef.json
+    - 📄 X9673e81542cc755219de64e9098e5ef6.json
+    - 📄 X9f51e080f1f219f70d1a48a186ecf6cb.json
+    - 📄 Xa071f188759da63a8386647c055f2afc.json
+    - 📄 Xa1608065f8067aa1510c17860421811a.json
+    - 📄 Xa2402dd4ba2898fffdae1ca1d90d5ae8.json
+    - 📄 Xa3b8208accd1a55e8f8fbda27d3e7a1a.json
+    - 📄 Xa3f570d91483d9bc923d6aef2fedd868.json
+    - 📄 Xa6b8c028c868f4d3c7151029ae97f122.json
+    - 📄 Xa94ee48830741ea5d5a27b5a4147f356.json
+    - 📄 Xa9dcc1b13fae5f1d8afd3fc881061c0d.json
+    - 📄 Xa9dd75ddfc39400dc186c24582d087ce.json
+    - 📄 Xaa0f9d22ae2744d5b5e97cd3affb74e4.json
+    - 📄 Xab477affc19097fd177e3f30cc98a2de.json
+    - 📄 Xac79e90fffdd41718a3802cee41b3415.json
+    - 📄 Xb26d1ed26c1ff7512c7447ca2cec5f3d.json
+    - 📄 Xb28c3cda3c37949283800dd00bb92476.json
+    - 📄 Xb3497d8d186b9999e01f3c41b81d791e.json
+    - 📄 Xb43a3525c53a1a07872443c03ce1828e.json
+    - 📄 Xb49660c5ef4a32ba8c6e90d09a4f29aa.json
+    - 📄 Xb6fbd6b54028f822eba2b6338332b91f.json
+    - 📄 Xb72b1be5791ec073b18d79db39c777f4.json
+    - 📄 Xbca66b32134f979608b332c43655dc57.json
+    - 📄 Xbf6635f7318e933001cf0088d45932f8.json
+    - 📄 Xc000d81f706ab26ce0c0fdb975005cb1.json
+    - 📄 Xc021353a2d8154ba5f6406d63ec08c78.json
+    - 📄 Xc22c6d64fe6e56bc8cc9071b8f6ff4b3.json
+    - 📄 Xc298b12f69e9b14583fce6ef0f78c167.json
+    - 📄 Xc624b49cfe45d997abaf23b082669ead.json
+    - 📄 Xc91be0aa0db6f5cf629236cad724d0f6.json
+    - 📄 Xcf585b24f89699547bf855a3bbcaa763.json
+    - 📄 Xcf60adb040b63108e23dfab69c384940.json
+    - 📄 Xd0059f50b1c7b2e459327e4e10662ebd.json
+    - 📄 Xd089054939456e5d151f2ec6bad2f3ac.json
+    - 📄 Xd0def111774efb48a6a06bff15dcebd8.json
+    - 📄 Xd7e89e9f41b2b75a9fa53eb0f9be20b8.json
+    - 📄 Xd94251a9cfda515d897e2fc1bc69694a.json
+    - 📄 Xde0b11535f141113073a20744e9b98b0.json
+    - 📄 Xde161ca6b6174b5f712813149b1538cd.json
+    - 📄 Xdee0a41d05d4d5316b64e10aa383bb7c.json
+    - 📄 Xe0a79a389b0049b8a5ce903ce0d1a6e6.json
+    - 📄 Xe374885fe28fc2b661b4699bee8780c7.json
+    - 📄 Xe532f921cd7ad2821aeb222246bb785a.json
+    - 📄 Xe658c52f6e9bba35619489fa421e67fc.json
+    - 📄 Xe6953361f0c119170aa053183e9912aa.json
+    - 📄 Xe7c8a883d55dbbb32f6b2c1c5b409fcf.json
+    - 📄 Xeb717ccc248096e60f43377684de1705.json
+    - 📄 Xec79ea0e0852d78fedbd06684c63def1.json
+    - 📄 Xecff07f116ce2b90e4fe8ad013b20582.json
+    - 📄 Xf153b2e322a75786e36f2d6f34cf2027.json
+    - 📄 Xf1a033af34d3d3d1bac6adf5dabde88d.json
+    - 📄 Xf1be13011e8fcb451ba369a376aade58.json
+    - 📄 Xf1dc7a2199a18ad3f9a4b3eb1bd5eb32.json
+    - 📄 Xf3e1f963fa31a1de731cedd43f27fce1.json
+    - 📄 Xf43f1853e3f4903a5e6dd9a8e9f2451c.json
+    - 📄 Xf5c71874c47cc99bacba09c773f74b59.json
+    - 📄 Xfc52aa39bc6ac7a6588fc1425273485b.json
+  - 📁 framework/
+    - 📄 .gitignore
+    - 📁 cache/
+      - 📄 .gitignore
+      - 📁 data/
+        - 📄 .gitignore
+        - 📁 11/
+          - 📁 48/
+            - 📄 1148a444e1b870b7a7f183188b5e84111963933c
+        - 📁 3d/
+          - 📁 46/
+        - 📁 41/
+          - 📁 63/
+        - 📁 46/
+          - 📁 d1/
+            - 📄 46d1177bd1b354f76fd6bbaed21c92fcf2ae980e
+        - 📁 a0/
+          - 📁 b3/
+            - 📄 a0b3cccfda3396a9e58b2009f05043f1f25811d3
+        - 📁 ab/
+          - 📁 6a/
+            - 📄 ab6a83d74fefa07fdae18624107618b930a56a12
+      - 📁 laravel-excel/
+    - 📁 sessions/
+      - 📄 .gitignore
+      - 📄 NeiLsfHnvAZRv5nuuukYsnliTjHVlyHXJ1JZdtnw
+      - 📄 zZp6r49Y2eInPcYaAqZvUTucv4PGqGLwTCpSS98M
+    - 📁 testing/
+      - 📄 .gitignore
+    - 📁 views/
+      - 📄 .gitignore
+      - 📄 0227e750964c41814fd69f3a89335cdb.php
+      - 📄 03e21ed17eef2378dd0a1315d637a4f9.php
+      - 📄 0826d9a8cd9ecbb6650cf9b54135351f.php
+      - 📄 0887c0a7bc0593db23107ab92ea6280b.php
+      - 📄 0cda2c0fbc5a9c2ebcdaafa40fb2c8cc.php
+      - 📄 0f0856a0092eda7e26ef511959e7711f.php
+      - 📄 0fdaf200618ade6e6eca3f1907c679a5.php
+      - 📄 11e7bc3e8bfac8b0c01465ebb54cfe8c.php
+      - 📄 148434c8b6c4f545b0e28a2da30d0190.php
+      - 📄 15fa83d08ce5b2e1ae6ac04afa7edbbd.php
+      - 📄 1a589e697e3d7d72d7b86bd7558911ca.php
+      - 📄 1ab607414442dbcbe52ac963ba83acdd.php
+      - 📄 1de48a6b37499e5fb63d024facd933cc.php
+      - 📄 2065b507a3b8edea9924dbb6e1b6ff43.php
+      - 📄 24d7e714040f3550613758ba49114ea0.php
+      - 📄 284e5031c3de09d8394348fbd009f70b.php
+      - 📄 28b6a2eb4c8852d0d34838ad7222df2d.php
+      - 📄 2cd9890643d8992f70c68447e41035d5.php
+      - 📄 2cdf6ef3f0f8d998673a0737015588a7.php
+      - 📄 2e4f5c9fc8ab662ef22c2bb1c07bdf62.php
+      - 📄 315490cf534a75f64f2a9557f3751acb.php
+      - 📄 35e569f61871bc50dc2f97a560474ae1.php
+      - 📄 3781be6cb7c724d37738f03943746371.php
+      - 📄 37ea2c72a53fc94198f7a30ee16cabd3.php
+      - 📄 382fbc620ec6e448f20cadc37e1ba8da.php
+      - 📄 383d014bdab39fb5246d419415d69dab.php
+      - 📄 3c18021361b98893292186b902117cd0.php
+      - 📄 417fa9cb5d56244a28e5c48375374879.php
+      - 📄 430ca60652833ac9d583a016517a62db.php
+      - 📄 483eb55a9f17bb93a12ed3b0a583ae4f.php
+      - 📄 4f1f1ef07383246451457a2bf40f8302.php
+      - 📄 52bb644bdd319fb6dc6f80cffe565a89.php
+      - 📄 540495e07c664e01823b9f7f2ab59d4d.php
+      - 📄 56cebc5606f8736f817de71e48f20f29.php
+      - 📄 571abbfbe240ca404018815ac9b7dd9d.php
+      - 📄 599f43092e8c92ec2b8c3b2b53535ac8.php
+      - 📄 5b12097d807c11d14825f11a5d776c5e.php
+      - 📄 6113a43e0384a22885c68ac1d14b2ee8.php
+      - 📄 64bee677ab813392f81df2e9138f9a7c.php
+      - 📄 676738792f907e1785efeeb0c490e522.php
+      - 📄 676b6db1b68643e65c5ff1eb1d759938.php
+      - 📄 6c8b22f1d10b6ecdebcabc68be39b88e.php
+      - 📄 74c9d906adeadfd0be9b850a1449b9a3.php
+      - 📄 783f2822347b2ac54a36c282be4c83a5.php
+      - 📄 7c95409c988f505087f53505cff00646.php
+      - 📄 85880efed74ed830a21aa8e52bffc902.php
+      - 📄 870d30346539f30d819e8990b7114db2.php
+      - 📄 87aebe9f9854efbe27ea2298be06d369.php
+      - 📄 888021fb7143c027ae1943b1972b283e.php
+      - 📄 8b63289a35d917262ad33bc8e83632b8.php
+      - 📄 8b997d9fdaab8f8f994c226ade0abb4d.php
+      - 📄 8c9bb8089771c53b45be70389c0a23e4.php
+      - 📄 903a43173b3e45907caf3f436d50639e.php
+      - 📄 9258df5e43e161715d84c4c8d04cc747.php
+      - 📄 9593e69a55eb51cfd78c4a1c74757bbd.php
+      - 📄 9795cd39bbffcddbed697c203e900be4.php
+      - 📄 99cbcde685c6987b9a8c6d039b78a25e.php
+      - 📄 9b16cc6276d317c2537f90f64bf988f2.php
+      - 📄 9ff442459820311ea3fd5b38f519a141.php
+      - 📄 a7f6f3e6c9e39768367bfdc565ae38ea.php
+      - 📄 b43e9c8da830b3254764873f9508a3ed.php
+      - 📄 b6ddf8ae01d95393acc1c1431c209c55.php
+      - 📄 b7bdbd2a1d893b1bb767ec0cba53485c.php
+      - 📄 b8133b1b872e0c23a6e6bf8c94a04b76.php
+      - 📄 c12339e78bb211b59881a294587c66e5.php
+      - 📄 cce138ffa9dd9384677cf31033debdf7.php
+      - 📄 d24ba1ea038a1d5cf094028c00bbca63.php
+      - 📄 d84abe25cb8cf741944f75b8922e917f.php
+      - 📄 de2e9f784acd1ebd7234ae72b952918e.php
+      - 📄 deeb238a66da1017a627acd55c2ed46c.php
+      - 📄 e65895d88896c0df596ec121e2c91a4d.php
+      - 📄 ede5eb839f86975b2daa49e381f644df.php
+      - 📄 f435ced03b60d444e65128d2f3c9e5d3.php
+      - 📄 fcf3fe4ac6881aa6b9a2957522f5d4d5.php
+  - 📁 logs/
+    - 📄 .gitignore
+    - 📄 laravel.log
+- 📄 tailwind.config.js
+  - Imports:
+    - import defaultTheme from 'tailwindcss/defaultTheme'
+    - import forms from '@tailwindcss/forms'
+- 📁 tests/
+  - 📄 CreatesApplication.php
+  - 📁 Feature/
+    - 📁 Auth/
+      - 📄 AuthenticationTest.php
+      - 📄 EmailVerificationTest.php
+      - 📄 PasswordConfirmationTest.php
+      - 📄 PasswordResetTest.php
+      - 📄 PasswordUpdateTest.php
+      - 📄 RegistrationTest.php
+    - 📄 ExampleTest.php
+    - 📄 InventorySystemTest.php
+    - 📄 ProfileTest.php
+  - 📄 TestCase.php
+  - 📁 Unit/
+    - 📄 ExampleTest.php
+- 📄 vite.config.js
+  - Imports:
+    - import { defineConfig } from 'vite'
+    - import laravel from 'laravel-vite-plugin'
