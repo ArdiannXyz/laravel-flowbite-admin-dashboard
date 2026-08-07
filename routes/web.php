@@ -69,11 +69,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 4. AKSES BERSAMA (Admin, Manajer, Staff)
     // =========================================================================
     Route::middleware(['role:admin|manajer|staff'])->group(function () {
-        // Riwayat Barang (list + detail)
+        // Riwayat Barang (list)
         Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
-        Route::get('stock-in/{stockTransaction}', [StockInController::class, 'show'])->name('stock-in.show');
         Route::get('stock-out', [StockOutController::class, 'index'])->name('stock-out.index');
-        Route::get('stock-out/{stockTransaction}', [StockOutController::class, 'show'])->name('stock-out.show');
 
         // Daftar Produk (read-only) — staff perlu ini untuk cocokkan barang fisik
         Route::get('products', [ProductController::class, 'index'])->name('products.index');
@@ -156,9 +154,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
     });
 
-    // Admin, Manajer, Staff (Read-Only Detail Produk)
+    // Admin, Manajer, Staff (Read-Only Detail Produk & Transaksi)
     Route::middleware(['role:admin|manajer|staff'])->group(function () {
-        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
+        Route::get('products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
+        Route::get('stock-in/{stockTransaction}', [StockInController::class, 'show'])->whereNumber('stockTransaction')->name('stock-in.show');
+        Route::get('stock-out/{stockTransaction}', [StockOutController::class, 'show'])->whereNumber('stockTransaction')->name('stock-out.show');
     });
 
     // Khusus Admin (Edit & Hapus)
