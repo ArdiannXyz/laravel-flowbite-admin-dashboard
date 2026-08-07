@@ -115,15 +115,19 @@
                                 <td class="px-6 py-4 text-center">
                                     @if($trx->status === 'pending')
                                         <div class="flex justify-center gap-2">
-                                            <form action="{{ route('stock-in.confirm', $trx) }}" method="POST" data-confirm-edit="Apakah Anda yakin ingin mengonfirmasi transaksi stok masuk ini?" data-confirm-title="Konfirmasi Stok Masuk">
+                                            <!-- Tombol Konfirmasi -->
+                                            <form action="{{ route('stock-in.confirm', $trx) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700">
                                                     Konfirmasi
                                                 </button>
                                             </form>
-                                            <form action="{{ route('stock-in.reject', $trx) }}" method="POST" data-confirm-delete="Yakin tolak transaksi ini? Stok yang sudah ditambahkan akan dikembalikan." data-confirm-title="Tolak Stok Masuk">
+
+                                            <!-- Form & Tombol Tolak dengan Input Alasan (Prompt) -->
+                                            <form action="{{ route('stock-in.reject', $trx) }}" method="POST" id="reject-form-{{ $trx->id }}">
                                                 @csrf
-                                                <button type="submit" class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">
+                                                <input type="hidden" name="rejection_reason" id="rejection_reason_{{ $trx->id }}">
+                                                <button type="button" onclick="handleReject({{ $trx->id }})" class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">
                                                     Tolak
                                                 </button>
                                             </form>
@@ -148,3 +152,37 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<!-- Pastikan library SweetAlert2 sudah dimuat di layout utama Anda -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function handleReject(id) {
+        Swal.fire({
+            title: 'Tolak Transaksi?',
+            text: "Silakan masukkan alasan penolakan barang masuk:",
+            input: 'text',
+            inputPlaceholder: 'Contoh: Barang tidak sesuai / rusak',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626', // Warna tombol tolak (Red-600)
+            cancelButtonColor: '#6b7280',  // Warna tombol batal (Gray-500)
+            confirmButtonText: 'Ya, Tolak',
+            cancelButtonText: 'Batal',
+            inputValidator: (value) => {
+                if (!value || value.trim() === "") {
+                    return 'Alasan penolakan wajib diisi!';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Masukkan nilai input dari SweetAlert ke input hidden form
+                document.getElementById('rejection_reason_' + id).value = result.value;
+                
+                // Submit form penolakan
+                document.getElementById('reject-form-' + id).submit();
+            }
+        });
+    }
+</script>
+@endpush
