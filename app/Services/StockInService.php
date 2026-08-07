@@ -33,10 +33,6 @@ class StockInService
                 throw new \InvalidArgumentException("Jumlah barang masuk harus lebih besar dari 0.");
             }
 
-            // Pengecekan role pengguna
-            $user = $userId ? \App\Models\User::find($userId) : null;
-            $isAdminOrManager = $user && ($user->hasRole('admin') || $user->hasRole('manajer') || ($user->role ?? '') === 'admin' || ($user->role ?? '') === 'manajer');
-
             // Generate code TRX-IN-YYYYMMDD-XXXX
             $code = 'TRX-IN-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -4));
 
@@ -44,20 +40,10 @@ class StockInService
                 ? (float) $data['unit_price'] 
                 : (float) $product->buy_price;
 
-            $status = $isAdminOrManager ? 'confirmed' : 'pending';
-
-            // Jika dibuat oleh Admin atau Manajer, langsung tambah stok & hitung rata-rata harga
-            if ($isAdminOrManager) {
-                $oldStock = max(0, (int) $product->current_stock);
-                $oldPrice = (float) $product->buy_price;
-                $incomingQty = (int) $data['quantity'];
-                $newStock = $oldStock + $incomingQty;
-                $totalQtyForAvg = $oldStock + $incomingQty;
-                $newAvgPrice = $totalQtyForAvg > 0 ? (($oldStock * $oldPrice) + ($incomingQty * $unitPrice)) / $totalQtyForAvg : $unitPrice;
-
-                $this->productRepository->updateStockAndPrice($product->id, $newStock, $newAvgPrice);
-            }
-
+            // --- PERUBAHAN DI SINI ---
+            // Semua transaksi baru otomatis statusnya PENDING
+            // Tidak ada pengecekan Role Admin/Manager di sini
+            
             $transaction = $this->stockTransactionRepository->create([
                 'transaction_code' => $code,
                 'type' => 'in',
@@ -68,9 +54,9 @@ class StockInService
                 'unit_price' => $unitPrice,
                 'transaction_date' => $data['transaction_date'] ?? date('Y-m-d'),
                 'notes' => $data['notes'] ?? null,
-                'status' => $status,
-                'confirmed_by' => $isAdminOrManager ? $userId : null,
-                'confirmed_at' => $isAdminOrManager ? now() : null,
+                'status' => 'pending',        // Selalu pending
+                'confirmed_by' => null,       // Belum dikonfirmasi
+                'confirmed_at' => null,       // Belum dikonfirmasi
             ]);
 
             return $transaction;

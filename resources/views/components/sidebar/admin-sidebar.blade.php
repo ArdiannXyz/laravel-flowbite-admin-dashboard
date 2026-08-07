@@ -141,31 +141,17 @@
     @endhasanyrole
 
 
-    {{-- 5. LAPORAN --}}
+   {{-- 5. LAPORAN --}}
     @hasanyrole('admin|manajer')
         <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
             LAPORAN
         </div>
 
-        <x-sidebar-menu-dashboard routeName="report.stock" activeRoute="report.stock" title="Laporan Stok Barang">
+        <x-sidebar-menu-dashboard routeName="report.index" activeRoute="report.index" title="Laporan">
             <x-slot:icon>
                 <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </x-slot:icon>
         </x-sidebar-menu-dashboard>
-
-        <x-sidebar-menu-dashboard routeName="report.transaction" activeRoute="report.transaction" title="Laporan Barang Masuk & Keluar">
-            <x-slot:icon>
-                <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            </x-slot:icon>
-        </x-sidebar-menu-dashboard>
-
-        @role('admin')
-            <x-sidebar-menu-dashboard routeName="report.activity" activeRoute="report.activity" title="Laporan Aktivitas Pengguna">
-                <x-slot:icon>
-                    <svg class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </x-slot:icon>
-            </x-sidebar-menu-dashboard>
-        @endrole
     @endhasanyrole
 
 

@@ -101,12 +101,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('stock-opname/create', [StockOpnameController::class, 'create'])->name('stock-opname.create');
         Route::post('stock-opname', [StockOpnameController::class, 'store'])->name('stock-opname.store');
 
-        // Laporan
+       // Laporan
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/', [ReportController::class, 'index'])->name('index');
-            Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
-            Route::get('/transaction', [ReportController::class, 'transaction'])->name('transaction');
-            Route::get('/activity', [ReportController::class, 'activity'])->name('activity');
 
             // Export PDF & Excel
             Route::get('/export/stok', [ReportController::class, 'exportStokPdf'])->name('export.stok');

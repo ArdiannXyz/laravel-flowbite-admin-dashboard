@@ -68,5 +68,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <x-sweetalert />
+    @stack('scripts')
 </body>
 </html>
