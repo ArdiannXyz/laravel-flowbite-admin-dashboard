@@ -29,7 +29,7 @@
 
 
     {{-- 2. MANAJEMEN PRODUK --}}
-    @hasanyrole('admin|manajer')
+    @hasanyrole('admin|manajer|staff')
         <div class="px-3 pt-4 pb-1 text-[11px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
             MANAJEMEN PRODUK
         </div>
