@@ -66,7 +66,10 @@
             </div>
 
             {{-- Filter Stok --}}
-            <form method="GET" action="{{ route('report.stock') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+            <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'stok' setelah filter disubmit -->
+                <input type="hidden" name="tab" value="stok">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Kategori</label>
@@ -141,11 +144,14 @@
         </div>
 
         {{-- ================================================================ --}}
-        {{-- TAB 2: BARANG MASUK --}}
+        {{-- TAB 2 & 3: BARANG MASUK / BARANG KELUAR --}}
         {{-- ================================================================ --}}
         <div class="{{ ($currentTab === 'transaction' || $currentTab === 'masuk') ? '' : 'hidden' }} rounded-lg" id="tab-masuk" role="tabpanel" aria-labelledby="tab-masuk-btn">
 
-            <form method="GET" action="{{ route('report.transaction') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+            <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'masuk' -->
+                <input type="hidden" name="tab" value="masuk">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Dari Tanggal</label>
@@ -174,7 +180,6 @@
                             <th class="px-4 py-3">SKU</th>
                             <th class="px-4 py-3">Nama Produk</th>
                             <th class="px-4 py-3 text-right">Qty</th>
-                            <th class="px-4 py-3">Supplier</th>
                             <th class="px-4 py-3">Dicatat Oleh</th>
                         </tr>
                     </thead>
@@ -185,12 +190,11 @@
                                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $item->product->sku ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $item->product->name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3 text-right font-semibold text-green-600">+{{ $item->quantity }}</td>
-                                <td class="px-4 py-3">{{ $item->supplier->name ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $item->user->name ?? 'System' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="p-4 text-center text-sm text-gray-500">Tidak ada riwayat barang masuk.</td>
+                                <td colspan="5" class="p-4 text-center text-sm text-gray-500">Tidak ada riwayat barang masuk.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -201,12 +205,12 @@
             </div>
         </div>
 
-        {{-- ================================================================ --}}
-        {{-- TAB 3: BARANG KELUAR --}}
-        {{-- ================================================================ --}}
         <div class="{{ $currentTab === 'keluar' ? '' : 'hidden' }} rounded-lg" id="tab-keluar" role="tabpanel" aria-labelledby="tab-keluar-btn">
 
-            <form method="GET" action="{{ route('report.transaction') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+            <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'keluar' -->
+                <input type="hidden" name="tab" value="keluar">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Dari Tanggal</label>
@@ -266,7 +270,10 @@
         @role('admin')
         <div class="{{ $currentTab === 'aktivitas' ? '' : 'hidden' }} rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
 
-            <form method="GET" action="{{ route('report.activity') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+            <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'aktivitas' -->
+                <input type="hidden" name="tab" value="aktivitas">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Pengguna</label>

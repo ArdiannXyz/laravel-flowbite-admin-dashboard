@@ -15,7 +15,7 @@ class StoreStockInRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'supplier_id' => 'nullable|exists:suppliers,id',
+            'supplier_id' => 'required|exists:suppliers,id', // diubah dari nullable jadi required
             'quantity' => 'required|integer|min:1',
             'unit_price' => 'nullable|numeric|min:0',
             'transaction_date' => 'required|date',
@@ -27,6 +27,8 @@ class StoreStockInRequest extends FormRequest
     {
         return [
             'product_id.required' => 'Pilih produk yang akan diterima.',
+            'supplier_id.required' => 'Supplier pengirim wajib dipilih.', // pesan baru
+            'supplier_id.exists' => 'Supplier yang dipilih tidak valid.', // pesan baru
             'quantity.required' => 'Jumlah barang masuk wajib diisi.',
             'quantity.min' => 'Jumlah barang masuk minimal 1.',
             'transaction_date.required' => 'Tanggal transaksi wajib diisi.',
