@@ -59,13 +59,19 @@ class StockOutController extends Controller
         }
     }
 
-    public function reject(StockTransaction $stockTransaction): RedirectResponse
+    public function reject(Request $request, StockTransaction $stockTransaction)
     {
-        try {
-            $this->stockOutService->rejectStockOut($stockTransaction, Auth::id());
-            return back()->with('success', 'Barang keluar ditolak, stok telah dikembalikan.');
-        } catch (Exception $e) {
-            return back()->with('error', $e->getMessage());
-        }
+        // Validasi agar alasan wajib diisi
+        $request->validate([
+            'rejection_reason' => 'required|string|max:255',
+        ]);
+
+        // Update status menjadi rejected dan simpan alasannya
+        $stockTransaction->update([
+            'status' => 'rejected',
+            'rejection_reason' => $request->rejection_reason,
+        ]);
+
+        return redirect()->back()->with('success', 'Transaksi berhasil ditolak.');
     }
 }
