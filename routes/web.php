@@ -69,9 +69,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 4. AKSES BERSAMA (Admin, Manajer, Staff)
     // =========================================================================
     Route::middleware(['role:admin|manajer|staff'])->group(function () {
-        // Hanya bisa melihat daftar Riwayat Barang
+        // Riwayat Barang (list + detail)
         Route::get('stock-in', [StockInController::class, 'index'])->name('stock-in.index');
+        Route::get('stock-in/{stockTransaction}', [StockInController::class, 'show'])->name('stock-in.show');
         Route::get('stock-out', [StockOutController::class, 'index'])->name('stock-out.index');
+        Route::get('stock-out/{stockTransaction}', [StockOutController::class, 'show'])->name('stock-out.show');
+
+        // Daftar Produk (read-only) — staff perlu ini untuk cocokkan barang fisik
+        Route::get('products', [ProductController::class, 'index'])->name('products.index');
     });
 
     // =========================================================================
@@ -81,8 +86,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/warehouse/dashboard', [WarehouseDashboardController::class, 'index'])->name('warehouse.dashboard');
 
         // Master Data Read-Only
-        Route::get('products', [ProductController::class, 'index'])->name('products.index');
         Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+
+        // Produk — manajer boleh tambah produk baru (sesuai spec Alur poin 1)
+        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('products', [ProductController::class, 'store'])->name('products.store');
 
         // Form Transaksi
         Route::get('stock-in/create', [StockInController::class, 'create'])->name('stock-in.create');
@@ -118,9 +126,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 6. KHUSUS ADMIN - ROUTE STATIS & MANIPULASI
     // =========================================================================
     Route::middleware(['role:admin'])->group(function () {
-        // Produk
-        Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('products', [ProductController::class, 'store'])->name('products.store');
+        // Produk — hanya admin yang boleh import/export & edit/hapus
         Route::get('products/import', [ProductController::class, 'import'])->name('products.import');
         Route::post('products/import', [ProductController::class, 'storeImport'])->name('products.storeImport');
         Route::get('products/export', [ProductController::class, 'export'])->name('products.export');
@@ -145,10 +151,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Harus diletakkan di bawah agar tidak menimpa route /create atau /export
     // =========================================================================
 
-    // Admin & Manajer (Read-Only Detail)
+    // Admin & Manajer (Read-Only Detail Supplier)
     Route::middleware(['role:admin|manajer'])->group(function () {
-        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
         Route::get('suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
+    });
+
+    // Admin, Manajer, Staff (Read-Only Detail Produk)
+    Route::middleware(['role:admin|manajer|staff'])->group(function () {
+        Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
     });
 
     // Khusus Admin (Edit & Hapus)
