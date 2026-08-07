@@ -19,38 +19,39 @@ class ReportController extends Controller
 
     public function index(Request $request)
     {
-        return redirect()->route('report.stock');
+        $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = $request->get('tab', 'stok');
+
+        return view('pages.report.index', $data);
     }
 
     public function stock(Request $request)
     {
-        $stok = $this->reportService->exportStok($request);
+        $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = 'stok';
 
-        return view('pages.report.stock', compact('stok'));
+        return view('pages.report.index', $data);
     }
 
     public function transaction(Request $request)
     {
-        $barangMasuk = $this->reportService->exportBarangMasuk($request);
-        $barangKeluar = $this->reportService->exportBarangKeluar($request);
+        $data = $this->reportService->getReportData($request);
+        
+        // Menentukan tab aktif berdasarkan parameter filter tanggal yang dikirimkan
+        $data['activeTab'] = $request->has('keluar_from_date') || $request->has('keluar_to_date') ? 'keluar' : 'masuk';
 
-        return view('pages.report.transaction', compact('barangMasuk', 'barangKeluar'));
+        return view('pages.report.index', $data);
     }
 
     public function activity(Request $request)
     {
-        if (auth()->user()->hasRole('manajer')) {
-            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
-        }
+        $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = 'aktivitas';
 
-        $aktivitas = $this->reportService->exportAktivitas($request);
-
-        return view('pages.report.activity', compact('aktivitas'));
+        return view('pages.report.index', $data);
     }
 
-    // =========================================================================
-    // METHOD EXPORT (PDF & EXCEL)
-    // =========================================================================
+    // ==================== EXPORT PDF ====================
 
     public function exportStokPdf(Request $request)
     {
@@ -90,10 +91,6 @@ class ReportController extends Controller
 
     public function exportAktivitasPdf(Request $request)
     {
-        if (auth()->user()->hasRole('manajer')) {
-            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
-        }
-
         $aktivitas = $this->reportService->exportAktivitas($request);
 
         $pdf = Pdf::loadView('pages.report.pdf.Activity', [
@@ -103,6 +100,8 @@ class ReportController extends Controller
 
         return $pdf->download('laporan-aktivitas-' . now()->format('Y-m-d') . '.pdf');
     }
+
+    // ==================== EXPORT EXCEL ====================
 
     public function exportStokExcel(Request $request)
     {
@@ -136,10 +135,6 @@ class ReportController extends Controller
 
     public function exportAktivitasExcel(Request $request)
     {
-        if (auth()->user()->hasRole('manajer')) {
-            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
-        }
-
         $aktivitas = $this->reportService->exportAktivitas($request);
 
         return Excel::download(

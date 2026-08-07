@@ -261,7 +261,7 @@
         </div>
 
         {{-- ================================================================ --}}
-        {{-- TAB 4: AKTIVITAS PENGGUNA --}}
+        {{-- TAB 4: AKTIVITAS PENGGUNA (KHUSUS ADMIN) --}}
         {{-- ================================================================ --}}
         @role('admin')
         <div class="{{ $currentTab === 'aktivitas' ? '' : 'hidden' }} rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">

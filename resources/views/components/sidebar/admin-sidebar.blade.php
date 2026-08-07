@@ -18,15 +18,24 @@
     {{-- ========================================== --}}
     {{-- 2. MANAJEMEN PRODUK & KATEGORI             --}}
     {{-- ========================================== --}}
-    @hasanyrole('admin|manajer')
+    {{-- Dibuka untuk admin|manajer|staff karena products.index & products.show
+         sekarang ada di grup route bersama (staff perlu ini untuk cocokkan
+         barang fisik saat terima/keluarkan barang). --}}
+    @hasanyrole('admin|manajer|staff')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
             MANAJEMEN PRODUK
         </div>
 
         <x-sidebar-menu-dropdown-dashboard routeName="products.*" title="Produk">
             <x-sidebar-menu-dropdown-item-dashboard routeName="products.index" title="Daftar Produk"/>
-            @role('admin')
+
+            {{-- products.create/store ada di grup admin|manajer di web.php --}}
+            @hasanyrole('admin|manajer')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="products.create" title="Tambah Produk"/>
+            @endhasanyrole
+
+            {{-- Kategori, atribut, import/export tetap admin-only --}}
+            @role('admin')
                 <x-sidebar-menu-dropdown-item-dashboard routeName="categories.index" title="Kategori Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="attributes.index" title="Atribut Produk"/>
                 <x-sidebar-menu-dropdown-item-dashboard routeName="products.import" title="Import Produk"/>
@@ -66,6 +75,11 @@
             <x-sidebar-menu-dropdown-item-dashboard routeName="stock-opname.create" title="Pemeriksaan Stok"/>
         </x-sidebar-menu-dropdown-dashboard>
     @endhasanyrole
+
+    {{-- Pengaturan Stok Minimum (admin-only, route: stock-settings.index) --}}
+    @role('admin')
+        <x-sidebar-menu-dashboard routeName="stock-settings.index" title="Stok Minimum"/>
+    @endrole
 
 
     {{-- ========================================== --}}

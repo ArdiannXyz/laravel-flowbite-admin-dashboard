@@ -40,21 +40,37 @@
 
                 <!-- Profile Dropdown -->
                 <div class="flex items-center ml-1 lg:ml-2 border-l border-gray-200 pl-3 lg:pl-4 dark:border-gray-700">
+                    
+                    <!-- Nama dan Badge Role di sebelah kiri tombol profil -->
+                    <div class="hidden md:flex flex-col text-right mr-3">
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white">
+                            {{ auth()->user()->name }}
+                        </span>
+                        <span class="text-xs font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wide">
+                            {{ auth()->user()->getRoleNames()->implode(', ') ?: 'User' }}
+                        </span>
+                    </div>
+
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full border-2 border-primary-500" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                            <img class="w-8 h-8 rounded-full border-2 border-primary-500 object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                         </button>
                     </div>
+                    
                     <!-- Dropdown menu -->
                     <div class="z-50 hidden my-4 text-base list-none bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded-xl shadow-lg border border-gray-100 dark:border-gray-600" id="dropdown-2">
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm font-semibold text-gray-900 dark:text-white" role="none">
                                 {{ auth()->user()->name }}
                             </p>
-                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate" role="none">
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400 truncate mb-1" role="none">
                                 {{ auth()->user()->email }}
                             </p>
+                            <!-- Tampilkan role juga di dalam dropdown (untuk perangkat mobile) -->
+                            <span class="inline-block md:hidden bg-primary-100 text-primary-800 text-xs font-semibold px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300 uppercase">
+                                {{ auth()->user()->getRoleNames()->implode(', ') ?: 'User' }}
+                            </span>
                         </div>
                         <ul class="py-1" role="none">
                             <li>

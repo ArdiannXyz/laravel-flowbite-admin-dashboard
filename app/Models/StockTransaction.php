@@ -20,9 +20,8 @@ class StockTransaction extends Model
         'unit_price',
         'transaction_date',
         'notes',
-        
-        // TAMBAHKAN KETIGA BARIS INI:
         'status',
+        'rejection_reason',
         'confirmed_by',
         'confirmed_at',
     ];
