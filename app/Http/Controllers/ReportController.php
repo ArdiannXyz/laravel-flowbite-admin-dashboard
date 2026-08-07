@@ -24,32 +24,6 @@ class ReportController extends Controller
 
     public function stock(Request $request)
     {
-        $data = $this->reportService->getReportData($request);
-        return view('pages.report.stock', $data);
-    }
-
-    public function transaction(Request $request)
-    {
-        $data = $this->reportService->getReportData($request);
-        return view('pages.report.transaction', $data);
-    }
-
-    public function activity(Request $request)
-    {
-        if (auth()->user()->hasRole('manajer')) {
-            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
-        }
-
-        $data = $this->reportService->getReportData($request);
-        return view('pages.report.activity', $data);
-    }
-
-    // =========================================================================
-    // TAMBAHAN METHOD HALAMAN LAPORAN (YANG SEBELUMNYA HILANG/ERROR)
-    // =========================================================================
-
-    public function stock(Request $request)
-    {
         $stok = $this->reportService->exportStok($request);
 
         return view('pages.report.stock', compact('stok'));
@@ -65,6 +39,10 @@ class ReportController extends Controller
 
     public function activity(Request $request)
     {
+        if (auth()->user()->hasRole('manajer')) {
+            abort(403, 'Manajer Gudang tidak memiliki akses ke Laporan Aktivitas Pengguna.');
+        }
+
         $aktivitas = $this->reportService->exportAktivitas($request);
 
         return view('pages.report.activity', compact('aktivitas'));

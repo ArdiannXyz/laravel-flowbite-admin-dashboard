@@ -109,12 +109,12 @@
     {{-- ========================================== --}}
     @role('admin')
         <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase dark:text-gray-400">
-            PENGATURAN & SISTEM
+            PENGATURAN SISTEM
         </div>
 
         <x-sidebar-menu-dropdown-dashboard routeName="users.*" title="Manajemen Pengguna">
             <x-sidebar-menu-dropdown-item-dashboard routeName="users.index" title="Daftar Pengguna"/>
-            <x-sidebar-menu-dropdown-item-dashboard routeName="users.create" title="Tambah Pengguna"/>
+            {{-- <x-sidebar-menu-dropdown-item-dashboard routeName="users.create" title="Tambah Pengguna"/> --}}
         </x-sidebar-menu-dropdown-dashboard>
 
         <x-sidebar-menu-dashboard routeName="settings.index" title="Pengaturan Aplikasi"/>

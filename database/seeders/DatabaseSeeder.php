@@ -17,30 +17,30 @@ class DatabaseSeeder extends Seeder
         }
 
         $admin = User::updateOrCreate(
-            ['email' => 'admin@stockify.test'],
+            ['email' => 'adminstockify@gmail.com'],
             [
                 'name' => 'Administrator Stockify',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('admin1234'),
                 'role' => 'admin',
             ]
         );
         $admin->syncRoles(['admin']);
 
         $manager = User::updateOrCreate(
-            ['email' => 'manager@stockify.test'],
+            ['email' => 'managerstockify@gmail.com'],
             [
                 'name' => 'Budi Santoso (Manajer Gudang)',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('manager1234'),
                 'role' => 'manajer', // disamakan dengan yang dipakai di routes/sidebar
             ]
         );
         $manager->syncRoles(['manajer']);
 
         $staff = User::updateOrCreate(
-            ['email' => 'staff@stockify.test'],
+            ['email' => 'staffstockify@gmail.com'],
             [
                 'name' => 'Siti Rahma (Staff Gudang)',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('staff1234'),
                 'role' => 'staff',
             ]
         );
