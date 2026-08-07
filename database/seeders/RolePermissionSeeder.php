@@ -15,6 +15,7 @@ class RolePermissionSeeder extends Seeder
             'manage-categories',
             'manage-suppliers',
             'manage-products',
+            'view-products',
             'manage-stock',
             'view-reports',
             'manage-settings',
@@ -24,13 +25,13 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
-        $admin = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
-        $admin->syncPermissions($permissions); // Admin dapat semua permission
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $admin->syncPermissions($permissions); // Admin mendapat semua permission
 
-        $manajerGudang = Role::firstOrCreate(['name' => 'Manajer Gudang', 'guard_name' => 'web']);
-        $manajerGudang->syncPermissions(['manage-products', 'manage-stock', 'view-reports']);
+        $manajerGudang = Role::firstOrCreate(['name' => 'manajer', 'guard_name' => 'web']);
+        $manajerGudang->syncPermissions(['view-products', 'manage-stock', 'view-reports']);
 
-        $staffGudang = Role::firstOrCreate(['name' => 'Staff Gudang', 'guard_name' => 'web']);
+        $staffGudang = Role::firstOrCreate(['name' => 'staff', 'guard_name' => 'web']);
         $staffGudang->syncPermissions(['manage-stock']);
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
-use App\Models\StockTransaction; // Sesuaikan dengan nama model transaksi Anda
+use App\Models\StockTransaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,18 +24,30 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // 3. Aktivitas Transaksi Terakhir
+        // 3. Aktivitas Transaksi Terakhir (Aktivitas Pengguna Terbaru)
         $recentTransactions = StockTransaction::with(['product', 'user'])
             ->latest()
-            ->limit(5)
+            ->limit(7)
             ->get();
+
+        // 4. Data Grafik Stok Barang per Kategori
+        $categoryChartData = Category::withCount('products')
+            ->withSum('products', 'current_stock')
+            ->get()
+            ->map(function ($cat) {
+                return [
+                    'name' => $cat->name,
+                    'stock' => (int) ($cat->products_sum_current_stock ?? 0),
+                ];
+            });
 
         return view('dashboard', compact(
             'totalProducts',
             'totalStockIn',
             'totalStockOut',
             'lowStockProducts',
-            'recentTransactions'
+            'recentTransactions',
+            'categoryChartData'
         ));
     }
 }
