@@ -42,7 +42,6 @@
                     @error('product_id')
                         <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
                     @enderror
-                    <div id="stock_info_badge" class="mt-2.5 hidden rounded-lg bg-red-50 p-3 text-xs font-semibold text-red-800 dark:bg-red-900/40 dark:text-red-300"></div>
                 </div>
 
                 <!-- Jumlah & Harga -->
@@ -91,8 +90,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const productSelect = document.getElementById('product_select');
     const quantityInput = document.getElementById('quantity_input');
-    const unitPriceInput = document.getElementById('unit_price_input'); // Deklarasi input harga
-    const stockBadge = document.getElementById('stock_info_badge');
+    const unitPriceInput = document.getElementById('unit_price_input');
     const quantityWarning = document.getElementById('quantity_warning');
     const submitBtn = document.getElementById('submit_btn');
     const form = document.getElementById('stock_out_form');
@@ -100,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateStockLimits() {
         const selectedOption = productSelect.options[productSelect.selectedIndex];
         if (!selectedOption || !selectedOption.value) {
-            stockBadge.classList.add('hidden');
             quantityInput.removeAttribute('max');
             quantityWarning.innerHTML = '';
             submitBtn.disabled = false;
@@ -112,10 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const unit = selectedOption.getAttribute('data-unit') || 'unit';
 
         quantityInput.setAttribute('max', stock);
-
-        // Update Stock Info Badge
-        stockBadge.classList.remove('hidden');
-
         validateQuantity(stock, unit);
     }
 
@@ -133,15 +126,13 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
         } else if (val <= 0) {
             quantityInput.classList.add('border-red-500');
-            quantityWarning.className = 'mt-1.5 text-xs text-red-600';
-            quantityWarning.innerHTML = `⚠️ Jumlah barang keluar harus minimal 1.`;
+            quantityWarning.innerHTML = '';
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
         } else {
             quantityInput.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
             quantityInput.classList.add('border-gray-300', 'focus:border-blue-500');
-            // const remaining = stock - val; (Disembunyikan agar warning tidak menampilkan sisa stok yang membingungkan)
-            quantityWarning.className = 'mt-1.5 text-xs font-medium text-green-600 dark:text-green-400';
+            quantityWarning.innerHTML = '';
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
