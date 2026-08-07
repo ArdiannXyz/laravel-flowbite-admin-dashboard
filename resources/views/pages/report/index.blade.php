@@ -9,7 +9,7 @@
     {{-- ============ HEADER ============ --}}
     <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Laporan</h1>
+            <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Laporan System</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">Laporan stok barang, riwayat transaksi, dan aktivitas pengguna</p>
         </div>
     </div>
@@ -32,6 +32,7 @@
                     Barang Keluar
                 </button>
             </li>
+            @role('admin')
             <li role="presentation">
                 <button class="inline-block rounded-t-lg border-b-2 p-4 {{ $currentTab === 'aktivitas' ? 'border-blue-600 text-blue-600 dark:text-blue-500 dark:border-blue-500' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' }}" id="tab-aktivitas-btn" data-tabs-target="#tab-aktivitas" type="button" role="tab" aria-controls="tab-aktivitas" aria-selected="{{ $currentTab === 'aktivitas' ? 'true' : 'false' }}">
                     Aktivitas Pengguna
@@ -262,7 +263,8 @@
         {{-- ================================================================ --}}
         {{-- TAB 4: AKTIVITAS PENGGUNA (KHUSUS ADMIN) --}}
         {{-- ================================================================ --}}
-        <div class="hidden rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
+        @role('admin')
+        <div class="{{ $currentTab === 'aktivitas' ? '' : 'hidden' }} rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
 
             <form method="GET" action="{{ route('report.activity') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
                 <div class="flex flex-col gap-3 sm:flex-row">
