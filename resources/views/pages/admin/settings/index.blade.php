@@ -14,7 +14,7 @@
     @endif
 
     <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800 max-w-2xl">
-        <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" data-confirm-edit="Apakah Anda yakin ingin menyimpan perubahan pengaturan aplikasi ini?" data-confirm-title="Simpan Pengaturan Aplikasi" class="space-y-6">
             @csrf
             @method('PUT')
 

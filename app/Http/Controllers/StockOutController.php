@@ -72,6 +72,11 @@ class StockOutController extends Controller
             'rejection_reason' => $request->rejection_reason,
         ]);
 
-        return redirect()->back()->with('success', 'Transaksi berhasil ditolak.');
+        return redirect()->back()->with('success', 'Barang keluar berhasil ditolak.');
+    }
+
+    public function show(StockTransaction $stockTransaction): RedirectResponse
+    {
+        return redirect()->route('stock-out.index');
     }
 }

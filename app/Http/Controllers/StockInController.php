@@ -77,4 +77,9 @@ class StockInController extends Controller
 
         return redirect()->back()->with('success', 'Transaksi berhasil ditolak.');
     }
+
+    public function show(StockTransaction $stockTransaction): RedirectResponse
+    {
+        return redirect()->route('stock-in.index');
+    }
 }
