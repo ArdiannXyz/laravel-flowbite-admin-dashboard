@@ -20,9 +20,38 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = $request->get('tab', 'stok');
 
         return view('pages.report.index', $data);
     }
+
+    public function stock(Request $request)
+    {
+        $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = 'stok';
+
+        return view('pages.report.index', $data);
+    }
+
+    public function transaction(Request $request)
+    {
+        $data = $this->reportService->getReportData($request);
+        
+        // Menentukan tab aktif berdasarkan parameter filter tanggal yang dikirimkan
+        $data['activeTab'] = $request->has('keluar_from_date') || $request->has('keluar_to_date') ? 'keluar' : 'masuk';
+
+        return view('pages.report.index', $data);
+    }
+
+    public function activity(Request $request)
+    {
+        $data = $this->reportService->getReportData($request);
+        $data['activeTab'] = 'aktivitas';
+
+        return view('pages.report.index', $data);
+    }
+
+    // ==================== EXPORT PDF ====================
 
     public function exportStokPdf(Request $request)
     {
@@ -71,6 +100,8 @@ class ReportController extends Controller
 
         return $pdf->download('laporan-aktivitas-' . now()->format('Y-m-d') . '.pdf');
     }
+
+    // ==================== EXPORT EXCEL ====================
 
     public function exportStokExcel(Request $request)
     {

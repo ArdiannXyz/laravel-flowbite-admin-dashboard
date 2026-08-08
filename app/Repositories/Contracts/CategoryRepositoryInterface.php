@@ -2,8 +2,11 @@
 namespace App\Repositories\Contracts;
 use App\Models\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+
 interface CategoryRepositoryInterface
 {
+    public function getAll(): Collection;
     public function paginate(int $perPage = 15, ?string $search = null): LengthAwarePaginator;
     public function findOrFail(int $id): Category;
     public function create(array $data): Category;

@@ -5,11 +5,17 @@ namespace App\Repositories\Eloquent;
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
     public function __construct(protected Category $model)
     {
+    }
+
+    public function getAll(): Collection
+    {
+        return $this->model->all();
     }
 
     public function paginate(int $perPage = 15, ?string $search = null): LengthAwarePaginator

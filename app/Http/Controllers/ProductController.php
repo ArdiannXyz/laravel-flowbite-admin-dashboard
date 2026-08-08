@@ -93,4 +93,74 @@ class ProductController extends Controller
             ->route('products.index')
             ->with('success', 'Produk berhasil dihapus.');
     }
+
+    public function import(): View
+    {
+        return view('pages.inventory.products.import');
+    }
+
+    public function storeImport(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt,xlsx|max:5048',
+        ]);
+
+        $file = $request->file('file');
+        $handle = fopen($file->getRealPath(), 'r');
+        $header = fgetcsv($handle, 1000, ',');
+        $imported = 0;
+
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if (count($data) >= 4) {
+                \App\Models\Product::updateOrCreate(
+                    ['sku' => trim($data[0])],
+                    [
+                        'name' => trim($data[1]),
+                        'buy_price' => (float) trim($data[2]),
+                        'sell_price' => (float) trim($data[3]),
+                        'current_stock' => isset($data[4]) ? (int) trim($data[4]) : 0,
+                        'min_stock' => isset($data[5]) ? (int) trim($data[5]) : 5,
+                        'unit' => isset($data[6]) ? trim($data[6]) : 'unit',
+                    ]
+                );
+                $imported++;
+            }
+        }
+        fclose($handle);
+
+        return redirect()->route('products.index')->with('success', "Berhasil mengimpor {$imported} data produk.");
+    }
+
+    public function export()
+    {
+        $products = \App\Models\Product::with(['category', 'supplier'])->get();
+        $filename = 'export-produk-' . date('Y-m-d') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $callback = function () use ($products) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['SKU', 'Nama Produk', 'Harga Beli', 'Harga Jual', 'Stok Saat Ini', 'Stok Minimum', 'Satuan', 'Kategori', 'Supplier']);
+
+            foreach ($products as $p) {
+                fputcsv($file, [
+                    $p->sku,
+                    $p->name,
+                    $p->buy_price,
+                    $p->sell_price,
+                    $p->current_stock,
+                    $p->min_stock,
+                    $p->unit,
+                    $p->category->name ?? '-',
+                    $p->supplier->name ?? '-',
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

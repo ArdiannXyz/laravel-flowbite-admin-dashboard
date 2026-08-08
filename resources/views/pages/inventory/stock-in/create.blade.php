@@ -25,10 +25,11 @@
                 <!-- Produk -->
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Pilih Produk <span class="text-red-500">*</span></label>
-                    <select name="product_id" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                        <option value="">-- Pilih Produk --</option>
+                    <select name="product_id" id="product_id" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <option value="" selected disabled>-- Pilih Produk --</option>
                         @foreach($products as $p)
-                            <option value="{{ $p->id }}" {{ (old('product_id') ?? $selectedProductId) == $p->id ? 'selected' : '' }}>
+                            <!-- Tambahkan atribut data-price di sini (sesuaikan $p->price dengan kolom harga di database Anda) -->
+                            <option value="{{ $p->id }}" data-price="{{ $p->buy_price ?? 0 }}" {{ (old('product_id') ?? $selectedProductId) == $p->id ? 'selected' : '' }}>
                                 {{ $p->name }} (SKU: {{ $p->sku }} | Stok Saat Ini: {{ $p->current_stock }} {{ $p->unit }})
                             </option>
                         @endforeach
@@ -37,9 +38,9 @@
 
                 <!-- Supplier -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Supplier Pengirim</label>
-                    <select name="supplier_id" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                        <option value="">-- Gunakan Supplier bawaan produk --</option>
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Supplier Pengirim <span class="text-red-500">*</span></label>
+                    <select name="supplier_id" id="supplier_id" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <option value="" selected disabled>-- Pilih Supplier --</option>
                         @foreach($suppliers as $sup)
                             <option value="{{ $sup->id }}" {{ old('supplier_id') == $sup->id ? 'selected' : '' }}>
                                 {{ $sup->name }} ({{ $sup->code }})
@@ -52,24 +53,25 @@
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
                         <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Jumlah Barang Masuk <span class="text-red-500">*</span></label>
-                        <input type="number" min="1" name="quantity" value="{{ old('quantity', 1) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <input type="number" min="1" name="quantity" id="quantity" value="{{ old('quantity', 1) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     </div>
                     <div>
                         <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Harga Beli Per Satuan (Rp)</label>
-                        <input type="number" step="0.01" name="unit_price" value="{{ old('unit_price') }}" placeholder="Default harga beli produk" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                        <!-- Tambahkan id="unit_price" agar bisa dikenali oleh JavaScript -->
+                        <input type="number" step="0.01" name="unit_price" id="unit_price" value="{{ old('unit_price') }}" placeholder="Default harga beli produk" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     </div>
                 </div>
 
                 <!-- Tanggal Transaksi -->
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Tanggal Penerimaan <span class="text-red-500">*</span></label>
-                    <input type="date" name="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <input type="date" name="transaction_date" id="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                 </div>
 
                 <!-- Catatan / No PO -->
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Catatan / Referensi Surat Jalan</label>
-                    <textarea name="notes" rows="3" placeholder="Contoh: Surat Jalan No. SJ-8891 dari supplier" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">{{ old('notes') }}</textarea>
+                    <textarea name="notes" id="notes" rows="3" placeholder="Contoh: Surat Jalan No. SJ-8891 dari supplier" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">{{ old('notes') }}</textarea>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-4 border-t dark:border-gray-700">
@@ -85,3 +87,40 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productSelect = document.getElementById('product_id');
+        const unitPriceInput = document.getElementById('unit_price');
+
+        // Fungsi untuk mengambil harga dari opsi produk yang dipilih
+        function updatePrice() {
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            
+            // Hindari memproses jika yang dipilih adalah opsi kosong
+            if (!selectedOption.value) return; 
+
+            // Ambil data harga dari atribut data-price
+            const price = selectedOption.getAttribute('data-price');
+            
+            // Isi input harga otomatis
+            if (price && price > 0) {
+                // Konversi string ke angka agar format desimal yang berlebihan hilang
+                unitPriceInput.value = parseFloat(price);
+            } else {
+                unitPriceInput.value = ''; // Kosongkan jika harga 0 atau null
+            }
+        }
+
+        // Jalankan fungsi saat dropdown produk diubah
+        productSelect.addEventListener('change', updatePrice);
+
+        // Opsional: Jalankan fungsi saat halaman pertama dimuat 
+        // (berguna jika kembali dari halaman error dan produk sudah terpilih)
+        if (productSelect.value && !unitPriceInput.value) {
+            updatePrice();
+        }
+    });
+</script>
+@endpush

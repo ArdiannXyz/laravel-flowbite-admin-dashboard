@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Exception;
+use App\Models\StockTransaction;
 
 class StockOutController extends Controller
 {
@@ -46,5 +47,36 @@ class StockOutController extends Controller
         } catch (Exception $e) {
             return back()->withInput()->with('error', $e->getMessage());
         }
+    }
+
+    public function confirm(StockTransaction $stockTransaction): RedirectResponse
+    {
+        try {
+            $this->stockOutService->confirmStockOut($stockTransaction, Auth::id());
+            return back()->with('success', 'Barang keluar berhasil dikonfirmasi.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function reject(Request $request, StockTransaction $stockTransaction)
+    {
+        // Validasi agar alasan wajib diisi
+        $request->validate([
+            'rejection_reason' => 'required|string|max:255',
+        ]);
+
+        // Update status menjadi rejected dan simpan alasannya
+        $stockTransaction->update([
+            'status' => 'rejected',
+            'rejection_reason' => $request->rejection_reason,
+        ]);
+
+        return redirect()->back()->with('success', 'Barang keluar berhasil ditolak.');
+    }
+
+    public function show(StockTransaction $stockTransaction): RedirectResponse
+    {
+        return redirect()->route('stock-out.index');
     }
 }

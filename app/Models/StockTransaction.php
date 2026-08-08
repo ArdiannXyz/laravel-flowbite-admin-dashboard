@@ -20,6 +20,10 @@ class StockTransaction extends Model
         'unit_price',
         'transaction_date',
         'notes',
+        'status',
+        'rejection_reason',
+        'confirmed_by',
+        'confirmed_at',
     ];
 
     protected $casts = [

@@ -1,12 +1,15 @@
 @extends('layouts.dashboard')
 
 @section('content')
+@php
+    $currentTab = $activeTab ?? 'stok';
+@endphp
 <div class="p-4">
 
     {{-- ============ HEADER ============ --}}
     <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Laporan</h1>
+            <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Laporan System</h1>
             <p class="text-sm text-gray-500 dark:text-gray-400">Laporan stok barang, riwayat transaksi, dan aktivitas pengguna</p>
         </div>
     </div>
@@ -15,25 +18,27 @@
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul class="-mb-px flex flex-wrap text-center text-sm font-medium" id="laporan-tabs" data-tabs-toggle="#laporan-tab-content" role="tablist">
             <li class="mr-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 p-4" id="tab-stok-btn" data-tabs-target="#tab-stok" type="button" role="tab" aria-controls="tab-stok">
+                <button class="inline-block rounded-t-lg border-b-2 p-4 {{ $currentTab === 'stok' ? 'border-blue-600 text-blue-600 dark:text-blue-500 dark:border-blue-500' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' }}" id="tab-stok-btn" data-tabs-target="#tab-stok" type="button" role="tab" aria-controls="tab-stok" aria-selected="{{ $currentTab === 'stok' ? 'true' : 'false' }}">
                     Laporan Stok
                 </button>
             </li>
             <li class="mr-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 p-4" id="tab-masuk-btn" data-tabs-target="#tab-masuk" type="button" role="tab" aria-controls="tab-masuk">
+                <button class="inline-block rounded-t-lg border-b-2 p-4 {{ ($currentTab === 'transaction' || $currentTab === 'masuk') ? 'border-blue-600 text-blue-600 dark:text-blue-500 dark:border-blue-500' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' }}" id="tab-masuk-btn" data-tabs-target="#tab-masuk" type="button" role="tab" aria-controls="tab-masuk" aria-selected="{{ ($currentTab === 'transaction' || $currentTab === 'masuk') ? 'true' : 'false' }}">
                     Barang Masuk
                 </button>
             </li>
             <li class="mr-2" role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 p-4" id="tab-keluar-btn" data-tabs-target="#tab-keluar" type="button" role="tab" aria-controls="tab-keluar">
+                <button class="inline-block rounded-t-lg border-b-2 p-4 {{ $currentTab === 'keluar' ? 'border-blue-600 text-blue-600 dark:text-blue-500 dark:border-blue-500' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' }}" id="tab-keluar-btn" data-tabs-target="#tab-keluar" type="button" role="tab" aria-controls="tab-keluar" aria-selected="{{ $currentTab === 'keluar' ? 'true' : 'false' }}">
                     Barang Keluar
                 </button>
             </li>
+            @role('admin')
             <li role="presentation">
-                <button class="inline-block rounded-t-lg border-b-2 p-4" id="tab-aktivitas-btn" data-tabs-target="#tab-aktivitas" type="button" role="tab" aria-controls="tab-aktivitas">
+                <button class="inline-block rounded-t-lg border-b-2 p-4 {{ $currentTab === 'aktivitas' ? 'border-blue-600 text-blue-600 dark:text-blue-500 dark:border-blue-500' : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300' }}" id="tab-aktivitas-btn" data-tabs-target="#tab-aktivitas" type="button" role="tab" aria-controls="tab-aktivitas" aria-selected="{{ $currentTab === 'aktivitas' ? 'true' : 'false' }}">
                     Aktivitas Pengguna
                 </button>
             </li>
+            @endrole
         </ul>
     </div>
 
@@ -42,7 +47,7 @@
         {{-- ================================================================ --}}
         {{-- TAB 1: LAPORAN STOK --}}
         {{-- ================================================================ --}}
-        <div class="hidden rounded-lg" id="tab-stok" role="tabpanel" aria-labelledby="tab-stok-btn">
+        <div class="{{ $currentTab === 'stok' ? '' : 'hidden' }} rounded-lg" id="tab-stok" role="tabpanel" aria-labelledby="tab-stok-btn">
 
             {{-- Kartu Ringkasan Stok --}}
             <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -62,6 +67,9 @@
 
             {{-- Filter Stok --}}
             <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'stok' setelah filter disubmit -->
+                <input type="hidden" name="tab" value="stok">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Kategori</label>
@@ -136,11 +144,14 @@
         </div>
 
         {{-- ================================================================ --}}
-        {{-- TAB 2: BARANG MASUK --}}
+        {{-- TAB 2 & 3: BARANG MASUK / BARANG KELUAR --}}
         {{-- ================================================================ --}}
-        <div class="hidden rounded-lg" id="tab-masuk" role="tabpanel" aria-labelledby="tab-masuk-btn">
+        <div class="{{ ($currentTab === 'transaction' || $currentTab === 'masuk') ? '' : 'hidden' }} rounded-lg" id="tab-masuk" role="tabpanel" aria-labelledby="tab-masuk-btn">
 
             <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'masuk' -->
+                <input type="hidden" name="tab" value="masuk">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Dari Tanggal</label>
@@ -169,7 +180,6 @@
                             <th class="px-4 py-3">SKU</th>
                             <th class="px-4 py-3">Nama Produk</th>
                             <th class="px-4 py-3 text-right">Qty</th>
-                            <th class="px-4 py-3">Supplier</th>
                             <th class="px-4 py-3">Dicatat Oleh</th>
                         </tr>
                     </thead>
@@ -180,12 +190,11 @@
                                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ $item->product->sku ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $item->product->name ?? 'N/A' }}</td>
                                 <td class="px-4 py-3 text-right font-semibold text-green-600">+{{ $item->quantity }}</td>
-                                <td class="px-4 py-3">{{ $item->supplier->name ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $item->user->name ?? 'System' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="p-4 text-center text-sm text-gray-500">Tidak ada riwayat barang masuk.</td>
+                                <td colspan="5" class="p-4 text-center text-sm text-gray-500">Tidak ada riwayat barang masuk.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -196,12 +205,12 @@
             </div>
         </div>
 
-        {{-- ================================================================ --}}
-        {{-- TAB 3: BARANG KELUAR --}}
-        {{-- ================================================================ --}}
-        <div class="hidden rounded-lg" id="tab-keluar" role="tabpanel" aria-labelledby="tab-keluar-btn">
+        <div class="{{ $currentTab === 'keluar' ? '' : 'hidden' }} rounded-lg" id="tab-keluar" role="tabpanel" aria-labelledby="tab-keluar-btn">
 
             <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'keluar' -->
+                <input type="hidden" name="tab" value="keluar">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Dari Tanggal</label>
@@ -256,11 +265,15 @@
         </div>
 
         {{-- ================================================================ --}}
-        {{-- TAB 4: AKTIVITAS PENGGUNA --}}
+        {{-- TAB 4: AKTIVITAS PENGGUNA (KHUSUS ADMIN) --}}
         {{-- ================================================================ --}}
-        <div class="hidden rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
+        @role('admin')
+        <div class="{{ $currentTab === 'aktivitas' ? '' : 'hidden' }} rounded-lg" id="tab-aktivitas" role="tabpanel" aria-labelledby="tab-aktivitas-btn">
 
             <form method="GET" action="{{ route('report.index') }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-end sm:justify-between">
+                <!-- Hidden input agar tab tetap berada di 'aktivitas' -->
+                <input type="hidden" name="tab" value="aktivitas">
+
                 <div class="flex flex-col gap-3 sm:flex-row">
                     <div>
                         <label class="mb-1 block text-xs font-medium text-gray-500 dark:text-gray-400">Pengguna</label>
@@ -332,6 +345,7 @@
                 {{ $userActivities->links() }}
             </div>
         </div>
+        @endrole
 
     </div>
 </div>

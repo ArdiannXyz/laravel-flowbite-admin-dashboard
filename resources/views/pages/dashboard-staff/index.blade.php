@@ -48,19 +48,20 @@
 
             <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($barangMasuk as $item)
-                    <li class="flex items-center justify-between gap-4 p-4">
+                    <li class="flex items-center justify-between gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                         <div class="min-w-0">
                             <p class="truncate font-medium text-gray-900 dark:text-white">{{ $item->product->name ?? 'N/A' }}</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                SKU: {{ $item->product->sku ?? '-' }} &middot; {{ $item->quantity }} {{ $item->product->unit ?? 'unit' }} &middot; dari {{ $item->supplier->name ?? 'Supplier Tidak Diketahui' }}
+                                SKU: {{ $item->product->sku ?? '-' }} &middot; <span class="font-bold text-green-600">+{{ $item->quantity }}</span> {{ $item->product->unit ?? 'unit' }} &middot; dari {{ $item->supplier->name ?? 'Supplier Tidak Diketahui' }}
                             </p>
                             <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
-                                Dicatat {{ \Carbon\Carbon::parse($item->transaction_date)->translatedFormat('d M Y') }}
+                                Dicatat {{ \Carbon\Carbon::parse($item->transaction_date)->translatedFormat('d M Y') }} 
+                                oleh {{ $item->user->name ?? 'Sistem' }}
                             </p>
                         </div>
-                        <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                        <a href="{{ route('stock-in.index', ['search' => $item->transaction_code]) }}" class="shrink-0 rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
                             Periksa
-                        </button>
+                        </a>
                     </li>
                 @empty
                     <div class="p-8 text-center">
@@ -81,19 +82,20 @@
 
             <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($barangKeluar as $item)
-                    <li class="flex items-center justify-between gap-4 p-4">
+                    <li class="flex items-center justify-between gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                         <div class="min-w-0">
                             <p class="truncate font-medium text-gray-900 dark:text-white">{{ $item->product->name ?? 'N/A' }}</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                SKU: {{ $item->product->sku ?? '-' }} &middot; {{ $item->quantity }} {{ $item->product->unit ?? 'unit' }}
+                                SKU: {{ $item->product->sku ?? '-' }} &middot; <span class="font-bold text-red-600">-{{ $item->quantity }}</span> {{ $item->product->unit ?? 'unit' }}
                             </p>
                             <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">
                                 Diminta {{ \Carbon\Carbon::parse($item->transaction_date)->translatedFormat('d M Y') }}
+                                oleh {{ $item->user->name ?? 'Sistem' }}
                             </p>
                         </div>
-                        <button type="button" class="shrink-0 rounded-lg bg-primary-700 px-3 py-2 text-xs font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                        <a href="{{ route('stock-out.index', ['search' => $item->transaction_code]) }}" class="shrink-0 rounded-lg bg-purple-600 px-3 py-2 text-xs font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800">
                             Siapkan
-                        </button>
+                        </a>
                     </li>
                 @empty
                     <div class="p-8 text-center">

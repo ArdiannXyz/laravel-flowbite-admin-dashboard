@@ -8,9 +8,11 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">Informasi lengkap, riwayat stok, dan transaksi produk ini.</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('products.edit', $product->id) }}" class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
-                Edit Produk
-            </a>
+            @role('admin')
+                <a href="{{ route('products.edit', $product->id) }}" class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                    Edit Produk
+                </a>
+            @endrole
             <a href="{{ route('products.index') }}" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                 ← Kembali
             </a>
@@ -41,8 +43,11 @@
                     <span class="font-semibold text-gray-900 dark:text-white">{{ $product->supplier->name ?? '-' }}</span>
                 </div>
                 <div class="flex justify-between border-b pb-2 dark:border-gray-700">
-                    <span class="text-gray-500 dark:text-gray-400">Harga Beli:</span>
-                    <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($product->buy_price, 0, ',', '.') }}</span>
+                    <span class="text-gray-500 dark:text-gray-400">Harga Beli (AVG):</span>
+                    <div class="text-right">
+                        <span class="font-semibold text-gray-900 dark:text-white">Rp {{ number_format($product->buy_price, 0, ',', '.') }}</span>
+                        <div class="text-[10px] text-gray-400">Weighted Average Cost</div>
+                    </div>
                 </div>
                 <div class="flex justify-between border-b pb-2 dark:border-gray-700">
                     <span class="text-gray-500 dark:text-gray-400">Harga Jual:</span>
@@ -85,10 +90,10 @@
                     <a href="{{ route('stock-in.create', ['product_id' => $product->id]) }}" class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
                         + Tambah Barang Masuk
                     </a>
-                    <a href="{{ route('stock-out.create', ['product_id' => $product->id]) }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                    <a href="{{ route('stock-out.create', ['product_id' => $product->id]) }}" class="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700">
                         - Catat Barang Keluar
                     </a>
-                    <a href="{{ route('stock-opname.create', ['product_id' => $product->id]) }}" class="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700">
+                    <a href="{{ route('stock-opname.create', ['product_id' => $product->id]) }}" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
                         Cek Stock Opname
                     </a>
                 </div>
