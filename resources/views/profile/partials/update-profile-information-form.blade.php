@@ -4,7 +4,7 @@
             {{ __('Informasi Profil') }}
         </h2>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {{ __('Perbarui nama dan alamat email akun kamu.') }}
+            {{ __('Perbarui nama akun kamu.') }}
         </p>
     </header>
 
@@ -27,8 +27,8 @@
 
         <div>
             <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Email</label>
-            <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required autocomplete="username"
-                class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" readonly tabindex="-1"
+                class="w-full rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-500 cursor-not-allowed focus:border-gray-300 focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
             @error('email')
                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
             @enderror

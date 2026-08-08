@@ -15,10 +15,6 @@
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             @include('profile.partials.update-password-form')
         </div>
-
-        <div class="rounded-xl border border-red-200 bg-white p-6 shadow-sm dark:border-red-900/50 dark:bg-gray-800">
-            @include('profile.partials.delete-user-form')
-        </div>
     </div>
 </div>
 @endsection
