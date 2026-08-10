@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
-use App\Repositories\Contracts\SupplierRepositoryInterface;
+use App\Services\SupplierService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class SupplierController extends Controller
 {
     public function __construct(
-        protected SupplierRepositoryInterface $supplierRepository
+        protected SupplierService $supplierService
     ) {}
 
     /**
@@ -21,7 +21,7 @@ class SupplierController extends Controller
     public function index(Request $request): View
     {
         $filters = $request->only(['search']);
-        $suppliers = $this->supplierRepository->getAllPaginated($filters, 10);
+        $suppliers = $this->supplierService->getPaginatedSuppliers($filters, 10);
 
         return view('pages.inventory.suppliers.index', compact('suppliers', 'filters'));
     }
@@ -39,7 +39,7 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request): RedirectResponse
     {
-        $supplier = $this->supplierRepository->create($request->validated());
+        $supplier = $this->supplierService->createSupplier($request->validated());
 
         return redirect()
             ->route('suppliers.index')
@@ -51,7 +51,7 @@ class SupplierController extends Controller
      */
     public function show(int $id): View
     {
-        $supplier = $this->supplierRepository->findById($id);
+        $supplier = $this->supplierService->getSupplierById($id);
         if (!$supplier) {
             abort(404, 'Supplier tidak ditemukan.');
         }
@@ -66,7 +66,7 @@ class SupplierController extends Controller
      */
     public function edit(int $id): View
     {
-        $supplier = $this->supplierRepository->findById($id);
+        $supplier = $this->supplierService->getSupplierById($id);
         if (!$supplier) {
             abort(404, 'Supplier tidak ditemukan.');
         }
@@ -79,7 +79,7 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, int $id): RedirectResponse
     {
-        $success = $this->supplierRepository->update($id, $request->validated());
+        $success = $this->supplierService->updateSupplier($id, $request->validated());
         if (!$success) {
             return back()->withInput()->with('error', 'Gagal memperbarui supplier.');
         }
@@ -94,20 +94,14 @@ class SupplierController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
-        $supplier = $this->supplierRepository->findById($id);
-        if (!$supplier) {
-            return back()->with('error', 'Supplier tidak ditemukan.');
-        }
+        $result = $this->supplierService->deleteSupplier($id);
 
-        // Check if supplier is referenced by products
-        if ($supplier->products()->count() > 0) {
-            return back()->with('error', "Supplier '{$supplier->name}' tidak dapat dihapus karena masih memiliki produk terikat.");
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
         }
-
-        $this->supplierRepository->delete($id);
 
         return redirect()
             ->route('suppliers.index')
-            ->with('success', "Supplier '{$supplier->name}' berhasil dihapus.");
+            ->with('success', $result['message']);
     }
 }
