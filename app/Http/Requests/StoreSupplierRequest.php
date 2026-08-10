@@ -15,7 +15,7 @@ class StoreSupplierRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:suppliers,code',
+            'code' => 'nullable|string|max:50|unique:suppliers,code',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:1000',
@@ -26,7 +26,6 @@ class StoreSupplierRequest extends FormRequest
     {
         return [
             'name.required' => 'Nama supplier wajib diisi.',
-            'code.required' => 'Kode supplier wajib diisi.',
             'code.unique' => 'Kode supplier sudah digunakan, silakan pilih kode lain.',
             'email.email' => 'Format email supplier tidak valid.',
         ];

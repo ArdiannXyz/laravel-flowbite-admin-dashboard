@@ -26,11 +26,10 @@
                 <!-- Kode & Nama Supplier -->
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
-                        <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Kode Supplier <span class="text-red-500">*</span></label>
-                        <input type="text" name="code" value="{{ old('code', $supplier->code) }}" required placeholder="Contoh: SUP-ELK-001" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                        @error('code')
-                            <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Kode Supplier</label>
+                        <input type="text" value="{{ $supplier->code }}" disabled
+                            class="w-full rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm text-gray-500 cursor-not-allowed dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kode supplier tidak dapat diubah setelah dibuat.</p>
                     </div>
                     <div>
                         <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Nama Supplier / Perusahaan <span class="text-red-500">*</span></label>

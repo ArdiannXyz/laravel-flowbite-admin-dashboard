@@ -29,8 +29,10 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <!-- SKU -->
                 <div>
-                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Kode SKU <span class="text-red-500">*</span></label>
-                    <input type="text" name="sku" value="{{ old('sku', $product->sku) }}" required class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Kode SKU</label>
+                    <input type="text" value="{{ $product->sku }}" disabled
+                        class="w-full rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-sm text-gray-500 cursor-not-allowed dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">SKU tidak dapat diubah setelah produk dibuat.</p>
                 </div>
 
                 <!-- Nama Produk -->
