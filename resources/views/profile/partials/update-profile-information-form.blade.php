@@ -12,12 +12,30 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="space-y-4">
-        @csrf
-        @method('patch')
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-4">
+    @csrf
+    @method('patch')
 
-        <div>
-            <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+    <!-- Foto Profil -->
+    <div>
+        <label class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Foto Profil</label>
+        <div class="flex items-center gap-4">
+            <img class="h-16 w-16 rounded-full object-cover border-2 border-primary-500"
+                 src="{{ $user->profile_photo_path ? Storage::url($user->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random' }}"
+                 alt="Foto profil {{ $user->name }}">
+            <div class="flex-1">
+                <input type="file" name="profile_photo" id="profile_photo" accept="image/*"
+                    class="w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Format: JPG, PNG (Maksimal 2MB).</p>
+                @error('profile_photo')
+                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Nama</label>
             <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name"
                 class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             @error('name')

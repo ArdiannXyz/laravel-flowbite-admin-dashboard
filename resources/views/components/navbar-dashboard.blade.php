@@ -9,8 +9,14 @@
                     <svg id="toggleSidebarMobileClose" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                 </button>
                 <a href="{{ url('/') }}" class="flex ml-2 md:mr-6">
-                    <img src="{{ asset('static/images/logo.svg') }}" class="h-8 mr-3" alt="Stockify Logo" />
-                    <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-900 dark:text-white">Stockify</span>
+                    @if(!empty($settings['app_logo']))
+                        <img src="{{ Storage::url($settings['app_logo']) }}" class="h-8 mr-3 object-contain" alt="{{ $settings['app_name'] ?? 'Stockify' }} Logo" />
+                    @else
+                        <img src="{{ asset('static/images/logo.svg') }}" class="h-8 mr-3" alt="Stockify Logo" />
+                    @endif
+                    <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-900 dark:text-white">
+                        {{ $settings['app_name'] ?? 'Stockify' }}
+                    </span>
                 </a>
 
                 <!-- Indikator Status & Tanggal (Hanya tampil di Desktop) -->
@@ -54,7 +60,9 @@
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full border-2 border-primary-500 object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                            <img class="w-8 h-8 rounded-full border-2 border-primary-500 object-cover" 
+                                src="{{ auth()->user()->profile_photo_path ? Storage::url(auth()->user()->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=random' }}" 
+                                alt="{{ auth()->user()->name }}">
                         </button>
                     </div>
                     
@@ -72,7 +80,7 @@
                                 {{ auth()->user()->getRoleNames()->implode(', ') ?: 'User' }}
                             </span>
                         </div>
-                        <ul class="py-1" role="none">
+                        <ul class="py-1" role="none">   
                             <li>
                                 <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">Dashboard</a>
                             </li>

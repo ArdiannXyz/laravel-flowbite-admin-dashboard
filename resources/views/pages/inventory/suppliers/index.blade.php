@@ -40,7 +40,7 @@
                     Filter
                 </button>
                 <a href="{{ route('suppliers.index') }}" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                    Reset
+                    Refresh
                 </a>
             </div>
         </form>

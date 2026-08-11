@@ -58,6 +58,17 @@
                 @enderror
             </div>
 
+            <div>
+                <label for="logo_size" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    Ukuran Logo
+                </label>
+                <select name="logo_size" id="logo_size" class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <option value="h-6" {{ ($settings['logo_size'] ?? 'h-8') == 'h-6' ? 'selected' : '' }}>Kecil</option>
+                    <option value="h-8" {{ ($settings['logo_size'] ?? 'h-8') == 'h-8' ? 'selected' : '' }}>Sedang</option>
+                    <option value="h-12" {{ ($settings['logo_size'] ?? 'h-8') == 'h-12' ? 'selected' : '' }}>Besar</option>
+                </select>
+            </div>
+
             <!-- Email Kontak -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
